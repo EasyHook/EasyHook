@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<example>
+  <code>
+private static void OnProcessUpdate(Object InCallback)
+{
+    ProcessTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+    try
+    {
+        ProcessInfo[] Array = (ProcessInfo[])RemoteHooking.ExecuteAsService&lt;Form1&gt;("EnumProcesses");
+        SortedDictionary&lt;String, ProcessInfo&gt; Result = new SortedDictionary&lt;string, ProcessInfo&gt;();
+
+        // sort by name...
+        lock (ProcessList)
+        {
+            ActivePIDList.Clear();
+
+            for (int i = 0; i &lt; Array.Length; i++)
+            {
+                Result.Add(System.IO.Path.GetFileName(Array[i].FileName) + "____" + i, Array[i]);
+
+                ActivePIDList.Add(Array[i].Id);
+            }
+
+            Result.Values.CopyTo(Array, 0);
+
+            ProcessList.Clear();
+
+            ProcessList.AddRange(Array);
+        }
+    }
+    catch (AccessViolationException)
+    {
+        MessageBox.Show("This is an administrative task!", "Permission denied...", MessageBoxButtons.OK);
+
+        Process.GetCurrentProcess().Kill();
+    }
+    finally
+    {
+        ProcessTimer.Change(5000, 5000);
+    }
+}
+
+[Serializable]
+public class ProcessInfo
+{
+    public String FileName;
+    public Int32 Id;
+    public Boolean Is64Bit;
+    public String User;
+}
+
+public static ProcessInfo[] EnumProcesses()
+{
+    List&lt;ProcessInfo&gt; Result = new List&lt;ProcessInfo&gt;();
+    Process[] ProcList = Process.GetProcesses();
+
+    for (int i = 0; i &lt; ProcList.Length; i++)
+    {
+        Process Proc = ProcList[i];
+
+        try
+        {
+            ProcessInfo Info = new ProcessInfo();
+
+            Info.FileName = Proc.MainModule.FileName;
+            Info.Id = Proc.Id;
+            Info.Is64Bit = RemoteHooking.IsX64Process(Proc.Id);
+            Info.User = RemoteHooking.GetProcessIdentity(Proc.Id).Name;
+
+            Result.Add(Info);
+        }
+        catch
+        {
+        }
+    }
+
+    return Result.ToArray();
+}
+  </code>
+</example>

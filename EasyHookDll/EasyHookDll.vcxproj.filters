@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\LocalHook">
+      <UniqueIdentifier>{4d8bb9fe-c7e3-4cc2-84ef-ab8b1c9d0970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RemoteHook">
+      <UniqueIdentifier>{65c22cf5-9858-4c09-ac39-fb89d842a8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rtl">
+      <UniqueIdentifier>{3d9fb4f5-3790-477e-806c-df9274b632bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ASM">
+      <UniqueIdentifier>{e3faa4ac-0a1d-498f-a58d-b79c297e9e46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Disassembler">
+      <UniqueIdentifier>{1b060902-90d6-413b-a8c1-5e85422deca9}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
+    </Filter>
+    <Filter Include="Source Files\Disassembler\libudis86">
+      <UniqueIdentifier>{4855d8cb-8b9c-4c0c-8145-d171085cbb12}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalHook\acl.c">
+      <Filter>Source Files\LocalHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\LocalHook\alloc.c">
+      <Filter>Source Files\LocalHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\LocalHook\barrier.c">
+      <Filter>Source Files\LocalHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\LocalHook\caller.c">
+      <Filter>Source Files\LocalHook</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalHook\debug.cpp">
+      <Filter>Source Files\LocalHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\LocalHook\install.c">
+      <Filter>Source Files\LocalHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\LocalHook\reloc.c">
+      <Filter>Source Files\LocalHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\LocalHook\uninstall.c">
+      <Filter>Source Files\LocalHook</Filter>
+    </ClCompile>
+    <ClCompile Include="RemoteHook\driver.cpp">
+      <Filter>Source Files\RemoteHook</Filter>
+    </ClCompile>
+    <ClCompile Include="RemoteHook\entry.cpp">
+      <Filter>Source Files\RemoteHook</Filter>
+    </ClCompile>
+    <ClCompile Include="gacutil.cpp">
+      <Filter>Source Files\RemoteHook</Filter>
+    </ClCompile>
+    <ClCompile Include="RemoteHook\service.c">
+      <Filter>Source Files\RemoteHook</Filter>
+    </ClCompile>
+    <ClCompile Include="RemoteHook\stealth.c">
+      <Filter>Source Files\RemoteHook</Filter>
+    </ClCompile>
+    <ClCompile Include="RemoteHook\thread.c">
+      <Filter>Source Files\RemoteHook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Rtl\error.c">
+      <Filter>Source Files\Rtl</Filter>
+    </ClCompile>
+    <ClCompile Include="Rtl\file.c">
+      <Filter>Source Files\Rtl</Filter>
+    </ClCompile>
+    <ClCompile Include="Rtl\memory.c">
+      <Filter>Source Files\Rtl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Rtl\string.c">
+      <Filter>Source Files\Rtl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\udis86.c">
+      <Filter>Source Files\Disassembler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\decode.c">
+      <Filter>Source Files\Disassembler\libudis86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn.c">
+      <Filter>Source Files\Disassembler\libudis86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\itab.c">
+      <Filter>Source Files\Disassembler\libudis86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-att.c">
+      <Filter>Source Files\Disassembler\libudis86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-intel.c">
+      <Filter>Source Files\Disassembler\libudis86</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\DriverShared\DriverShared.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\easyhook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ntstatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\rtl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\udis86.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\decode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\extern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\itab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\syn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="..\DriverShared\ASM\HookSpecific_x86.asm">
+      <Filter>Source Files\ASM</Filter>
+    </MASM>
+    <MASM Include="..\DriverShared\ASM\HookSpecific_x64.asm">
+      <Filter>Source Files\ASM</Filter>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EasyHookDll_64.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="EasyHookDll_32.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

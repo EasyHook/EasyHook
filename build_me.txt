@@ -1,0 +1,34 @@
+﻿Requires MSBuild Community Tasks: https://github.com/loresoft/msbuildtasks
+
+*******************************************************************************
+* Build Binaries - build.bat
+*******************************************************************************
+Requires Visual Studio 2013
+
+Use the build.bat to build binaries for all configurations (.NET 3.5/4.0, 
+Debug/Release, x86/x64).
+
+.\netfx3.5-Debug\x86
+.\netfx3.5-Debug\x64
+.\netfx3.5-Release\x86
+.\netfx3.5-Release\x64
+.\netfx4-Debug\x86
+.\netfx4-Debug\x64
+.\netfx4-Release\x86
+.\netfx4-Release\x64
+
+*******************************************************************************
+* Packaging for Release - build-package.bat
+*******************************************************************************
+
+Use the build-package.bat to set version information, build binaries for all 
+configurations and ZIP Release builds and Source within .\Deploy.
+
+Generates a ZIP archive:
+.\Deploy\EasyHook-#.#.#.#-Binaries.zip
+.\Deploy\EasyHook-#.#.#.#-Source.zip
+
+Containing the following files:
+.\Deploy\NetFX3.5\*
+.\Deploy\NetFX4.0\*
+.\Deploy\Source\*

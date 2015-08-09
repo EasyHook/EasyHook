@@ -85,10 +85,8 @@
   <Target Name = "PreparePackage">
     <!--DependsOnTargets="Build">-->
     <ItemGroup>
-      <CommonFiles Include=".\KNOWN ISSUES.txt" />
-      <CommonFiles Include=".\LICENSE.txt" />
-      <CommonFiles Include=".\README.txt" />
-      <CommonFiles Include=".\KNOWN ISSUES.txt" />
+      <CommonFiles Include=".\LICENSE" />
+      <CommonFiles Include=".\README.md" />
       <CommonFiles Include=".\EasyHookTestCert.cer" />
       <CommonFiles Include=".\Public\easyhook.h" />
     </ItemGroup>
@@ -128,24 +126,24 @@
     <Copy SourceFiles="@(NetFX4Files)"
           DestinationFolder="$(PackageDir)\NetFX4.0" />
   </Target>
-
+<!-- No need to export source
   <Target Name="ExportSource">
     <RemoveDir Directories="$(PackageDir)\Source" />
     <SvnExport RepositoryPath="$(MSBuildProjectDirectory)"
                LocalPath="$(PackageDir)\Source"></SvnExport>
   </Target>
+-->
 
   <!-- Package: Create deployment ZIP file -->
   <Target Name = "Package" DependsOnTargets="PreparePackage">
     <ItemGroup>
       <PackageFiles Include="$(PackageDir)\**\*.*" Exclude="$(PackageDir)\*.zip;$(PackageDir)\Source\**\*.*" />
     </ItemGroup>
-    <ItemGroup>
+    <!-- No longer packaging source files
+	<ItemGroup>
       <SourceFiles Include="$(PackageDir)\Source\**\*.*" />
     </ItemGroup>
-    <!--<ItemGroup>
-      <SourceFiles Include="" Exclude="" />
-    </ItemGroup>-->
+    -->
     <Version VersionFile="Version.txt" BuildType="None" RevisionType="None">
       <Output TaskParameter="Major" PropertyName="Major" />
       <Output TaskParameter="Minor" PropertyName="Minor" />
@@ -157,10 +155,12 @@
          WorkingDirectory="$(PackageDir)"
          ZipFileName="$(PackageDir)\EasyHook-$(Major).$(Minor).$(Build).$(Revision)-Binaries.zip"
          ZipLevel="9" />
-    <Zip Files="@(SourceFiles)"
+    <!-- no longer archiving source files here
+	<Zip Files="@(SourceFiles)"
          WorkingDirectory="$(PackageDir)\Source"
          ZipFileName="$(PackageDir)\EasyHook-$(Major).$(Minor).$(Build).$(Revision)-Source.zip"
          ZipLevel="9" />
+	-->
   </Target>
   <Target Name = "Clean">
     <RemoveDir Directories=".\Build;$(PackageDir)\NetFX4.0;$(PackageDir)\NetFX3.5;$(PackageDir)\Source" />

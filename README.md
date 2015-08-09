@@ -26,10 +26,6 @@ For more information head to the EasyHook site https://easyhook.github.io
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Lesser General Public License for more details.
 
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-
 ## External libraries
 EasyHook includes the UDIS86 library Copyright (c) 2002-2012, Vivek Thampi <vivek.mt@gmail.com>. See DirectShared\Disassembler\udis86-LICENSE.txt for license details. Minor modifications have been made for it to compile with EasyHook.
 

@@ -27,6 +27,6 @@ For more information head to the EasyHook site https://easyhook.github.io
     Lesser General Public License for more details.
 
 ## External libraries
-EasyHook includes the UDIS86 library Copyright (c) 2002-2012, Vivek Thampi <vivek.mt@gmail.com>. See DirectShared\Disassembler\udis86-LICENSE.txt for license details. Minor modifications have been made for it to compile with EasyHook.
+EasyHook includes the UDIS86 library Copyright (c) 2002-2012, Vivek Thampi <vivek.mt@gmail.com>. See .\DriverShared\Disassembler\udis86-LICENSE.txt for license details. Minor modifications have been made for it to compile with EasyHook.
 
 More information about UDIS86 can be found at https://github.com/vmt/udis86

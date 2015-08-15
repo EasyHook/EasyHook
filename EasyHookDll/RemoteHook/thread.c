@@ -277,6 +277,58 @@ FINALLY_OUTRO:
 
 
 
+EASYHOOK_NT_INTERNAL NtForceLdrInitializeThunk(HANDLE hProc)
+{
+	/*
+	Description:
+
+	Allows us to retrieve remote function addresses for a suspended process by starting a 
+	remote thread that runs a single instruction function (ret). Thanks to werker: https://github.com/EasyHook/EasyHook/issues/9
+
+	Parameters:
+
+	- hProcess
+
+	The handle to the remote process to force loader initialization
+	*/
+	HANDLE                  hRemoteThread = NULL;
+	UCHAR*                  RemoteInjectCode = NULL;
+	BYTE                    InjectCode[3];
+	ULONG                   CodeSize;
+	SIZE_T                  BytesWritten;
+	NTSTATUS                NtStatus;
+
+#ifdef _M_X64
+	InjectCode[0] = 0xC3; // ret
+	CodeSize = 1;
+#else
+	InjectCode[0] = 0xC2; // ret 0x4
+	InjectCode[1] = 0x04;
+	InjectCode[2] = 0x00;
+	CodeSize = 3;
+#endif
+
+	if ((RemoteInjectCode = (BYTE*)VirtualAllocEx(hProc, NULL, CodeSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE)) == NULL)
+		THROW(STATUS_NO_MEMORY, L"Unable to allocate memory in target process.");
+
+	if (!WriteProcessMemory(hProc, RemoteInjectCode, InjectCode, CodeSize, &BytesWritten) || (BytesWritten != CodeSize))
+		THROW(STATUS_INTERNAL_ERROR, L"Unable to write into target process memory.");
+
+	if ((hRemoteThread = CreateRemoteThread(hProc, NULL, 0, (LPTHREAD_START_ROUTINE)RemoteInjectCode, NULL, 0, NULL)) == NULL)
+		THROW(STATUS_ACCESS_DENIED, L"Unable to create remote thread.");
+
+	WaitForSingleObject(hRemoteThread, INFINITE);
+
+	RETURN;
+
+THROW_OUTRO:
+FINALLY_OUTRO :
+	return NtStatus;
+}
+
+
+
+
 
 typedef BOOL __stdcall IsWow64Process_PROC(HANDLE InProc, BOOL* OutResult);
 typedef void GetNativeSystemInfo_PROC(LPSYSTEM_INFO OutSysInfo);
@@ -1175,6 +1227,9 @@ Returns:
 
 	if((Info = (LPREMOTE_INFO)RtlAllocateMemory(TRUE, RemoteInfoSize)) == NULL)
 		THROW(STATUS_NO_MEMORY, L"Unable to allocate memory in current process.");
+
+	// Ensure that if we have injected into a suspended process that we can retrieve the remote function addresses
+	FORCE(NtForceLdrInitializeThunk(hProc));
 
 	// Determine function addresses within remote process
     Info->LoadLibraryW   = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "LoadLibraryW");

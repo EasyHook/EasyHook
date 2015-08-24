@@ -106,20 +106,26 @@ Returns:
     if(iEnd > (LONGLONG)SysInfo.lpMaximumApplicationAddress)
         iEnd = (LONGLONG)SysInfo.lpMaximumApplicationAddress;
 
-    // we are trying to get memory as near as possible to relocate most RIP-relative addressings
+    // we are trying to get memory as near as possible to relocate most RIP-relative instructions
     for(Base = (LONGLONG)InEntryPoint, Index = 0; ; Index += PAGE_SIZE)
     {
+		BOOLEAN end = TRUE;
 		if(Base + Index < iEnd)
 		{
 			if((Res = (UCHAR*)VirtualAlloc((void*)(Base + Index), PAGE_SIZE, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE)) != NULL)
 				break;
+			end = FALSE;
 		}
 
         if(Base - Index > iStart)
         {
 	        if((Res = (BYTE*)VirtualAlloc((void*)(Base - Index), PAGE_SIZE, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE)) != NULL)
 		        break;
+			end = FALSE;
         }
+
+		if (end)
+			break;
     }
 
     if(Res == NULL)

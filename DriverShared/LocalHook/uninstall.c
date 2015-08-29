@@ -168,7 +168,7 @@ Descriptions:
 */
     PLOCAL_HOOK_INFO        Hook;
     NTSTATUS                NtStatus = STATUS_SUCCESS;
-    UINT32                  Timeout = 1000;
+    INT32                  Timeout = 1000;
     while(TRUE)
     {
         // pop from removal list
@@ -211,7 +211,7 @@ Descriptions:
                     break;
                 }
 
-                if (Timeout < 0)
+                if (Timeout <= 0)
                 {
                     // this hook was not released within timeout or cannot be released.
                     // We will leak the memory, but not hang forever.

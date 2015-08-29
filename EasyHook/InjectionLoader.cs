@@ -350,6 +350,7 @@ namespace EasyHook
         private static Type FindEntryPoint(string userAssemblyStrongName, string userAssemblyFileName)
         {
             Assembly userAssembly = null;
+            StringBuilder errors = new StringBuilder();
 
             // First try to find the assembly using a strong name (if provided)
             if (!String.IsNullOrEmpty(userAssemblyStrongName))
@@ -362,6 +363,7 @@ namespace EasyHook
                 catch (Exception e)
                 {
                     Config.PrintComment("FAIL: Assembly.Load({0}) - {1}", userAssemblyStrongName, e.ToString());
+                    errors.AppendFormat("Failed to load assembly using strong name {0} - {1}\r\n", userAssemblyStrongName, e.ToString());
                 }
             }
 
@@ -375,15 +377,16 @@ namespace EasyHook
                 }
                 catch (Exception e)
                 {
-                    Config.PrintComment("FAIL: Assembly.LoadFrom({0}) - {1}", userAssemblyFileName,
-                                        e.ToString());
+                    Config.PrintComment("FAIL: Assembly.LoadFrom({0}) - {1}", userAssemblyFileName, e.ToString());
+                    errors.AppendFormat("Failed to load assembly from file {0} - {1}", userAssemblyFileName, e.ToString());
                 }
             }
 
+            // If both attempts fail, raise an exception with the failed attempts.
             if (userAssembly == null)
             {
                 Config.PrintError("Could not load assembly {0}, {1}", userAssemblyFileName, userAssemblyStrongName);
-                throw new FileNotFoundException("The given user library could not be found.");
+                throw new Exception(errors.ToString());
             }
 
             // Find the first EasyHook.IEntryPoint
@@ -393,7 +396,7 @@ namespace EasyHook
                 if (exportedTypes[i].GetInterface("EasyHook.IEntryPoint") != null)
                     return exportedTypes[i];
             }
-            throw new EntryPointNotFoundException("The given user library does not export a proper type implementing the 'EasyHook.IEntryPoint' interface.");
+            throw new EntryPointNotFoundException("The given library does not include a public class implementing the 'EasyHook.IEntryPoint' interface.");
         }
 
         /// <summary>

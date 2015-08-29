@@ -768,8 +768,12 @@ namespace EasyHook
                     new System.GACManagedAccess.InstallReference(System.GACManagedAccess.InstallReferenceGuid.OpaqueGuid, InUniqueID, InDescription),
                     out results);
 
+// disable warnings Obsolete and Obsolete("message")
+#pragma warning disable 612, 618
                 for (var i = 0; i < InAssemblyNames.Length; i++)
                     Config.PrintComment("GacUninstallAssembly: Assembly {0}, uninstall result {1}", InAssemblyNames[i], results[i]);
+// enable warnings for Obsolete and Obsolete("message")
+#pragma warning restore 612, 618
             }
             catch (Exception e)
             {

@@ -9,8 +9,8 @@ namespace EasyHook.COM
     /// <para>A helper class for determining the address of COM object functions for hooking given a COM class id (CLSID) and COM interface id (IID), or COM class type and COM interface type.</para>
     /// </summary>
     /// <example>
-    /// // The following three examples result in the same output
-    /// 
+    /// The following three examples result in the same output:
+    /// <code>
     /// // 1. Use imported Class and Interface Types
     /// COMClassInfo cci1 = new COMClassInfo(typeof(CLSID_DirectInputDevice8), typeof(IID_IDirectInputDevice8W), "GetCapabilities");
     /// // 2. Use Guid from class and interface types
@@ -48,6 +48,7 @@ namespace EasyHook.COM
     ///     int GetCapabilities(IntPtr deviceCaps); // fourth method due to IUnknown methods QueryInterface, AddRef and Release
     ///     // other methods...
     /// }
+    /// </code>
     /// </example>
     public class COMClassInfo
     {

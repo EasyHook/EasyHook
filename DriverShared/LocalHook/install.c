@@ -149,8 +149,7 @@ Returns:
 */
 
     ULONG           			EntrySize;
-    LOCAL_HOOK_INFO*            Hook;
-    ULONG                       Index;
+    LOCAL_HOOK_INFO*            Hook = NULL;
     LONGLONG          			RelAddr;
     UCHAR*                      MemoryPtr;
     LONG                        NtStatus = STATUS_INTERNAL_ERROR;
@@ -160,6 +159,7 @@ Returns:
 #endif
 
 #ifndef _M_X64
+    ULONG                       Index;
     UCHAR*			            Ptr;
 #endif
 
@@ -188,8 +188,15 @@ Returns:
 
     // create and initialize hook handle
     Hook->NativeSize = sizeof(LOCAL_HOOK_INFO);
+#if !_M_X64
+    __pragma(warning(push))
+    __pragma(warning(disable:4305))
+#endif
     Hook->RandomValue = (void*)0x69FAB738962376EF;
-    Hook->HookProc = (UCHAR*)InHookProc;
+#if !_M_X64
+    __pragma(warning(pop))
+#endif
+        Hook->HookProc = (UCHAR*)InHookProc;
     Hook->TargetProc = (UCHAR*)InEntryPoint;
     Hook->EntrySize = EntrySize;	
     Hook->IsExecutedPtr = (int*)((UCHAR*)Hook + 2048);
@@ -369,11 +376,6 @@ Returns:
 	UCHAR			            Jumper_x64[12] = {0x48, 0xb8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xe0};
 	ULONGLONG					AtomicCache_x64;
 #endif
-
-#ifndef _M_X64
-    UCHAR*			            Ptr;
-#endif
-
 
     // validate parameters
     if(!IsValidPointer(InEntryPoint, 1))

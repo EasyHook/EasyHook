@@ -32,15 +32,17 @@ extern "C" {
 
 #include "types.h"
 
-#if defined(_MSC_VER) && defined(_USRDLL)
-# ifdef LIBUDIS86_EXPORTS
-#  define LIBUDIS86_DLLEXTERN __declspec(dllexport)
-# else 
-#  define LIBUDIS86_DLLEXTERN __declspec(dllimport)
-# endif
-#else
-# define LIBUDIS86_DLLEXTERN 
-#endif
+//#if defined(_MSC_VER) && defined(_USRDLL)
+//# ifdef LIBUDIS86_EXPORTS
+//#  define LIBUDIS86_DLLEXTERN __declspec(dllexport)
+//# else 
+//#  define LIBUDIS86_DLLEXTERN __declspec(dllimport)
+//# endif
+//#else
+//# define LIBUDIS86_DLLEXTERN 
+//#endif
+// EasyHook does not need to export the UDIS86 library
+#define LIBUDIS86_DLLEXTERN
 
 /* ============================= PUBLIC API ================================= */
 

@@ -104,10 +104,10 @@ ud_set_vendor(struct ud* u, unsigned v)
 {
   switch(v) {
   case UD_VENDOR_INTEL:
-    u->vendor = v;
+    u->vendor = (uint8_t)v;
     break;
   case UD_VENDOR_ANY:
-    u->vendor = v;
+      u->vendor = (uint8_t)v;
     break;
   default:
     u->vendor = UD_VENDOR_AMD;
@@ -171,7 +171,7 @@ ud_insn_hex(struct ud* u)
     /* for each byte used to decode instruction */
     for (i = 0; i < ud_insn_len(u) && i < sizeof(u->insn_hexcode) / 2;
          ++i, ++src_ptr) {
-      sprintf(src_hex, "%02x", *src_ptr & 0xFF);
+      sprintf_s(src_hex, sizeof(u->insn_hexcode), "%02x", *src_ptr & 0xFF);
       src_hex += 2;
     }
   }
@@ -201,7 +201,7 @@ ud_insn_ptr(const struct ud* u)
 extern unsigned int 
 ud_insn_len(const struct ud* u) 
 {
-  return u->inp_ctr;
+  return (unsigned int)u->inp_ctr;
 }
 
 

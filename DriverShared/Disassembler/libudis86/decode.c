@@ -87,12 +87,12 @@ inp_peek(struct ud *u)
         return u->inp_buf[u->inp_buf_index];
       }
     } else if (u->inp_peek != UD_EOI) {
-      return u->inp_peek;
+      return (uint8_t)u->inp_peek;
     } else {
       int c;
       if ((c = u->inp_hook(u)) != UD_EOI) {
         u->inp_peek = c;
-        return u->inp_peek;
+        return (uint8_t)u->inp_peek;
       }
     }
   }
@@ -114,7 +114,7 @@ inp_next(struct ud *u)
       int c = u->inp_peek;
       if (c != UD_EOI || (c = u->inp_hook(u)) != UD_EOI) {
         u->inp_peek = UD_EOI;
-        u->inp_curr = c;
+        u->inp_curr = (uint8_t)c;
         u->inp_sess[u->inp_ctr++] = u->inp_curr;
         return u->inp_curr;
       }
@@ -431,9 +431,9 @@ decode_reg(struct ud *u,
            int size)
 {
   int reg;
-  size = resolve_operand_size(u, size);
+  size = resolve_operand_size(u, (ud_operand_size_t)size);
   switch (type) {
-    case REGCLASS_GPR : reg = decode_gpr(u, size, num); break;
+    case REGCLASS_GPR: reg = decode_gpr(u, (unsigned char)size, (unsigned char)num); break;
     case REGCLASS_MMX : reg = UD_R_MM0  + (num & 7); break;
     case REGCLASS_XMM :
       reg = num + (size == SZ_QQ ? UD_R_YMM0 : UD_R_XMM0);
@@ -458,7 +458,7 @@ decode_reg(struct ud *u,
   }
   opr->type = UD_OP_REG;
   opr->base = reg;
-  opr->size = size;
+  opr->size = (uint16_t)size;
 }
 
 
@@ -470,7 +470,7 @@ decode_reg(struct ud *u,
 static void 
 decode_imm(struct ud* u, unsigned int size, struct ud_operand *op)
 {
-  op->size = resolve_operand_size(u, size);
+  op->size = (uint16_t)resolve_operand_size(u, (ud_operand_size_t)size);
   op->type = UD_OP_IMM;
 
   switch (op->size) {
@@ -544,7 +544,7 @@ decode_modrm_rm(struct ud         *u,
                 unsigned int       size)    /* operand size */
 
 {
-  size_t offset = 0;
+  unsigned int offset = 0;
   unsigned char mod, rm;
 
   /* get mod, r/m and reg fields */
@@ -564,7 +564,7 @@ decode_modrm_rm(struct ud         *u,
    * !11b => Memory Address
    */  
   op->type = UD_OP_MEM;
-  op->size = resolve_operand_size(u, size);
+  op->size = (uint16_t)resolve_operand_size(u, (ud_operand_size_t)size);
 
   if (u->adr_mode == 64) {
     op->base = UD_R_RAX + rm;
@@ -686,7 +686,7 @@ decode_moffset(struct ud *u, unsigned int size, struct ud_operand *opr)
   opr->base  = UD_NONE;
   opr->index = UD_NONE;
   opr->scale = UD_NONE;
-  opr->size  = resolve_operand_size(u, size);
+  opr->size = (uint16_t)resolve_operand_size(u, (ud_operand_size_t)size);
   decode_mem_disp(u, u->adr_mode, opr);
 }
 
@@ -739,7 +739,7 @@ decode_operand(struct ud           *u,
     case OP_MR:
       decode_modrm_rm(u, operand, REGCLASS_GPR, 
                       MODRM_MOD(modrm(u)) == 3 ? 
-                        Mx_reg_size(size) : Mx_mem_size(size));
+                      Mx_reg_size((ud_operand_size_t)size) : Mx_mem_size((ud_operand_size_t)size));
       break;
     case OP_F:
       u->br_far  = 1;
@@ -791,7 +791,7 @@ decode_operand(struct ud           *u,
     case OP_MU:
       decode_modrm_rm(u, operand, REGCLASS_XMM, 
                       MODRM_MOD(modrm(u)) == 3 ? 
-                        Mx_reg_size(size) : Mx_mem_size(size));
+                        Mx_reg_size((ud_operand_size_t)size) : Mx_mem_size((ud_operand_size_t)size));
       break;
     case OP_S:
       decode_modrm_reg(u, operand, REGCLASS_SEG, size);
@@ -1165,10 +1165,10 @@ decode_ext(struct ud *u, uint16_t ptr)
       idx = u->dis_mode != 64 ? 0 : 1;
       break;
     case UD_TAB__OPC_OSIZE:
-      idx = eff_opr_mode(u->dis_mode, REX_W(u->pfx_rex), u->pfx_opr) / 32;
+      idx = (uint8_t)(eff_opr_mode(u->dis_mode, REX_W(u->pfx_rex), u->pfx_opr) / 32);
       break;
     case UD_TAB__OPC_ASIZE:
-      idx = eff_adr_mode(u->dis_mode, u->pfx_adr) / 32;
+      idx = (uint8_t)(eff_adr_mode(u->dis_mode, u->pfx_adr) / 32);
       break;
     case UD_TAB__OPC_X87:
       idx = modrm(u) - 0xC0;
@@ -1257,7 +1257,7 @@ ud_decode(struct ud *u)
   u->pc += u->inp_ctr;    /* move program counter by bytes decoded */
 
   /* return number of bytes disassembled. */
-  return u->inp_ctr;
+  return (unsigned int)u->inp_ctr;
 }
 
 /*

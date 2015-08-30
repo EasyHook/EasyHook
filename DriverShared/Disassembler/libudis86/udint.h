@@ -46,23 +46,32 @@
     } while (0)
 #else
   #define UDERR(u, m) \
+    __pragma(warning(push)) \
+    __pragma(warning(disable:4127)) \
     do { \
       (u)->error = 1; \
-    } while (0)
+    } while (0) \
+    __pragma(warning(pop))
 #endif /* !LOGERR */
 
 #define UD_RETURN_ON_ERROR(u) \
+  __pragma(warning(push)) \
+  __pragma(warning(disable:4127)) \
   do { \
     if ((u)->error != 0) { \
       return (u)->error; \
     } \
-  } while (0)
+  } while (0) \
+  __pragma(warning(pop))
 
 #define UD_RETURN_WITH_ERROR(u, m) \
+  __pragma(warning(push)) \
+  __pragma(warning(disable:4127)) \
   do { \
     UDERR(u, m); \
     return (u)->error; \
-  } while (0)
+  } while (0) \
+  __pragma(warning(pop))
 
 #ifndef __UD_STANDALONE__
 # define UD_NON_STANDALONE(x) x

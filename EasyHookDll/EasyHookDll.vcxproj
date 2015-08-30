@@ -205,13 +205,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(TargetPath)" "$(TargetDir)..\x64\EasyHook32.dll"
 copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
     </PostBuildEvent>
     <MASM>
-      <UseSafeExceptionHandlers>true</UseSafeExceptionHandlers>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">
@@ -239,13 +240,14 @@ copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(TargetPath)" "$(TargetDir)..\x64\EasyHook32.dll"
 copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
     </PostBuildEvent>
     <MASM>
-      <UseSafeExceptionHandlers>true</UseSafeExceptionHandlers>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">
@@ -281,7 +283,7 @@ copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
 copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
     </PostBuildEvent>
     <MASM>
-      <UseSafeExceptionHandlers>true</UseSafeExceptionHandlers>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">
@@ -317,7 +319,7 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
 copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
     </PostBuildEvent>
     <MASM>
-      <UseSafeExceptionHandlers>true</UseSafeExceptionHandlers>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">
@@ -351,6 +353,7 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(TargetPath)" "$(TargetDir)..\x64\EasyHook32.dll"
@@ -358,7 +361,7 @@ copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
     </PostBuildEvent>
     <MASM>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <UseSafeExceptionHandlers>true</UseSafeExceptionHandlers>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">
@@ -392,6 +395,7 @@ copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(TargetPath)" "$(TargetDir)..\x64\EasyHook32.dll"
@@ -399,7 +403,7 @@ copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
     </PostBuildEvent>
     <MASM>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <UseSafeExceptionHandlers>true</UseSafeExceptionHandlers>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'">
@@ -441,7 +445,7 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
     </PostBuildEvent>
     <MASM>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <UseSafeExceptionHandlers>true</UseSafeExceptionHandlers>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">
@@ -483,7 +487,7 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
     </PostBuildEvent>
     <MASM>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <UseSafeExceptionHandlers>true</UseSafeExceptionHandlers>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
     </MASM>
   </ItemDefinitionGroup>
   <ItemGroup>

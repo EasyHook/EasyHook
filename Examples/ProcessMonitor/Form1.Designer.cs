@@ -33,27 +33,27 @@
             this.CHK_IsMonitoring = new System.Windows.Forms.CheckBox();
             this.BTN_Clear = new System.Windows.Forms.Button();
             this.LIST_Accesses = new System.Windows.Forms.ListView();
-            this.PID = new System.Windows.Forms.ColumnHeader();
-            this.Time = new System.Windows.Forms.ColumnHeader();
-            this.Access = new System.Windows.Forms.ColumnHeader();
+            this.PID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Access = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.LIST_Processes = new System.Windows.Forms.ListView();
-            this.Activated = new System.Windows.Forms.ColumnHeader();
-            this.EnumPID = new System.Windows.Forms.ColumnHeader();
-            this.Wow64 = new System.Windows.Forms.ColumnHeader();
-            this.ProcName = new System.Windows.Forms.ColumnHeader();
-            this.Path = new System.Windows.Forms.ColumnHeader();
+            this.HookActive = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.EnumPID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Wow64 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ProcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.UserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Path = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TIMER = new System.Windows.Forms.Timer(this.components);
-            this.UserName = new System.Windows.Forms.ColumnHeader();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.CHK_IsMonitoring);
             this.groupBox1.Controls.Add(this.BTN_Clear);
             this.groupBox1.Controls.Add(this.LIST_Accesses);
@@ -89,9 +89,9 @@
             // 
             // LIST_Accesses
             // 
-            this.LIST_Accesses.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.LIST_Accesses.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LIST_Accesses.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.PID,
             this.Time,
@@ -123,8 +123,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.LIST_Processes);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
@@ -135,12 +135,12 @@
             // 
             // LIST_Processes
             // 
-            this.LIST_Processes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.LIST_Processes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LIST_Processes.CheckBoxes = true;
             this.LIST_Processes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Activated,
+            this.HookActive,
             this.EnumPID,
             this.Wow64,
             this.ProcName,
@@ -159,10 +159,10 @@
             this.LIST_Processes.View = System.Windows.Forms.View.Details;
             this.LIST_Processes.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.LIST_Processes_ItemChecked);
             // 
-            // Activated
+            // HookActive
             // 
-            this.Activated.Text = "";
-            this.Activated.Width = 27;
+            this.HookActive.Text = "";
+            this.HookActive.Width = 27;
             // 
             // EnumPID
             // 
@@ -179,6 +179,11 @@
             this.ProcName.Text = "Name";
             this.ProcName.Width = 161;
             // 
+            // UserName
+            // 
+            this.UserName.Text = "User";
+            this.UserName.Width = 132;
+            // 
             // Path
             // 
             this.Path.Text = "Path";
@@ -190,11 +195,6 @@
             this.TIMER.Interval = 2000;
             this.TIMER.Tick += new System.EventHandler(this.TIMER_Tick);
             // 
-            // UserName
-            // 
-            this.UserName.Text = "User";
-            this.UserName.Width = 132;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -204,7 +204,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Interactive Process Monitor powered by EasyHook        -       Copyrights 2008 by" +
-                " Christoph Husse,  released under MIT-License";
+    " Christoph Husse,  released under MIT-License";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -225,7 +225,7 @@
         private System.Windows.Forms.ColumnHeader EnumPID;
         private System.Windows.Forms.ColumnHeader Wow64;
         private System.Windows.Forms.ColumnHeader Path;
-        private System.Windows.Forms.ColumnHeader Activated;
+        private System.Windows.Forms.ColumnHeader HookActive;
         private System.Windows.Forms.Timer TIMER;
         private System.Windows.Forms.ColumnHeader ProcName;
         private System.Windows.Forms.CheckBox CHK_IsMonitoring;

@@ -8,6 +8,8 @@
     #pragma comment(lib, "EasyHook64.lib")
 #endif
 
+#pragma warning(disable: 4100 4127)
+
 #define FORCE(expr)     {if(!SUCCEEDED(NtStatus = (expr))) goto ERROR_ABORT;}
 
 BOOL WINAPI MessageBeepHook(__in UINT uType)
@@ -23,7 +25,7 @@ BOOL WINAPI MessageBeepHook(__in UINT uType)
 
 	LhEnumModules((HMODULE*)CallStack, 64, &MethodCount);
 
-	for(int i = 0; i < MethodCount; i++)
+	for(ULONG i = 0; i < MethodCount; i++)
 	{
 		LhBarrierPointerToModule(CallStack[i], &Mod);
 	}
@@ -138,7 +140,7 @@ extern "C" int main(int argc, wchar_t* argv[])
     FORCE(DbgGetThreadIdByHandle(Handle, &ThreadId));
 
     if(ThreadId != RealThreadId)
-        throw;
+        return EXIT_FAILURE;
 
 	_getch();
 

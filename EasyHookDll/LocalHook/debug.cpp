@@ -97,8 +97,8 @@ EASYHOOK_NT_EXPORT DbgAttachDebugger()
 /*
 Description:
 
-    Attaches a debugger to the current process. This is currently
-    only necessary for RIP-relocation and disassembling. Multiple
+    Attaches a debugger to the current process (64-bit only). This is no 
+	longer necessary for RIP-relocation and disassembling. Multiple
     calls will do nothing.
 
 */
@@ -108,7 +108,7 @@ Description:
     if(hDbgEng != NULL)
         RETURN;
 
-#ifdef _M_X64    
+#ifdef _M_X64
 
     if((hDbgEng = LoadLibraryW(L"dbgeng.dll")) == NULL)
         THROW(STATUS_NOT_SUPPORTED, L"Unable to load 'dbgeng.dll'.");
@@ -135,9 +135,6 @@ Description:
 	// wait for completion
 	if(!RTL_SUCCESS(DebugControl->WaitForEvent(0, 5000)))
 	    THROW(STATUS_INTERNAL_ERROR, L"Unable to wait for debugger.");
-#else
-	hDbgEng = (HMODULE)-1;
-#endif
 
     RETURN;
 
@@ -145,11 +142,16 @@ THROW_OUTRO:
     {
         DbgDetachDebugger();
     }
+#else
+	hDbgEng = (HMODULE)-1;
+
+    RETURN;
+#endif
+
 FINALLY_OUTRO:
     {
         return NtStatus;
     }
-
 }
 
 EASYHOOK_NT_EXPORT DbgDetachDebugger()

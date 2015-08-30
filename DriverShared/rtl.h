@@ -30,9 +30,9 @@ extern "C"{
 #include "stdafx.h"
 
 #if _DEBUG
-    #define DEBUG(message) { WCHAR debugMsg[1024] = { 0 }; _snwprintf_s(debugMsg, 1024, _TRUNCATE, L"%s\n", message); OutputDebugStringW(debugMsg); }
+    #define DEBUGMSG(message) { WCHAR debugMsg[1024] = { 0 }; _snwprintf_s(debugMsg, 1024, _TRUNCATE, L"%s\n", message); OutputDebugStringW(debugMsg); }
 #else
-    #define DEBUG(message) { }
+    #define DEBUGMSG(message) { }
 #endif
 
 #ifndef DRIVER

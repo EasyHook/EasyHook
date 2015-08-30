@@ -1530,7 +1530,7 @@ Returns:
 	char pszModuleName[256] = { 0 };
     char pszFunctionRedi[256] = { 0 };
 
-    int a = 0;
+    unsigned int a = 0;
 	int b = 0;
 
 	WORD OrdinalValue;
@@ -1542,12 +1542,11 @@ Returns:
     ULONG64 nextInstr;
     CHAR buf[MAX_PATH];
 
-    NTSTATUS NtStatus;
     CHAR asmBuf[MAX_PATH];
     unsigned char *opcodes;
     ULONG entryPointSize = 0;
     UCHAR entryPoint[ 256 ] = { 0 };
-    DWORD_PTR pEntryPoint = NULL;
+    DWORD_PTR pEntryPoint = 0;
     LOCAL_HOOK_INFO* hookBuf = NULL;
     ULONG relocBufSize = 0;
 
@@ -1555,7 +1554,7 @@ Returns:
 
     TEST_FUNC_HOOKS_RESULT* results = NULL;
     TEST_FUNC_HOOKS_RESULT* result;
-    int count = 0;
+    unsigned int count = 0;
 
 	char pszRedirectedFunctionName[ 256 ] = { 0 };
 
@@ -1753,7 +1752,7 @@ Returns:
                 if(!ReadProcessMemory(hProcess, (void*)dwAddressOfRedirectedName, pszRedirectedFunctionName, 256, NULL))
                 {
                     
-                    strcpy(result->Error, "Ordinal redirect unreadable");
+                    strcpy_s(result->Error, 1024, "Ordinal redirect unreadable");
                     continue;
                 }
                 else
@@ -1789,19 +1788,19 @@ Returns:
             while ((a < 2 || (pEntryPoint - dwAddressOfFunction < 5)) && RTL_SUCCESS(LhDisassembleInstruction((void*)pEntryPoint, &asmLength, buf, MAX_PATH, &nextInstr)))
             {
                 opcodes = (unsigned char *)pEntryPoint;
-                sprintf(asmBuf, "\t");
+                sprintf_s(asmBuf, 260, "\t");
                 for (b = 0; b < (int)(nextInstr - pEntryPoint); b++)
                 {
                     entryPoint[entryPointSize + b] = *opcodes;
                 
-                    sprintf(asmBuf + strlen(asmBuf), "%02X ", *opcodes);
+                    sprintf_s(asmBuf + strlen(asmBuf), 260 - strlen(asmBuf), "%02X ", *opcodes);
                     opcodes++;
                 }
 
                 sprintf_s(result->EntryDisasm + strlen(result->EntryDisasm), 1024 - strlen(result->EntryDisasm), "%-35s%-30sIP:%x\n", asmBuf, buf, nextInstr);
                 a++;
 
-                pEntryPoint = nextInstr;
+                pEntryPoint = (DWORD_PTR)nextInstr;
             }
             
             continue;
@@ -1810,9 +1809,9 @@ Returns:
 
         // 2. Disassemble entry point and relocated buffer
         if (entryPointSize == 0)
-            strcpy(result->Error, "Entry point size is Zero");
+            strcpy_s(result->Error, 1024, "Entry point size is Zero");
         else if (entryPointSize >= 20)
-            sprintf(result->Error, "Entry point is too large: %d", entryPointSize);
+            sprintf_s(result->Error, 1024, "Entry point is too large: %d", entryPointSize);
         else
         {
             pEntryPoint = dwAddressOfFunction;
@@ -1820,14 +1819,14 @@ Returns:
             while ((pEntryPoint - (DWORD_PTR)dwAddressOfFunction < entryPointSize) && RTL_SUCCESS(LhDisassembleInstruction((void*)pEntryPoint, &asmLength, buf, MAX_PATH, &nextInstr)))
             {
                 opcodes = (PUCHAR)pEntryPoint;
-                sprintf(asmBuf, "\t");
+                sprintf_s(asmBuf, 260, "\t");
                 for (b = 0; b < (int)(nextInstr - pEntryPoint); b++)
                 {
-                    sprintf(asmBuf + strlen(asmBuf), "%02X ", *opcodes);
+                    sprintf_s(asmBuf + strlen(asmBuf), 260 - strlen(asmBuf), "%02X ", *opcodes);
                     opcodes++;
                 }
                 sprintf_s(result->EntryDisasm + strlen(result->EntryDisasm), 1024 - strlen(result->EntryDisasm), "%-35s%-30sIP:%x\n", asmBuf, buf, nextInstr);
-                pEntryPoint = nextInstr;
+                pEntryPoint = (DWORD_PTR)nextInstr;
             }
             pEntryPoint = (DWORD_PTR)hookBuf->OldProc;
             result->RelocAddress = (void*)pEntryPoint;
@@ -1835,14 +1834,14 @@ Returns:
             while ((pEntryPoint - (DWORD_PTR)hookBuf->OldProc < relocBufSize) && RTL_SUCCESS(LhDisassembleInstruction((void*)pEntryPoint, &asmLength, buf, MAX_PATH, &nextInstr)))
             {
                 opcodes = (PUCHAR)pEntryPoint;
-                sprintf(asmBuf, "\t");
+                sprintf_s(asmBuf, 260, "\t");
                 for (b = 0; b < (int)(nextInstr - pEntryPoint); b++)
                 {
-                    sprintf(asmBuf + strlen(asmBuf), "%02X ", *opcodes);
+                    sprintf_s(asmBuf + strlen(asmBuf), 260 - strlen(asmBuf), "%02X ", *opcodes);
                     opcodes++;
                 }
                 sprintf_s(result->RelocDisasm + strlen(result->RelocDisasm), 1024 - strlen(result->RelocDisasm), "%-35s%-30sIP:%x\n", asmBuf, buf, nextInstr);
-                pEntryPoint = nextInstr;
+                pEntryPoint = (DWORD_PTR)nextInstr;
             }
         }
         
@@ -1855,7 +1854,7 @@ Returns:
         
     if (options.Filename != NULL && strlen(options.Filename) > 0)
     {
-        f = fopen(options.Filename, "w");
+        fopen_s(&f, options.Filename, "w");
         if (f == NULL)
         {
             printf("Error opening file!\n");
@@ -1883,9 +1882,9 @@ Returns:
             }
             else
             {
-                fprintf(f, "Entry point:@ %x\n", result->FnAddress);
+                fprintf(f, "Entry point:@ %p\n", result->FnAddress);
                 fprintf(f, "%s", result->EntryDisasm);
-                fprintf(f, "Relocated entry point:@ %x\n", result->RelocAddress);
+                fprintf(f, "Relocated entry point:@ %p\n", result->RelocAddress);
                 fprintf(f, "%s", result->RelocDisasm);
             }
         }

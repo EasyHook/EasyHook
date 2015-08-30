@@ -25,10 +25,12 @@
 
 
 // support for Windows 2000 SP4 and later...
+__pragma(warning(push))
+__pragma(warning(disable:4005))
 #define NTDDI_VERSION           NTDDI_WIN2KSP4
 #define _WIN32_WINNT            0x500
 #define _WIN32_IE_              _WIN32_IE_WIN2KSP4
-
+__pragma(warning(pop))
 
 #pragma warning (disable:4100) // unreference formal parameter
 #pragma warning(disable:4201) // nameless struct/union

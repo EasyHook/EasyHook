@@ -56,7 +56,7 @@ extern "C" __declspec(dllexport) void __stdcall GacReleaseContext(LPINTERNAL_CON
 	*RefContext = NULL;
 }
 
-extern "C" int main(int argc, char** argw){ return 0;}
+extern "C" int __cdecl main(int argc, char** argw){ return 0; }
 
 extern "C" __declspec(dllexport) LPINTERNAL_CONTEXT __stdcall GacCreateContext(){
 	LPINTERNAL_CONTEXT	Result = NULL;

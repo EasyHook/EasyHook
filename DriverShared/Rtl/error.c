@@ -38,7 +38,7 @@ PWCHAR RtlGetLastErrorString()
 PWCHAR RtlGetLastErrorStringCopy()
 {
     // https://easyhook.codeplex.com/workitem/24958
-    int len = (wcslen(LastError)+1)*sizeof(TCHAR);
+    ULONG len = (ULONG)(wcslen(LastError)+1)*sizeof(TCHAR);
     PWCHAR pBuffer = (PWCHAR) CoTaskMemAlloc(len);
     CopyMemory(pBuffer, LastError, len);
 
@@ -110,7 +110,7 @@ void RtlSetLastError(LONG InCode, NTSTATUS InNtStatus, WCHAR* InMessage)
             {
                 _snwprintf_s(msg, 1024, _TRUNCATE, L"%s (%s)", InMessage, RtlErrorCodeToString(InNtStatus));
             }
-            DEBUG(msg);
+            DEBUGMSG(msg);
 
             LocalFree(lpMsgBuf);
         }

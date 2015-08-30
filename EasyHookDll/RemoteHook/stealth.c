@@ -285,10 +285,16 @@ Returns:
 		We also shift the whole thing some pages behind the RSP value, so that even if code uses
 		some sort of "dead stack" reference, we will not overwrite any data.
 	*/
-	if(VirtualAllocEx(hProc, (PVOID)(LocalCtx.Rsp - 4096 * 20), 4096, MEM_COMMIT, PAGE_EXECUTE_READWRITE) == NULL)
+#if !_M_X64
+    __pragma(warning(push))
+    __pragma(warning(disable:4305))
+#endif
+    if(VirtualAllocEx(hProc, (PVOID)(LocalCtx.Rsp - 4096 * 20), 4096, MEM_COMMIT, PAGE_EXECUTE_READWRITE) == NULL)
 		THROW(STATUS_NO_MEMORY, L"Unable to allocate executable thread stack.");
-
-	RemoteCtx = (STEALTH_CONTEXT*)(LocalCtx.Rsp - CtxSize - 4096 * 19);
+    RemoteCtx = (STEALTH_CONTEXT*)(LocalCtx.Rsp - CtxSize - 4096 * 19);
+#if !_M_X64
+    __pragma(warning(pop))
+#endif
 
     // prepare thread context...
 #ifndef _M_X64

@@ -120,7 +120,7 @@ namespace TestFuncHooks
                 process = System.Diagnostics.Process.GetProcessById(pid);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
             return false;

@@ -56,7 +56,7 @@ extern LIBUDIS86_DLLEXTERN void ud_set_input_hook(struct ud*, int (*)(struct ud*
 
 extern LIBUDIS86_DLLEXTERN void ud_set_input_buffer(struct ud*, const uint8_t*, size_t);
 
-#ifndef __UD_STANDALONE__
+#if !__UD_STANDALONE__ && !DRIVER
 extern LIBUDIS86_DLLEXTERN void ud_set_input_file(struct ud*, FILE*);
 #endif /* __UD_STANDALONE__ */
 

@@ -22,6 +22,9 @@
 */
 #include "stdafx.h"
 
+// Disable warning C4276: no prototype provided; assumed no parameters
+// For ASM functions
+#pragma warning(disable: 4276)
 
 UCHAR* GetTrampolinePtr();
 ULONG GetTrampolineSize();

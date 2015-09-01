@@ -87,7 +87,9 @@ DRIVER_SHARED_API(NTSTATUS, RtlGetLastError());
 
 DRIVER_SHARED_API(PWCHAR, RtlGetLastErrorString());
 
+#ifndef DRIVER
 DRIVER_SHARED_API(PWCHAR, RtlGetLastErrorStringCopy());
+#endif
 
 DRIVER_SHARED_API(NTSTATUS, LhInstallHook(
             void* InEntryPoint,

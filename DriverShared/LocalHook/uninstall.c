@@ -94,7 +94,7 @@ Parameters:
 
     RETURN(STATUS_SUCCESS);
 
-THROW_OUTRO:
+//THROW_OUTRO:
 FINALLY_OUTRO:
     return NtStatus;
 }
@@ -169,7 +169,9 @@ Descriptions:
     PLOCAL_HOOK_INFO        Hook;
     NTSTATUS                NtStatus = STATUS_SUCCESS;
     INT32                  Timeout = 1000;
+#pragma warning(disable: 4127)
     while(TRUE)
+#pragma warning(default: 4127)
     {
         // pop from removal list
         RtlAcquireLock(&GlobalHookLock);
@@ -196,7 +198,9 @@ Descriptions:
 			*((ULONGLONG*)(Hook->TargetProc + 8)) = Hook->TargetBackup_x64;
 #endif
 
+#pragma warning(disable: 4127)
             while (TRUE)
+#pragma warning(default: 4127)
             {
                 if (*Hook->IsExecutedPtr <= 0)
                 {

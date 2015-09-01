@@ -54,7 +54,7 @@ Parameters:
 
     ULONG           Index;
 
-    ASSERT(IsValidPointer(InAcl, sizeof(HOOK_ACL)));
+    ASSERT(IsValidPointer(InAcl, sizeof(HOOK_ACL)),L"acl.c - IsValidPointer(InAcl, sizeof(HOOK_ACL))");
 
     if(InProcessCount > MAX_ACE_COUNT)
         return STATUS_INVALID_PARAMETER_2;
@@ -65,7 +65,7 @@ Parameters:
     for(Index = 0; Index < InProcessCount; Index++)
     {
         if(InProcessIdList[Index] == 0)
-            InProcessIdList[Index] = PsGetCurrentProcessId();
+            InProcessIdList[Index] = (ULONG)PsGetCurrentProcessId();
     }
 
     // set ACL...

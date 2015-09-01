@@ -99,6 +99,9 @@ EASYHOOK_NT_INTERNAL LhUpdateModuleInformation()
 
 	LhModuleListChanged = FALSE;
 
+#ifdef DRIVER
+    #pragma warning(disable: 4013)
+#endif
 	if(ZwQuerySystemInformation(11, NULL, 0, &RequiredSize) != STATUS_INFO_LENGTH_MISMATCH)
 		THROW(STATUS_INTERNAL_ERROR, L"Unable to enumerate system modules.");
 
@@ -110,6 +113,10 @@ EASYHOOK_NT_INTERNAL LhUpdateModuleInformation()
 
 	if((List = RtlAllocateMemory(FALSE, sizeof(MODULE_INFORMATION) * NativeList->Count)) == NULL)
 		THROW(STATUS_NO_MEMORY, L"Unable to allocate memory.");
+#ifdef DRIVER
+    #pragma warning(default: 4013)
+#endif
+
 
 	for(i = 0; i < NativeList->Count; i++)
 	{
@@ -520,7 +527,13 @@ Returns:
         THROW(STATUS_NOT_IMPLEMENTED, L"This method requires Windows XP or later.");
 #endif
 
+#ifdef DRIVER
+    #pragma warning(disable: 4013)
+#endif
     *OutMethodCount = RtlCaptureStackBackTrace(1, 32, OutMethodArray, NULL);
+#ifdef DRIVER
+    #pragma warning(default: 4013)
+#endif
 
     RETURN;
 

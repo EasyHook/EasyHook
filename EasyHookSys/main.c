@@ -22,28 +22,27 @@
 */
 #include "stdafx.h"
 
-
 typedef struct _DRIVER_NOTIFICATION_
 {
-	SLIST_ENTRY		ListEntry;
-	ULONG			ProcessId;
+    SLIST_ENTRY		ListEntry;
+    ULONG			ProcessId;
 }DRIVER_NOTIFICATION, *PDRIVER_NOTIFICATION;
 
 NTSTATUS DriverEntry(
-	IN PDRIVER_OBJECT InDriverObject,
-	IN PUNICODE_STRING InRegistryPath);
+    IN PDRIVER_OBJECT InDriverObject,
+    IN PUNICODE_STRING InRegistryPath);
 
 NTSTATUS EasyHookDispatchCreate(
-	IN PDEVICE_OBJECT InDeviceObject,
-	IN PIRP	InIrp);
+    IN PDEVICE_OBJECT InDeviceObject,
+    IN PIRP	InIrp);
 
 NTSTATUS EasyHookDispatchClose(
-	IN PDEVICE_OBJECT InDeviceObject,
-	IN PIRP InIrp);
+    IN PDEVICE_OBJECT InDeviceObject,
+    IN PIRP InIrp);
 
 NTSTATUS EasyHookDispatchDeviceControl(
-	IN PDEVICE_OBJECT InDeviceObject,
-	IN PIRP InIrp);
+    IN PDEVICE_OBJECT InDeviceObject,
+    IN PIRP InIrp);
 
 VOID EasyHookUnload(IN PDRIVER_OBJECT DriverObject);
 
@@ -62,112 +61,114 @@ void OnImageLoadNotification(
     IN HANDLE  ProcessId, // where image is mapped
     IN PIMAGE_INFO  ImageInfo)
 {
-	LhModuleListChanged = TRUE;
+    LhModuleListChanged = TRUE;
 }
 
 /**************************************************************
 
 Description:
 
-	Initializes the driver and also loads the system specific PatchGuard
-	information.
+Initializes the driver and also loads the system specific PatchGuard
+information.
 */
 NTSTATUS DriverEntry(
-	IN PDRIVER_OBJECT		InDriverObject,
-	IN PUNICODE_STRING		InRegistryPath)
+    IN PDRIVER_OBJECT		InDriverObject,
+    IN PUNICODE_STRING		InRegistryPath)
 {
-	NTSTATUS						Status;    
+    NTSTATUS						Status;
     UNICODE_STRING					NtDeviceName;
-	UNICODE_STRING					DosDeviceName;
+    UNICODE_STRING					DosDeviceName;
     PEASYHOOK_DEVICE_EXTENSION		DeviceExtension;
-	PDEVICE_OBJECT					DeviceObject = NULL;
-	BOOLEAN							SymbolicLink = FALSE;
+    PDEVICE_OBJECT					DeviceObject = NULL;
+    BOOLEAN							SymbolicLink = FALSE;
 
-	/*
-		Create device...
-	*/
+    /*
+    Create device...
+    */
     RtlInitUnicodeString(&NtDeviceName, EASYHOOK_DEVICE_NAME);
 
     Status = IoCreateDevice(
-		InDriverObject,
-		sizeof(EASYHOOK_DEVICE_EXTENSION),		// DeviceExtensionSize
-		&NtDeviceName,					// DeviceName
-		FILE_DEVICE_EASYHOOK,			// DeviceType
-		0,								// DeviceCharacteristics
-		TRUE,							// Exclusive
-		&DeviceObject					// [OUT]
-		);
+        InDriverObject,
+        sizeof(EASYHOOK_DEVICE_EXTENSION),		// DeviceExtensionSize
+        &NtDeviceName,					// DeviceName
+        FILE_DEVICE_EASYHOOK,			// DeviceType
+        0,								// DeviceCharacteristics
+        TRUE,							// Exclusive
+        &DeviceObject					// [OUT]
+        );
 
-	if (!NT_SUCCESS(Status))
-		goto ERROR_ABORT;
+    if (!NT_SUCCESS(Status))
+        goto ERROR_ABORT;
 
-	/*
-		Expose interfaces...
-	*/
-	DeviceExtension = (PEASYHOOK_DEVICE_EXTENSION)DeviceObject->DeviceExtension;
-	DeviceExtension->MaxVersion = EASYHOOK_INTERFACE_v_1;
+    /*
+    Expose interfaces...
+    */
+    DeviceExtension = (PEASYHOOK_DEVICE_EXTENSION)DeviceObject->DeviceExtension;
+    DeviceExtension->MaxVersion = EASYHOOK_INTERFACE_v_1;
 
-	DeviceExtension->API_v_1.RtlGetLastError = RtlGetLastError;
-	DeviceExtension->API_v_1.RtlGetLastErrorString = RtlGetLastErrorString;
-	DeviceExtension->API_v_1.LhInstallHook = LhInstallHook;
-	DeviceExtension->API_v_1.LhUninstallHook = LhUninstallHook;
-	DeviceExtension->API_v_1.LhWaitForPendingRemovals = LhWaitForPendingRemovals;
-	DeviceExtension->API_v_1.LhBarrierGetCallback = LhBarrierGetCallback;
-	DeviceExtension->API_v_1.LhBarrierGetReturnAddress = LhBarrierGetReturnAddress;
-	DeviceExtension->API_v_1.LhBarrierGetAddressOfReturnAddress = LhBarrierGetAddressOfReturnAddress;
-	DeviceExtension->API_v_1.LhBarrierBeginStackTrace = LhBarrierBeginStackTrace;
-	DeviceExtension->API_v_1.LhBarrierEndStackTrace = LhBarrierEndStackTrace;
-	DeviceExtension->API_v_1.LhBarrierPointerToModule = LhBarrierPointerToModule;
-	DeviceExtension->API_v_1.LhBarrierGetCallingModule = LhBarrierGetCallingModule;
-	DeviceExtension->API_v_1.LhBarrierCallStackTrace = LhBarrierCallStackTrace;
-	DeviceExtension->API_v_1.LhSetGlobalExclusiveACL = LhSetGlobalExclusiveACL;
-	DeviceExtension->API_v_1.LhSetGlobalInclusiveACL = LhSetGlobalInclusiveACL;
-	DeviceExtension->API_v_1.LhSetExclusiveACL = LhSetExclusiveACL;
-	DeviceExtension->API_v_1.LhSetInclusiveACL = LhSetInclusiveACL;
-	DeviceExtension->API_v_1.LhIsProcessIntercepted = LhIsProcessIntercepted;
+// Disable warning C4276: no prototype provided; assumed no parameters
+#pragma warning(disable: 4276)
+    DeviceExtension->API_v_1.RtlGetLastError = RtlGetLastError;
+    DeviceExtension->API_v_1.RtlGetLastErrorString = RtlGetLastErrorString;
+    DeviceExtension->API_v_1.LhInstallHook = LhInstallHook;
+    DeviceExtension->API_v_1.LhUninstallHook = LhUninstallHook;
+    DeviceExtension->API_v_1.LhWaitForPendingRemovals = LhWaitForPendingRemovals;
+    DeviceExtension->API_v_1.LhBarrierGetCallback = LhBarrierGetCallback;
+    DeviceExtension->API_v_1.LhBarrierGetReturnAddress = LhBarrierGetReturnAddress;
+    DeviceExtension->API_v_1.LhBarrierGetAddressOfReturnAddress = LhBarrierGetAddressOfReturnAddress;
+    DeviceExtension->API_v_1.LhBarrierBeginStackTrace = LhBarrierBeginStackTrace;
+    DeviceExtension->API_v_1.LhBarrierEndStackTrace = LhBarrierEndStackTrace;
+    DeviceExtension->API_v_1.LhBarrierPointerToModule = LhBarrierPointerToModule;
+    DeviceExtension->API_v_1.LhBarrierGetCallingModule = LhBarrierGetCallingModule;
+    DeviceExtension->API_v_1.LhBarrierCallStackTrace = LhBarrierCallStackTrace;
+    DeviceExtension->API_v_1.LhSetGlobalExclusiveACL = LhSetGlobalExclusiveACL;
+    DeviceExtension->API_v_1.LhSetGlobalInclusiveACL = LhSetGlobalInclusiveACL;
+    DeviceExtension->API_v_1.LhSetExclusiveACL = LhSetExclusiveACL;
+    DeviceExtension->API_v_1.LhSetInclusiveACL = LhSetInclusiveACL;
+    DeviceExtension->API_v_1.LhIsProcessIntercepted = LhIsProcessIntercepted;
 
-	/*
-		Register for user-mode accessibility and set major functions...
-	*/
+    /*
+    Register for user-mode accessibility and set major functions...
+    */
     RtlInitUnicodeString(&DosDeviceName, EASYHOOK_DOS_DEVICE_NAME);
 
     if (!NT_SUCCESS(Status = IoCreateSymbolicLink(&DosDeviceName, &NtDeviceName)))
-		goto ERROR_ABORT;
+        goto ERROR_ABORT;
 
-	SymbolicLink = TRUE;
+    SymbolicLink = TRUE;
 
     InDriverObject->MajorFunction[IRP_MJ_CREATE] = EasyHookDispatchCreate;
     InDriverObject->MajorFunction[IRP_MJ_CLOSE] = EasyHookDispatchClose;
     InDriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL] = EasyHookDispatchDeviceControl;
     InDriverObject->DriverUnload = EasyHookUnload;
 
-	// initialize EasyHook
-	if (!NT_SUCCESS(Status = LhBarrierProcessAttach()))
-		goto ERROR_ABORT;
+    // initialize EasyHook
+    if (!NT_SUCCESS(Status = LhBarrierProcessAttach()))
+        goto ERROR_ABORT;
 
-	PsSetLoadImageNotifyRoutine(OnImageLoadNotification);
+    PsSetLoadImageNotifyRoutine(OnImageLoadNotification);
 
     LhCriticalInitialize();
 
-	return LhUpdateModuleInformation();
+    return LhUpdateModuleInformation();
 
 ERROR_ABORT:
 
-	/*
-		Rollback in case of errors...
-	*/
-	if (SymbolicLink)
-		IoDeleteSymbolicLink(&DosDeviceName);
+    /*
+    Rollback in case of errors...
+    */
+    if (SymbolicLink)
+        IoDeleteSymbolicLink(&DosDeviceName);
 
-	if (DeviceObject != NULL)
-		IoDeleteDevice(DeviceObject);
+    if (DeviceObject != NULL)
+        IoDeleteDevice(DeviceObject);
 
-	return Status;
+    return Status;
 }
 
 NTSTATUS EasyHookDispatchCreate(
-	IN PDEVICE_OBJECT InDeviceObject,
-	IN PIRP InIrp)
+    IN PDEVICE_OBJECT InDeviceObject,
+    IN PIRP InIrp)
 {
     InIrp->IoStatus.Information = 0;
     InIrp->IoStatus.Status = STATUS_SUCCESS;
@@ -178,8 +179,8 @@ NTSTATUS EasyHookDispatchCreate(
 }
 
 NTSTATUS EasyHookDispatchClose(
-	IN PDEVICE_OBJECT InDeviceObject,
-	IN PIRP InIrp)
+    IN PDEVICE_OBJECT InDeviceObject,
+    IN PIRP InIrp)
 {
     InIrp->IoStatus.Information = 0;
     InIrp->IoStatus.Status = STATUS_SUCCESS;
@@ -190,15 +191,15 @@ NTSTATUS EasyHookDispatchClose(
 }
 
 /************************************************************
-	
+
 Description:
 
-	Handles all device requests.
+Handles all device requests.
 
 */
 NTSTATUS EasyHookDispatchDeviceControl(
-	IN PDEVICE_OBJECT InDeviceObject,
-	IN PIRP	InIrp)
+    IN PDEVICE_OBJECT InDeviceObject,
+    IN PIRP	InIrp)
 {
     InIrp->IoStatus.Information = 0;
     InIrp->IoStatus.Status = STATUS_INVALID_PARAMETER;
@@ -212,7 +213,7 @@ NTSTATUS EasyHookDispatchDeviceControl(
 
 Description:
 
-	Release all resources and remove the driver object.
+Release all resources and remove the driver object.
 */
 VOID EasyHookUnload(IN PDRIVER_OBJECT InDriverObject)
 {
@@ -223,17 +224,17 @@ VOID EasyHookUnload(IN PDRIVER_OBJECT InDriverObject)
 
     LhBarrierProcessDetach();
 
-	PsRemoveLoadImageNotifyRoutine(OnImageLoadNotification);
+    PsRemoveLoadImageNotifyRoutine(OnImageLoadNotification);
 
     /*
-		Delete the symbolic link
+    Delete the symbolic link
     */
     RtlInitUnicodeString(&DosDeviceName, EASYHOOK_DOS_DEVICE_NAME);
 
     IoDeleteSymbolicLink(&DosDeviceName);
 
     /*
-		Delete the device object
+    Delete the device object
     */
 
     IoDeleteDevice(InDriverObject->DeviceObject);

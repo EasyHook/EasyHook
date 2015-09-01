@@ -35,6 +35,7 @@ PWCHAR RtlGetLastErrorString()
     return LastError;
 }
 
+#ifndef DRIVER
 PWCHAR RtlGetLastErrorStringCopy()
 {
     // https://easyhook.codeplex.com/workitem/24958
@@ -44,6 +45,7 @@ PWCHAR RtlGetLastErrorStringCopy()
 
     return pBuffer;
 }
+#endif
 
 WCHAR* RtlErrorCodeToString(LONG InCode)
 {

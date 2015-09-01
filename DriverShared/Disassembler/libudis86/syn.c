@@ -27,7 +27,12 @@
 #include "decode.h"
 #include "syn.h"
 #include "udint.h"
-
+#ifdef DRIVER
+#pragma warning(disable : 4201)
+#include <ntstatus.h>
+#include <Ntstrsafe.h>
+#pragma warning(default : 4201)
+#endif
 /* 
  * Register Table - Order Matters (types.h)!
  *
@@ -117,7 +122,11 @@ ud_asmprintf(struct ud *u, const char *fmt, ...)
   va_list ap;
   va_start(ap, fmt);
   avail = (int)(u->asm_buf_size - u->asm_buf_fill - 1 /* nullchar */);
-  ret = vsnprintf_s((char*) u->asm_buf + u->asm_buf_fill, avail, avail, fmt, ap);
+#ifdef DRIVER
+  ret = RtlStringCbVPrintfA((char*)u->asm_buf + u->asm_buf_fill, avail, fmt, ap);
+#else
+  ret = vsnprintf_s((char*)u->asm_buf + u->asm_buf_fill, avail, avail, fmt, ap);
+#endif
   if (ret < 0 || ret > avail) {
       u->asm_buf_fill = u->asm_buf_size - 1;
   } else {

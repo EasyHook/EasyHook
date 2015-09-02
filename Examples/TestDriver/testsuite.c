@@ -43,11 +43,13 @@ NTSTATUS RunTestSuite()
     /*
         The following shows how to install and remove local hooks...
     */
+#pragma warning(disable: 4152)
     FORCE(Interface.LhInstallHook(
             MmGetSystemRoutineAddress(&SymbolName),
             KeCancelTimer_Hook,
             (PVOID)0x12345678,
             &hHook));
+#pragma warning(default: 4152)
 
     // won't invoke the hook handle because hooks are inactive after installation
 	KeInitializeTimer(&Timer);

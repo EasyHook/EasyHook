@@ -1,7 +1,7 @@
 /*
     You may use this file without any restriction...
 */
-#include "EasyHook.h"
+#include "stdafx.h"
 
 NTSTATUS DriverEntry(
 	IN PDRIVER_OBJECT InDriverObject,
@@ -31,6 +31,7 @@ VOID TestDriverUnload(IN PDRIVER_OBJECT DriverObject);
 
 #endif
 
+#pragma warning(disable: 4100)
 
 NTSTATUS DriverEntry(
 	IN PDRIVER_OBJECT		InDriverObject,
@@ -59,7 +60,7 @@ NTSTATUS DriverEntry(
     InDriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL] = TestDriverDispatchDeviceControl;
     InDriverObject->DriverUnload = TestDriverUnload;
 
-	// run test code...
+    // run test code...
 	return RunTestSuite();
 
 ERROR_ABORT:

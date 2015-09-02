@@ -57,27 +57,39 @@
     <ClCompile Include="..\DriverShared\LocalHook\uninstall.c">
       <Filter>Source Files\LocalHook</Filter>
     </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\decode.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\itab.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-att.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-intel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\udis86.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DriverShared\DriverShared.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\easyhook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DriverShared\rtl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Trace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\DriverShared\ASM\HookSpecific_x64.asm">
+    <MASM Include="..\DriverShared\ASM\HookSpecific_x64.asm">
       <Filter>Source Files\ASM</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\DriverShared\ASM\HookSpecific_x86.asm">
+    </MASM>
+    <MASM Include="..\DriverShared\ASM\HookSpecific_x86.asm">
       <Filter>Source Files\ASM</Filter>
-    </CustomBuild>
+    </MASM>
   </ItemGroup>
 </Project>

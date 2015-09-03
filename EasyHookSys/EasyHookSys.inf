@@ -4,8 +4,8 @@
 
 [Version]
 Signature="$WINDOWS NT$"
-Class=EasyHook ; TODO: edit Class
-ClassGuid={AE11A2FF-E086-4AFC-8A77-26AAF5836EE6} ; TODO: edit ClassGuid
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
 Provider=%ManufacturerName%
 CatalogFile=EasyHookSys.cat
 DriverVer= ; TODO: set DriverVer in stampinf property pages
@@ -14,6 +14,13 @@ DriverVer= ; TODO: set DriverVer in stampinf property pages
 DefaultDestDir = 12
 
 ; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
 
 [SourceDisksNames]
 1 = %DiskName%,,,""
@@ -29,7 +36,7 @@ EasyHookSys.sys  = 1,,
 %ManufacturerName%=Standard,NT$ARCH$
 
 [Standard.NT$ARCH$]
-%EasyHookSys.DeviceDesc%=EasyHookSys_Device, Device\EasyHook ; TODO: edit hw-id
+%EasyHookSys.DeviceDesc%=EasyHookSys_Device, Root\EasyHook ; TODO: edit hw-id
 
 [EasyHookSys_Device.NT]
 CopyFiles=Drivers_Dir
@@ -53,23 +60,23 @@ LoadOrderGroup = Extended Base
 ;
 ;--- EasyHookSys_Device Coinstaller installation ------
 ;
-;
-;[DestinationDirs]
-;EasyHookSys_Device_CoInstaller_CopyFiles = 11
-;
-;[EasyHookSys_Device.NT.CoInstallers]
-;AddReg=EasyHookSys_Device_CoInstaller_AddReg
-;CopyFiles=EasyHookSys_Device_CoInstaller_CopyFiles
-;
-;[EasyHookSys_Device_CoInstaller_AddReg]
-;HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
-;
-;[EasyHookSys_Device_CoInstaller_CopyFiles]
-;WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
-;
-;[SourceDisksFiles]
-;WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
-;
+
+[DestinationDirs]
+EasyHookSys_Device_CoInstaller_CopyFiles = 11
+
+[EasyHookSys_Device.NT.CoInstallers]
+AddReg=EasyHookSys_Device_CoInstaller_AddReg
+CopyFiles=EasyHookSys_Device_CoInstaller_CopyFiles
+
+[EasyHookSys_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[EasyHookSys_Device_CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[SourceDisksFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+
 [EasyHookSys_Device.NT.Wdf]
 KmdfService =  EasyHookSys, EasyHookSys_wdfsect
 [EasyHookSys_wdfsect]
@@ -78,7 +85,7 @@ KmdfLibraryVersion = $KMDFVERSION$
 [Strings]
 SPSVCINST_ASSOCSERVICE= 0x00000002
 ManufacturerName="EasyHook" ; TODO: add ManufacturerName
-ClassName="NetService" ; TODO: edit ClassName
+ClassName="Sample" ; TODO: edit ClassName
 DiskName = "EasyHookSys Installation Disk"
 EasyHookSys.DeviceDesc = "EasyHookSys Device"
 EasyHookSys.SVCDESC = "EasyHookSys Service"

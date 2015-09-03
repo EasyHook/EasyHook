@@ -127,6 +127,9 @@ LONGLONG RtlAnsiHexToLongLong(const CHAR *s, int len)
 			//errno = EINVAL;
 			return 0;
 		}
+#ifndef LLONG_MAX
+#define LLONG_MAX     9223372036854775807i64
+#endif
 		if (rc > (LLONG_MAX / 16)) {
 			//errno = ERANGE;
 			return LLONG_MAX;

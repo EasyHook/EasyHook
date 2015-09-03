@@ -22,6 +22,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\Disassembler">
+      <UniqueIdentifier>{35667928-b855-4c70-a291-c028237f4388}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Driver Files">
+      <UniqueIdentifier>{89f4aac7-1a61-4dbd-b3c9-aa3bfd48bbb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -58,22 +64,22 @@
       <Filter>Source Files\LocalHook</Filter>
     </ClCompile>
     <ClCompile Include="..\DriverShared\Disassembler\libudis86\decode.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Disassembler</Filter>
     </ClCompile>
     <ClCompile Include="..\DriverShared\Disassembler\libudis86\itab.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-att.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-intel.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Disassembler</Filter>
     </ClCompile>
     <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Disassembler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-att.c">
+      <Filter>Source Files\Disassembler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-intel.c">
+      <Filter>Source Files\Disassembler</Filter>
     </ClCompile>
     <ClCompile Include="..\DriverShared\Disassembler\libudis86\udis86.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Disassembler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Trace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\easyhook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -91,5 +100,10 @@
     <MASM Include="..\DriverShared\ASM\HookSpecific_x86.asm">
       <Filter>Source Files\ASM</Filter>
     </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="EasyHookSys.inf">
+      <Filter>Driver Files</Filter>
+    </Inf>
   </ItemGroup>
 </Project>

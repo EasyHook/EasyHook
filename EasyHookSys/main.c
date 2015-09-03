@@ -61,6 +61,10 @@ void OnImageLoadNotification(
     IN HANDLE  ProcessId, // where image is mapped
     IN PIMAGE_INFO  ImageInfo)
 {
+    UNREFERENCED_PARAMETER(FullImageName);
+    UNREFERENCED_PARAMETER(ProcessId);
+    UNREFERENCED_PARAMETER(ImageInfo);
+
     LhModuleListChanged = TRUE;
 }
 
@@ -75,6 +79,8 @@ NTSTATUS DriverEntry(
     IN PDRIVER_OBJECT		InDriverObject,
     IN PUNICODE_STRING		InRegistryPath)
 {
+    UNREFERENCED_PARAMETER(InRegistryPath);
+
     NTSTATUS						Status;
     UNICODE_STRING					NtDeviceName;
     UNICODE_STRING					DosDeviceName;
@@ -170,6 +176,8 @@ NTSTATUS EasyHookDispatchCreate(
     IN PDEVICE_OBJECT InDeviceObject,
     IN PIRP InIrp)
 {
+    UNREFERENCED_PARAMETER(InDeviceObject);
+
     InIrp->IoStatus.Information = 0;
     InIrp->IoStatus.Status = STATUS_SUCCESS;
 
@@ -182,6 +190,8 @@ NTSTATUS EasyHookDispatchClose(
     IN PDEVICE_OBJECT InDeviceObject,
     IN PIRP InIrp)
 {
+    UNREFERENCED_PARAMETER(InDeviceObject);
+
     InIrp->IoStatus.Information = 0;
     InIrp->IoStatus.Status = STATUS_SUCCESS;
 
@@ -201,6 +211,8 @@ NTSTATUS EasyHookDispatchDeviceControl(
     IN PDEVICE_OBJECT InDeviceObject,
     IN PIRP	InIrp)
 {
+    UNREFERENCED_PARAMETER(InDeviceObject);
+
     InIrp->IoStatus.Information = 0;
     InIrp->IoStatus.Status = STATUS_INVALID_PARAMETER;
 

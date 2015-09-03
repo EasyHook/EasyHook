@@ -174,11 +174,14 @@ Parameters:
 #ifndef _M_X64
     return FALSE;
 #else
+#ifndef MAX_INSTR
+#define MAX_INSTR 100
+#endif
     NTSTATUS            NtStatus;
-    CHAR                Buf[MAX_PATH];
+	CHAR                Buf[MAX_INSTR];
     ULONG               AsmSize;
     ULONG64             NextInstr;
-    CHAR                Line[MAX_PATH];
+	CHAR                Line[MAX_INSTR];
     LONG                Pos;
     LONGLONG            RelAddr;
     LONGLONG            MemDelta = InTargetOffset - InOffset;
@@ -225,11 +228,11 @@ Parameters:
         
         Pos += 4;
         // parse content
-        if(RtlAnsiSubString(Buf, Pos + 1, RtlAnsiIndexOf(Buf, ']') - Pos - 1, Line, MAX_PATH) <= 0)
+		if (RtlAnsiSubString(Buf, Pos + 1, RtlAnsiIndexOf(Buf, ']') - Pos - 1, Line, MAX_INSTR) <= 0)
             RETURN;
 
-        // Convert HEX string to LONG
-        RelAddr = strtol(Line, NULL, 16);
+        // Convert HEX string to LONGLONG
+		RelAddr = RtlAnsiHexToLongLong(Line, MAX_INSTR);
         if (!RelAddr)
             RETURN;
 

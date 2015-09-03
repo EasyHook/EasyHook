@@ -337,7 +337,7 @@ Parameters:
 	if(RtlAnsiSubString(Buf, Pos + 1, RtlAnsiIndexOf(Buf, ']') - Pos - 1, Line, MAX_PATH) != 16)
 		RETURN;
 
-	if(!RtlAnsiHexToLongLong(Line, 16, &RelAddr))
+	if(!RtlAnsiDbgHexToLongLong(Line, 16, &RelAddr))
 		RETURN;
 	
 	// verify that we are really RIP relative...

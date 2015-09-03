@@ -1,0 +1,84 @@
+;
+; TestDriver.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=EasyHook ; TODO: edit Class
+ClassGuid={AE11A2FF-E086-4AFC-8A77-26AAF5836EE6} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=TestDriver.cat
+DriverVer= ; TODO: set DriverVer in stampinf property pages
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ================= Class section =====================
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+TestDriver.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NT$ARCH$
+
+[Standard.NT$ARCH$]
+%TestDriver.DeviceDesc%=TestDriver_Device, Device\TestDriver ; TODO: edit hw-id
+
+[TestDriver_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+TestDriver.sys
+
+;-------------- Service installation
+[TestDriver_Device.NT.Services]
+AddService = TestDriver,%SPSVCINST_ASSOCSERVICE%, TestDriver_Service_Inst
+
+; -------------- TestDriver driver install sections
+[TestDriver_Service_Inst]
+DisplayName    = %TestDriver.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\TestDriver.sys
+LoadOrderGroup = Extended Base
+
+;
+;--- TestDriver_Device Coinstaller installation ------
+;
+;
+;[DestinationDirs]
+;TestDriver_Device_CoInstaller_CopyFiles = 11
+;
+;[TestDriver_Device.NT.CoInstallers]
+;AddReg=TestDriver_Device_CoInstaller_AddReg
+;CopyFiles=TestDriver_Device_CoInstaller_CopyFiles
+;
+;[TestDriver_Device_CoInstaller_AddReg]
+;HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+;
+;[TestDriver_Device_CoInstaller_CopyFiles]
+;WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+;
+;[SourceDisksFiles]
+;WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+;
+[TestDriver_Device.NT.Wdf]
+KmdfService =  TestDriver, TestDriver_wdfsect
+[TestDriver_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="EasyHook" ; TODO: add ManufacturerName
+ClassName="NetService" ; TODO: edit ClassName
+DiskName = "TestDriver Installation Disk"
+TestDriver.DeviceDesc = "TestDriver Device"
+TestDriver.SVCDESC = "TestDriver Service"

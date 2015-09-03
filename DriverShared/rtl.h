@@ -114,7 +114,11 @@ void RtlSetLastError(
             LONG InNtStatus,
             WCHAR* InMessage);
 
-BOOL RtlAnsiHexToLongLong(
+LONGLONG RtlAnsiHexToLongLong(
+	const CHAR *s, 
+	int len);
+
+BOOL RtlAnsiDbgHexToLongLong(
             CHAR* InHexString,
             ULONG InMinStrLen,
             LONGLONG* OutValue);

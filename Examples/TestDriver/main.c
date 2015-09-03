@@ -31,13 +31,13 @@ VOID TestDriverUnload(IN PDRIVER_OBJECT DriverObject);
 
 #endif
 
-#pragma warning(disable: 4100)
-
 NTSTATUS DriverEntry(
 	IN PDRIVER_OBJECT		InDriverObject,
 	IN PUNICODE_STRING		InRegistryPath)
 {
-	NTSTATUS						Status;    
+    UNREFERENCED_PARAMETER(InRegistryPath);
+
+    NTSTATUS						Status;    
 	PDEVICE_OBJECT					DeviceObject = NULL;
 
 	/*
@@ -78,6 +78,8 @@ NTSTATUS TestDriverDispatchCreate(
 	IN PDEVICE_OBJECT InDeviceObject,
 	IN PIRP InIrp)
 {
+    UNREFERENCED_PARAMETER(InDeviceObject);
+
     InIrp->IoStatus.Information = 0;
     InIrp->IoStatus.Status = STATUS_SUCCESS;
 
@@ -90,6 +92,8 @@ NTSTATUS TestDriverDispatchClose(
 	IN PDEVICE_OBJECT InDeviceObject,
 	IN PIRP InIrp)
 {
+    UNREFERENCED_PARAMETER(InDeviceObject);
+
     InIrp->IoStatus.Information = 0;
     InIrp->IoStatus.Status = STATUS_SUCCESS;
 
@@ -102,6 +106,8 @@ NTSTATUS TestDriverDispatchDeviceControl(
 	IN PDEVICE_OBJECT InDeviceObject,
 	IN PIRP	InIrp)
 {
+    UNREFERENCED_PARAMETER(InDeviceObject);
+
     InIrp->IoStatus.Information = 0;
     InIrp->IoStatus.Status = STATUS_INVALID_PARAMETER;
 

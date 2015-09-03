@@ -104,7 +104,40 @@ LONG RtlAnsiSubString(
     return -1;
 }
 
-BOOL RtlAnsiHexToLongLong(
+
+LONGLONG RtlAnsiHexToLongLong(const CHAR *s, int len)
+{
+	// Almost equivalent behaviour to strtol (but long long and doesn't support signed hex)
+	const char *start = s;
+	if ('0' == s[0] && ('x' == s[1] || 'X' == s[1]))
+		s += 2;
+	int c;
+	LONGLONG rc = 0;
+	for (rc = 0; (s - start < len && '\0' != (c = *s)); s++) {
+		if (c >= 'a' && c <= 'f') {
+			c = c - 'a' + 10;
+		}
+		else if (c >= 'A' && c <= 'F') {
+			c = c - 'A' + 10;
+		}
+		else if (c >= '0' && c <= '9') {
+			c = c - '0';
+		}
+		else {
+			//errno = EINVAL;
+			return 0;
+		}
+		if (rc > (LLONG_MAX / 16)) {
+			//errno = ERANGE;
+			return LLONG_MAX;
+		}
+		rc *= 16;
+		rc += (LONGLONG)c;
+	}
+	return rc;
+}
+
+BOOL RtlAnsiDbgHexToLongLong(
             CHAR* InHexString,
             ULONG InMinStrLen,
             LONGLONG* OutValue)

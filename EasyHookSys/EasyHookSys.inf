@@ -1,0 +1,84 @@
+;
+; EasyHookSys.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=EasyHook ; TODO: edit Class
+ClassGuid={AE11A2FF-E086-4AFC-8A77-26AAF5836EE6} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=EasyHookSys.cat
+DriverVer= ; TODO: set DriverVer in stampinf property pages
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ================= Class section =====================
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+EasyHookSys.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NT$ARCH$
+
+[Standard.NT$ARCH$]
+%EasyHookSys.DeviceDesc%=EasyHookSys_Device, Device\EasyHook ; TODO: edit hw-id
+
+[EasyHookSys_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+EasyHookSys.sys
+
+;-------------- Service installation
+[EasyHookSys_Device.NT.Services]
+AddService = EasyHookSys,%SPSVCINST_ASSOCSERVICE%, EasyHookSys_Service_Inst
+
+; -------------- EasyHookSys driver install sections
+[EasyHookSys_Service_Inst]
+DisplayName    = %EasyHookSys.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\EasyHookSys.sys
+LoadOrderGroup = Extended Base
+
+;
+;--- EasyHookSys_Device Coinstaller installation ------
+;
+;
+;[DestinationDirs]
+;EasyHookSys_Device_CoInstaller_CopyFiles = 11
+;
+;[EasyHookSys_Device.NT.CoInstallers]
+;AddReg=EasyHookSys_Device_CoInstaller_AddReg
+;CopyFiles=EasyHookSys_Device_CoInstaller_CopyFiles
+;
+;[EasyHookSys_Device_CoInstaller_AddReg]
+;HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+;
+;[EasyHookSys_Device_CoInstaller_CopyFiles]
+;WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+;
+;[SourceDisksFiles]
+;WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+;
+[EasyHookSys_Device.NT.Wdf]
+KmdfService =  EasyHookSys, EasyHookSys_wdfsect
+[EasyHookSys_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="EasyHook" ; TODO: add ManufacturerName
+ClassName="NetService" ; TODO: edit ClassName
+DiskName = "EasyHookSys Installation Disk"
+EasyHookSys.DeviceDesc = "EasyHookSys Device"
+EasyHookSys.SVCDESC = "EasyHookSys Service"

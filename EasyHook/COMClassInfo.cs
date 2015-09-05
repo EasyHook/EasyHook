@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace EasyHook.COM
+namespace EasyHook
 {
     /// <summary>
     /// <para>A helper class for determining the address of COM object functions for hooking given a COM class id (CLSID) and COM interface id (IID), or COM class type and COM interface type.</para>

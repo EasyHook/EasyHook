@@ -90,7 +90,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="COM\COMClassInfo.cs" />
+    <Compile Include="COMClassInfo.cs" />
     <Compile Include="GACWrap.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Debugging.cs" />

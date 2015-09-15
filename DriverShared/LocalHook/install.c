@@ -158,6 +158,8 @@ Returns:
     LONG                        NtStatus = STATUS_INTERNAL_ERROR;
 
 #if X64_DRIVER
+	// 48 b8 00 00 00 00 00 00 00 00  mov rax, 0x0
+	// ff e0                          jmp rax
 	UCHAR			            Jumper_x64[12] = {0x48, 0xb8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xe0};
 #endif
 
@@ -199,7 +201,7 @@ Returns:
 #if !_M_X64
     __pragma(warning(pop))
 #endif
-        Hook->HookProc = (UCHAR*)InHookProc;
+    Hook->HookProc = (UCHAR*)InHookProc;
     Hook->TargetProc = (UCHAR*)InEntryPoint;
     Hook->EntrySize = EntrySize;	
     Hook->IsExecutedPtr = (int*)((UCHAR*)Hook + 2048);
@@ -240,10 +242,11 @@ Returns:
 #ifdef X64_DRIVER
 
 	// absolute jumper
-	RelAddr = Hook->TargetProc + Hook->EntrySize;
+	RelAddr = (LONGLONG)(Hook->TargetProc + Hook->EntrySize);
 
-	RtlCopyMemory(Hook->OldProc + RelocSize, Jumper_x64, 12);
-	RtlCopyMemory(Hook->OldProc + RelocSize + 2, &RelAddr, 8);
+	RtlCopyMemory(Hook->OldProc + *RelocSize, Jumper_x64, 12);
+	// Set address to be copied into RAX
+	RtlCopyMemory(Hook->OldProc + *RelocSize + 2, &RelAddr, 8);
 
 #else
 
@@ -376,8 +379,11 @@ Returns:
     LONG                        NtStatus = STATUS_INTERNAL_ERROR;
 
 #if X64_DRIVER
+	// 48 b8 00 00 00 00 00 00 00 00  mov rax, 0x0
+	// ff e0                          jmp rax
 	UCHAR			            Jumper_x64[12] = {0x48, 0xb8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xe0};
 	ULONGLONG					AtomicCache_x64;
+	KIRQL						CurrentIRQL = PASSIVE_LEVEL;
 #endif
 
     // validate parameters
@@ -403,6 +409,7 @@ Returns:
 	RelAddr = (ULONGLONG)Hook->Trampoline;
 
 	RtlCopyMemory(Jumper, Jumper_x64, 12);
+	// Set address to be copied into RAX
 	RtlCopyMemory(Jumper + 2, &RelAddr, 8);
 
 #else
@@ -453,11 +460,14 @@ Returns:
 		RtlCopyMemory(&AtomicCache_x64, Jumper, 8);
 	    RtlCopyMemory(&AtomicCache, Jumper + 8, 4);
 
-		// backup entry point for later comparsion
+		// backup entry point for later comparison
 	    Hook->HookCopy = AtomicCache_x64;
     }
+	CurrentIRQL = KeGetCurrentIrql();
+	RtlWPOff();
 	*((ULONGLONG*)(Hook->TargetProc + 0)) = AtomicCache_x64;
     *((ULONGLONG*)(Hook->TargetProc + 8)) = AtomicCache;
+	RtlWPOn(CurrentIRQL);
 
 #else
 
@@ -465,7 +475,7 @@ Returns:
     {
 	    RtlCopyMemory(&AtomicCache, Jumper, 5);
 
-	    // backup entry point for later comparsion
+	    // backup entry point for later comparison
 	    Hook->HookCopy = AtomicCache;
     }
     *((ULONGLONG*)Hook->TargetProc) = AtomicCache;

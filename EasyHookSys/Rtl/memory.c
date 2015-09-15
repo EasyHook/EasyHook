@@ -142,3 +142,31 @@ BOOL RtlIsValidPointer(PVOID InPtr, ULONG InSize)
 
     return TRUE;
 }
+
+#if X64_DRIVER
+// Write Protection Off
+KIRQL RtlWPOff()
+{
+	// prevent rescheduling 
+	KIRQL irql = KeRaiseIrqlToDpcLevel();
+	// disable memory protection (disable WP bit of CR0)   
+	UINT64 cr0 = __readcr0();
+	cr0 &= ~0x10000;
+	__writecr0(cr0);
+	// disable interrupts
+	_disable();
+	return irql;
+}
+//Write Protection On
+void RtlWPOn(KIRQL irql)
+{
+	// re-enable memory protection (enable WP bit of CR0)   
+	UINT64 cr0 = __readcr0();
+	cr0 |= 0x10000;
+	// enable interrupts
+	_enable();
+	__writecr0(cr0);
+	// lower irql again
+	KeLowerIrql(irql);
+}
+#endif

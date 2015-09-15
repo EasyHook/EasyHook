@@ -142,6 +142,13 @@ void RtlLongLongToUnicodeHex(LONGLONG InValue, WCHAR* InBuffer);
 
 BOOL RtlIsValidPointer(PVOID InPtr, ULONG InSize);
 
+#if X64_DRIVER
+// Write Protection Off
+KIRQL RtlWPOff();
+//Write Protection On
+void RtlWPOn(KIRQL irql);
+
+#endif
 
 #ifdef __cplusplus
 }

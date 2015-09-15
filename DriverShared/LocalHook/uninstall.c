@@ -169,6 +169,10 @@ Descriptions:
     PLOCAL_HOOK_INFO        Hook;
     NTSTATUS                NtStatus = STATUS_SUCCESS;
     INT32                  Timeout = 1000;
+#ifdef X64_DRIVER
+    KIRQL                  CurrentIRQL = PASSIVE_LEVEL;
+#endif
+
 #pragma warning(disable: 4127)
     while(TRUE)
 #pragma warning(default: 4127)
@@ -192,10 +196,14 @@ Descriptions:
         // restore entry point...
         if(Hook->HookCopy == *((ULONGLONG*)Hook->TargetProc))
         {
-            *((ULONGLONG*)Hook->TargetProc) = Hook->TargetBackup;
-
 #ifdef X64_DRIVER
-			*((ULONGLONG*)(Hook->TargetProc + 8)) = Hook->TargetBackup_x64;
+            CurrentIRQL = KeGetCurrentIrql();
+            RtlWPOff();
+#endif
+            *((ULONGLONG*)Hook->TargetProc) = Hook->TargetBackup;
+#ifdef X64_DRIVER
+            *((ULONGLONG*)(Hook->TargetProc + 8)) = Hook->TargetBackup_x64;
+            RtlWPOn(CurrentIRQL);
 #endif
 
 #pragma warning(disable: 4127)

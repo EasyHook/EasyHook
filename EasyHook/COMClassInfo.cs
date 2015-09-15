@@ -182,7 +182,10 @@ namespace EasyHook
             if (InterfaceType != null)
                 interfaceIntPtr = Marshal.GetComInterfaceForObject(classInstance, InterfaceType);
             else
+            {
                 interfaceIntPtr = Marshal.GetIUnknownForObject(classInstance);
+                Marshal.QueryInterface(interfaceIntPtr, ref interfaceGuid, out interfaceIntPtr);
+            }
 
             try
             {

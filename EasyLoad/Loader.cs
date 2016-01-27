@@ -86,7 +86,7 @@ namespace EasyLoad
         /// Loads EasyHook and commences the loading of user supplied assembly. This method is exported as a DllExport, making it consumable from native code.
         /// </summary>
         /// <param name="inParam"></param>
-        /// <returns>0 for success, -1 for fail</returns>
+        /// <returns>0 if successfully loaded into new AppDomain, 1 if could not use new AppDomain but successfully loaded into default, or -1 for fail</returns>
         [DllExport("Load", System.Runtime.InteropServices.CallingConvention.StdCall)]
         public static int Load([MarshalAs(UnmanagedType.LPWStr)]String inParam)
         {
@@ -94,17 +94,33 @@ namespace EasyLoad
             {
                 lock (_lock)
                 {
-                    _injectCount++;
-                    if (_easyHookDomain == null)
+                    try
                     {
-                        System.Security.PermissionSet ps = new System.Security.PermissionSet(System.Security.Permissions.PermissionState.Unrestricted);
-                        ps.AddPermission(new System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityPermissionFlag.AllFlags));
-                        // Evidence of null means use the current appdomain evidence
-                        _easyHookDomain = AppDomain.CreateDomain("EasyHook", null, new AppDomainSetup()
+                        _injectCount++;
+                        if (_easyHookDomain == null)
                         {
-                            ApplicationBase = Path.GetDirectoryName(typeof(Loader).Assembly.Location),
-                            // ShadowCopyFiles = "true", // copies assemblies from ApplicationBase into cache, leaving originals unlocked and updatable
-                        }, ps);
+                            System.Security.PermissionSet ps = new System.Security.PermissionSet(System.Security.Permissions.PermissionState.Unrestricted);
+                            ps.AddPermission(new System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityPermissionFlag.AllFlags));
+                            // Evidence of null means use the current appdomain evidence
+                            _easyHookDomain = AppDomain.CreateDomain("EasyHook", null, new AppDomainSetup()
+                            {
+                                ApplicationBase = Path.GetDirectoryName(typeof(Loader).Assembly.Location),
+                                // ShadowCopyFiles = "true", // copies assemblies from ApplicationBase into cache, leaving originals unlocked and updatable
+                            }, ps);
+                        }
+                    }
+                    catch (OutOfMemoryException ome)
+                    {
+                        // Creation of AppDomain failed, so fall back to using default domain (means it cannot be unloaded)
+                        
+                        // The reason is there could be an issue with the target application's stack commit size.
+                        // The default stack commit size must be <= 253952 (or 0x3E000) - due to bug in .NET Framework, 
+                        // this can be checked with dumpbin.exe and edited with editbin.exe.
+
+                        // Load EasyHook and the target assembly
+                        LoadEasyHookProxy lp = new LoadEasyHookProxy();
+                        lp.Load(inParam);
+                        return 1;
                     }
                 }
 
@@ -129,7 +145,7 @@ namespace EasyLoad
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("Exception occured within Loader.Load: " + e.ToString());
+                System.Diagnostics.Debug.WriteLine("Exception occurred within Loader.Load: " + e.ToString());
             }
             finally
             {

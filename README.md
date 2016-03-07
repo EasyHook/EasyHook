@@ -6,6 +6,9 @@ This project supports extending (hooking) unmanaged code (APIs) with pure manage
 
 EasyHook currently supports injecting assemblies built for .NET Framework 3.5 and 4.0 and can also inject native DLLs.
 
+## NuGet
+https://www.nuget.org/packages/EasyHook
+
 ## Bug reports or questions
 Reporting bugs is the only way to get them fixed and help other users of the library!
 

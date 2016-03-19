@@ -9,6 +9,8 @@ EasyHook currently supports injecting assemblies built for .NET Framework 3.5 an
 ## NuGet
 https://www.nuget.org/packages/EasyHook
 
+For native C++ apps there is also a native NuGet package available: https://www.nuget.org/packages/EasyHookNativePackage
+
 ## Bug reports or questions
 Reporting bugs is the only way to get them fixed and help other users of the library!
 

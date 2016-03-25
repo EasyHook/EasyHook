@@ -1,5 +1,9 @@
 echo off
-call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86_amd64
 
-msbuild build.proj /t:Clean
+call findvs.bat
+
+IF NOT "%vspath%"=="" (
+  msbuild build-package.proj /t:Clean /tv:%tv%
+)
+
 pause

@@ -1,0 +1,54 @@
+﻿nuget {
+   nuspec {
+      id = EasyHookNativePackage;
+      version : 2.7.0.0;
+      title: EasyHook Native Package;
+      authors: {EasyHook};
+      owners: {EasyHook};
+      licenseUrl: "https://github.com/EasyHook/EasyHook#license";
+      iconUrl: "http://i3.codeplex.com/Download?ProjectName=easyhook&DownloadId=186762";
+      requireLicenseAcceptance:true;
+      summary:The reinvention of Windows API Hooking;
+      description: @"This project supports extending (hooking) unmanaged code (APIs) on 32- or 64-bit
+Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8.1, and Windows 10.";
+      releaseNotes: "New native only NuGet package";
+      projectUrl: "https://easyhook.github.io/";
+      copyright: Copyright © 2009 Christoph Husse & Copyright © 2012 Justin Stenning. All rights reserved.;
+      tags: {  api, hook, hooking, easyhook, native };
+   };
+ 
+   files {
+      include: { .\Public\easyhook.h };
+ 
+      // The release here works for any config that contains release
+      // Examples : Release ENU,  RELEASE-ENU,  Release DEU
+      [x86,v120,release] {
+         lib:     { .\Build\netfx4-Release\x86\EasyHook32.lib; }
+         symbols: { .\Build\netfx4-Release\x86\EasyHook32.pdb; }
+         bin:     { .\Build\netfx4-Release\x86\EasyHook32.dll; }
+      };
+      [x86,v120,debug] {
+         lib:     { .\Build\netfx4-Debug\x86\EasyHook32.lib; }
+         symbols: { .\Build\netfx4-Debug\x86\EasyHook32.pdb; }
+         bin:     { .\Build\netfx4-Debug\x86\EasyHook32.dll; }
+      };
+      [x64,v120,release] {
+         lib:     { .\Build\netfx4-Release\x64\EasyHook64.lib; }
+         symbols: { .\Build\netfx4-Release\x64\EasyHook64.pdb; }
+         bin:     { .\Build\netfx4-Release\x64\EasyHook64.dll; }
+      };
+      [x64,v120,debug] {
+         lib:     { .\Build\netfx4-Debug\x64\EasyHook64.lib; }
+         symbols: { .\Build\netfx4-Debug\x64\EasyHook64.pdb; }
+         bin:     { .\Build\netfx4-Debug\x64\EasyHook64.dll; }
+      };
+ 
+      // The debug here works for any config that contains debug
+      // Examples : Debug ENU,  DEBUG-ENU,  Debug DEU
+      //[x86,v120,debug] {
+         //lib:     { Debug\*.lib;  }
+         //symbols: { Debug\*.pdb; }
+         //bin:     { Debug\*.dll; }
+      //};
+   };
+}

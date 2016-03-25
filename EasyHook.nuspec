@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>EasyHook</id>
+        <version>2.7.0.0</version>
+        <title>EasyHook</title>
+        <authors>EasyHook</authors>
+        <owners>EasyHook</owners>
+        <licenseUrl>https://github.com/EasyHook/EasyHook#license</licenseUrl>
+        <projectUrl>https://easyhook.github.io/</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>This project supports extending (hooking) unmanaged code (APIs) with pure managed ones, from within a fully managed environment on 32- or 64-bit Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8.1, and Windows 10.
+
+EasyHook currently supports injecting assemblies built for .NET Framework 3.5 and 4.0 and can also inject native DLLs.</description>
+        <summary>The reinvention of Windows API Hooking</summary>
+        <releaseNotes>Added WOW64 boundary executables to NuGet package</releaseNotes>
+        <copyright>Copyright © 2009 Christoph Husse &amp; Copyright © 2012 Justin Stenning</copyright>
+        <tags>api hook hooking easyhook</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System.Runtime.Remoting" targetFramework="" />
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+        <file src="Build\netfx3.5-Release\x64\EasyHook32.dll" target="content\net35\EasyHook32.dll" />
+        <file src="Build\netfx3.5-Release\x64\EasyHook32Svc.exe" target="content\net35\EasyHook32Svc.exe" />
+        <file src="Build\netfx3.5-Release\x64\EasyHook64.dll" target="content\net35\EasyHook64.dll" />
+        <file src="Build\netfx3.5-Release\x64\EasyHook64Svc.exe" target="content\net35\EasyHook64Svc.exe" />
+        <file src="Build\netfx3.5-Release\x64\EasyLoad32.dll" target="content\net35\EasyLoad32.dll" />
+        <file src="Build\netfx3.5-Release\x64\EasyLoad64.dll" target="content\net35\EasyLoad64.dll" />
+        <file src="Build\netfx4-Release\x64\EasyHook32.dll" target="content\net40\EasyHook32.dll" />
+        <file src="Build\netfx4-Release\x64\EasyHook32Svc.exe" target="content\net40\EasyHook32Svc.exe" />
+        <file src="Build\netfx4-Release\x64\EasyHook64.dll" target="content\net40\EasyHook64.dll" />
+        <file src="Build\netfx4-Release\x64\EasyHook64Svc.exe" target="content\net40\EasyHook64Svc.exe" />
+        <file src="Build\netfx4-Release\x64\EasyLoad32.dll" target="content\net40\EasyLoad32.dll" />
+        <file src="Build\netfx4-Release\x64\EasyLoad64.dll" target="content\net40\EasyLoad64.dll" />
+        <file src="Build\netfx3.5-Release\x64\EasyHook.dll" target="lib\net35\EasyHook.dll" />
+        <file src="Build\netfx3.5-Release\x64\EasyHook.xml" target="lib\net35\EasyHook.xml" />
+        <file src="Build\netfx4-Release\x64\EasyHook.dll" target="lib\net40\EasyHook.dll" />
+        <file src="Build\netfx4-Release\x64\EasyHook.xml" target="lib\net40\EasyHook.xml" />
+        <file src="tools\install.ps1" target="tools\install.ps1" />
+    </files>
+</package>

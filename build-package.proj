@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PackageDir>.\Deploy</PackageDir>
+    <FX35BuildDir>.\Build\netfx3.5-Release\x64</FX35BuildDir>
+    <FX4BuildDir>.\Build\netfx4-Release\x64</FX4BuildDir>
+    <AssemblyCopyright>Copyright (c) 2016 EasyHook Team</AssemblyCopyright>
+    <AssemblyTitlePostfix>(beta)</AssemblyTitlePostfix>
+  </PropertyGroup>
+
+  <!-- https://github.com/loresoft/msbuildtasks -->
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+
+  <!-- BeforeBuild: update version info across all projects -->
+  <Target Name="BeforeBuild" >
+    <ItemGroup>
+      <AssemblyInfoFiles Include=".\**\*AssemblyInfo.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <CppProjectFiles Include=".\**\*.vcxproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <CppResourceFiles Include=".\**\*.rc" />
+    </ItemGroup>
+    <ItemGroup>
+      <NuGetAutopkgFiles Include=".\EasyHookNative.autopkg" />
+      <NuGetNuspecFiles Include=".\EasyHook.nuspec" />
+    </ItemGroup>
+    <!-- attempt to record the Subversion Repository revision in SVNRevision for use in AssemblyTitle -->
+    <CreateProperty Value="$(AssemblyTitlePostfix)">
+      <Output TaskParameter="Value" PropertyName="AssemblyTitlePostfix" />
+    </CreateProperty>
+    <!-- Increment Version number in Version.txt -->
+    <Version VersionFile="Version.txt" BuildType="Automatic" RevisionType="BuildIncrement">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+
+    <Message Text="Updating AssemblyInfo to Version: $(Major).$(Minor).$(Build).$(Revision)"></Message>
+    <Message Text="Writing to AssemblyInfo files: @(AssemblyInfoFiles)"></Message>
+
+    <FileUpdate Files="@(AssemblyInfoFiles)"
+      Regex="(\d+)\.(\d+)\.(\d+)\.(\d+)"
+      ReplacementText="$(Major).$(Minor).$(Build).$(Revision)" />
+    <FileUpdate Files="@(AssemblyInfoFiles)"
+      Regex="AssemblyTitle\(&quot;(.*) (\([a-zA-Z]*\))&quot;\)"
+      ReplacementText="AssemblyTitle(&quot;$1&quot;)" />
+    <FileUpdate Files="@(AssemblyInfoFiles)"
+      Regex="AssemblyTitle\(&quot;(.*)&quot;\)"
+      ReplacementText="AssemblyTitle(&quot;$1 $(AssemblyTitlePostfix)&quot;)" />
+    <FileUpdate Files="@(AssemblyInfoFiles)"
+      Regex="AssemblyCopyright\(.*\)"
+      ReplacementText="AssemblyCopyright(&quot;$(AssemblyCopyright)&quot;)" />
+    <FileUpdate Files="@(CppProjectFiles)"
+      Regex="&lt;Version&gt;.*&lt;/Version&gt;"
+      ReplacementText="&lt;Version&gt;$(Major).$(Minor).$(Build).$(Revision)&lt;/Version&gt;" />
+    <FileUpdate Files="@(CppResourceFiles)" Encoding="Windows-1252"
+      Regex="FILEVERSION (\d+),(\d+),(\d+),(\d+)"
+      ReplacementText="FILEVERSION $(Major),$(Minor),$(Build),$(Revision)" />
+    <FileUpdate Files="@(CppResourceFiles)" Encoding="Windows-1252"
+      Regex="PRODUCTVERSION (\d+),(\d+),(\d+),(\d+)"
+      ReplacementText="PRODUCTVERSION $(Major),$(Minor),$(Build),$(Revision)" />
+    <FileUpdate Files="@(CppResourceFiles)" Encoding="Windows-1252"
+      Regex="&quot;LegalCopyright&quot;, &quot;.*&quot;"
+      ReplacementText="&quot;LegalCopyright&quot;, &quot;$(AssemblyCopyright)&quot;" />
+    <FileUpdate Files="@(CppResourceFiles)"
+      Regex="&quot;FileDescription&quot;, &quot;(.*) (\([a-zA-Z]*\))&quot;"
+      ReplacementText="&quot;FileDescription&quot;, &quot;$1&quot;" />
+    <FileUpdate Files="@(CppResourceFiles)" Encoding="Windows-1252"
+      Regex="&quot;FileDescription&quot;, &quot;(.*)&quot;"
+      ReplacementText="&quot;FileDescription&quot;, &quot;$1 $(AssemblyTitlePostfix)&quot;" />
+    <FileUpdate Files="@(CppResourceFiles)" Encoding="Windows-1252"
+      Regex="&quot;FileVersion&quot;, &quot;.*&quot;"
+      ReplacementText="&quot;FileVersion&quot;, &quot;$(Major).$(Minor).$(Build).$(Revision)&quot;" />
+    <FileUpdate Files="@(CppResourceFiles)" Encoding="Windows-1252"
+      Regex="&quot;ProductVersion&quot;, &quot;.*&quot;"
+      ReplacementText="&quot;ProductVersion&quot;, &quot;$(Major).$(Minor).$(Build).$(Revision)&quot;" />
+	<FileUPdate Files="@(NugetAutopkgFiles)"
+	  Regex="version : (\d+)\.(\d+)\.(\d+)\.(\d+);"
+      ReplacementText="version : $(Major).$(Minor).$(Build).$(Revision);" />
+	<FileUPdate Files="@(NuGetAutopkgFiles)"
+	  Regex="version : (\d+)\.(\d+)\.(\d+)\.(\d+);"
+      ReplacementText="version : $(Major).$(Minor).$(Build).$(Revision);" />
+	<FileUPdate Files="@(NuGetNuspecFiles)"
+	  Regex="&lt;version&gt;(\d+)\.(\d+)\.(\d+)\.(\d+)"
+      ReplacementText="&lt;version&gt;$(Major).$(Minor).$(Build).$(Revision)" />
+  </Target>
+
+  <!-- PreparePackage: Prepare Deployment package files within .\Deploy\ -->
+  <Target Name = "PreparePackage">
+    <!--DependsOnTargets="Build">-->
+    <ItemGroup>
+      <CommonFiles Include=".\LICENSE" />
+      <CommonFiles Include=".\README.md" />
+      <CommonFiles Include=".\EasyHookTestCert.cer" />
+      <CommonFiles Include=".\Public\easyhook.h" />
+    </ItemGroup>
+    <!-- Note: These ItemGroup's must be child of Target to ensure that the Include paths are evaluated AFTER the build has completed -->
+    <ItemGroup>
+      <NetFX35Files Include="$(FX35BuildDir)\EasyHook*.dll" />
+      <NetFX35Files Include="$(FX35BuildDir)\EasyLoad*.dll" />
+      <NetFX35Files Include="$(FX35BuildDir)\EasyHook*.lib" />
+      <NetFX35Files Include="$(FX35BuildDir)\EasyHook32Svc.exe" />
+      <NetFX35Files Include="$(FX35BuildDir)\EasyHook64Svc.exe" />
+      <NetFX35Files Include="$(FX35BuildDir)\FileMon.exe" />
+      <NetFX35Files Include="$(FX35BuildDir)\ProcessMonitor.exe" />
+      <NetFX35Files Include="$(FX35BuildDir)\ProcMonInject.dll" />
+      <NetFX35Files Include="$(FX35BuildDir)\ComplexParameterTest.exe" />
+      <NetFX35Files Include="$(FX35BuildDir)\ComplexParameterInject.dll" />
+      <NetFX35Files Include="$(FX35BuildDir)\TestFuncHooks.exe" />
+      <NetFX35Files Include="$(FX35BuildDir)\*.sys" />
+    </ItemGroup>
+    <ItemGroup>
+      <NetFX4Files Include="$(FX4BuildDir)\EasyHook*.dll" />
+      <NetFX4Files Include="$(FX4BuildDir)\EasyLoad*.dll" />
+      <NetFX4Files Include="$(FX4BuildDir)\EasyHook*.lib" />
+      <NetFX4Files Include="$(FX4BuildDir)\EasyHook32Svc.exe" />
+      <NetFX4Files Include="$(FX4BuildDir)\EasyHook64Svc.exe" />
+      <NetFX4Files Include="$(FX4BuildDir)\FileMon.exe" />
+      <NetFX4Files Include="$(FX4BuildDir)\FileMonInject.dll" />
+      <NetFX4Files Include="$(FX4BuildDir)\ProcessMonitor.exe" />
+      <NetFX4Files Include="$(FX4BuildDir)\ProcMonInject.dll" />
+      <NetFX4Files Include="$(FX4BuildDir)\ComplexParameterTest.exe" />
+      <NetFX4Files Include="$(FX4BuildDir)\ComplexParameterInject.dll" />
+      <NetFX4Files Include="$(FX4BuildDir)\TestFuncHooks.exe" />
+      <NetFX4Files Include="$(FX4BuildDir)\*.sys" />
+    </ItemGroup>
+    <MakeDir Directories = "$(PackageDir)"
+            Condition = "!Exists('$(PackageDir)')" />
+    <MakeDir Directories = "$(PackageDir)\NetFX3.5"
+            Condition = "!Exists('$(PackageDir)\NetFX3.5')" />
+    <MakeDir Directories = "$(PackageDir)\NetFX4.0"
+            Condition = "!Exists('$(PackageDir)\NetFX4.0')" />
+    <Copy SourceFiles="@(CommonFiles)"
+          DestinationFolder="$(PackageDir)\NetFX3.5" />
+    <Copy SourceFiles="@(CommonFiles)"
+          DestinationFolder="$(PackageDir)\NetFX4.0" />
+    <Copy SourceFiles="@(NetFX35Files)"
+          DestinationFolder="$(PackageDir)\NetFX3.5" />
+    <Copy SourceFiles="@(NetFX4Files)"
+          DestinationFolder="$(PackageDir)\NetFX4.0" />
+  </Target>
+<!-- No need to export source
+  <Target Name="ExportSource">
+    <RemoveDir Directories="$(PackageDir)\Source" />
+    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)"
+               LocalPath="$(PackageDir)\Source"></SvnExport>
+  </Target>
+-->
+
+  <!-- Package: Create deployment ZIP file -->
+  <Target Name = "Package" DependsOnTargets="PreparePackage">
+    <ItemGroup>
+      <PackageFiles Include="$(PackageDir)\**\*.*" Exclude="$(PackageDir)\*.zip;$(PackageDir)\Source\**\*.*" />
+    </ItemGroup>
+    <!-- No longer packaging source files
+	<ItemGroup>
+      <SourceFiles Include="$(PackageDir)\Source\**\*.*" />
+    </ItemGroup>
+    -->
+    <Version VersionFile="Version.txt" BuildType="None" RevisionType="None">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+    
+    <Zip Files="@(PackageFiles)"
+         WorkingDirectory="$(PackageDir)"
+         ZipFileName="$(PackageDir)\EasyHook-$(Major).$(Minor).$(Build).$(Revision)-Binaries.zip"
+         ZipLevel="9" />
+    <Exec Command="NuGet.exe pack .\EasyHook.nuspec -NoPackageAnalysis" />
+    <Exec Command="powershell.exe -executionpolicy Unrestricted -command &quot;&amp; { &amp;'.\tools\EasyHookNativePkg.ps1' } &quot;" />
+    <!-- no longer archiving source files here
+	<Zip Files="@(SourceFiles)"
+         WorkingDirectory="$(PackageDir)\Source"
+         ZipFileName="$(PackageDir)\EasyHook-$(Major).$(Minor).$(Build).$(Revision)-Source.zip"
+         ZipLevel="9" />
+	-->
+  </Target>
+  <!-- Clean -->
+  <Target Name = "Clean">
+    <RemoveDir Directories=".\Build;$(PackageDir)\NetFX4.0;$(PackageDir)\NetFX3.5;$(PackageDir)\Source" />
+  </Target>  
+</Project>

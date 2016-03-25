@@ -76,10 +76,10 @@ BEGIN
         BLOCK "000904b0"
         BEGIN
             VALUE "CompanyName", "easyhook.codeplex.com"
-            VALUE "FileDescription", "EasyHook Native DLL (64-bit)"
+            VALUE "FileDescription", "EasyHook Native DLL (64-bit) (beta)"
             VALUE "FileVersion", "2.7.0.0"
             VALUE "InternalName", "EasyHook64.dll"
-            VALUE "LegalCopyright", "Copyright © 2014 EasyHook Team"
+            VALUE "LegalCopyright", "Copyright (c) 2016 EasyHook Team"
             VALUE "OriginalFilename", "EasyHook64.dll"
             VALUE "ProductName", "EasyHook"
             VALUE "ProductVersion", "2.7.0.0"

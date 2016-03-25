@@ -30,12 +30,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EasyHookLoader")]
+[assembly: AssemblyTitle("EasyHookLoader (beta)")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("EasyHookLoader")]
-[assembly: AssemblyCopyright("Copyright © 2014 EasyHook Team")]
+[assembly: AssemblyCopyright("Copyright (c) 2016 EasyHook Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

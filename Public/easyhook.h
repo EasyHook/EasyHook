@@ -73,7 +73,7 @@ extern "C"{
 #define EASYHOOK_NT_EXPORT          EXTERN_C NTSTATUS EASYHOOK_API
 #define EASYHOOK_BOOL_EXPORT        EXTERN_C BOOL EASYHOOK_API
 
-#define MAX_HOOK_COUNT              128
+#define MAX_HOOK_COUNT              1024
 #define MAX_ACE_COUNT               128
 #define MAX_THREAD_COUNT            128
 #define MAX_PASSTHRU_SIZE           1024 * 64

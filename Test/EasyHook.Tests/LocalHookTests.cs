@@ -31,11 +31,11 @@ namespace EasyHook.Tests
         [TestMethod]
         public void InstallTooManyHooks_ThrowException()
         {
-            int maxHookCount = 128;
+            int maxHookCount = 1024;
 
             List<LocalHook> hooks = new List<LocalHook>();
 
-            // Install MAX_HOOK_COUNT hooks (i.e. 128)
+            // Install MAX_HOOK_COUNT hooks (i.e. 1024)
             for (var i = 0; i < maxHookCount; i++)
             {
                 LocalHook lh = LocalHook.Create(

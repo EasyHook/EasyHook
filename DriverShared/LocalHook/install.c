@@ -89,8 +89,17 @@ Description:
 }
 
 
+// The maximum number of bytes that can be used for a trampoline jump
+// Under most circumstance the max is 8 bytes, for X64_DRIVER this
+// increases to 16 bytes to support jumping to absolute addresses
+#define MAX_JMP_SIZE 16
 
-
+#if X64_DRIVER
+// The size of the instructions for a jump in/out of the trampoline within a 64-bit driver
+#define X64_DRIVER_JMPSIZE 16
+// The offset for where the address should be copied to within the jump
+#define X64_DRIVER_JMPADDR_OFFSET 3
+#endif
 
 EASYHOOK_NT_INTERNAL LhAllocateHook(
             void* InEntryPoint,
@@ -159,11 +168,21 @@ Returns:
     LONGLONG          			RelAddr;
     UCHAR*                      MemoryPtr;
     LONG                        NtStatus = STATUS_INTERNAL_ERROR;
+	ULONG                       PageSize = 0;
 
 #if X64_DRIVER
+	// This is the ASM that will perform a JMP back out of the trampoline
+	// Note that the address 0x0 will be replaced with appropriate address.
+	// 50                             push   rax
 	// 48 b8 00 00 00 00 00 00 00 00  mov rax, 0x0
-	// ff e0                          jmp rax
-	UCHAR			            Jumper_x64[12] = {0x48, 0xb8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xe0};
+	// 48 87 04 24                    xchg   QWORD PTR[rsp], rax
+	// c3                             ret
+	UCHAR			            Jumper_x64[X64_DRIVER_JMPSIZE] = { 
+		0x50, 
+		0x48, 0xb8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x48, 0x87, 0x04, 0x24,
+		0xc3
+	};
 #endif
 
 #ifndef _M_X64
@@ -178,18 +197,19 @@ Returns:
     if(!IsValidPointer(InHookProc, 1))
         THROW(STATUS_INVALID_PARAMETER_2, L"Invalid hook procedure.");
 
-    // allocate memory for hook, for 64-bit this will be located within a 32-bit relative jump of entry point
-	if((*OutHook = (LOCAL_HOOK_INFO*)LhAllocateMemory(InEntryPoint)) == NULL)
+    // allocate memory for hook, for 64-bit non-driver this will be located within a 32-bit relative jump of entry point
+    if ((*OutHook = (LOCAL_HOOK_INFO*)LhAllocateMemoryEx(InEntryPoint, &PageSize)) == NULL)
         THROW(STATUS_NO_MEMORY, L"Failed to allocate memory.");
     Hook = *OutHook;
 
-    FORCE(RtlProtectMemory(Hook, 4096, PAGE_EXECUTE_READWRITE));
+    FORCE(RtlProtectMemory(Hook, PageSize, PAGE_EXECUTE_READWRITE));
 
-    MemoryPtr = (UCHAR*)(Hook + 1);
+    // Set MemoryPtr to end of LOCAL_HOOK_INFO structure where we will copy the trampoline and old proc
+	MemoryPtr = (UCHAR*)(Hook + 1);
 
     // determine entry point size
 #ifdef X64_DRIVER
-	FORCE(EntrySize = LhRoundToNextInstruction(InEntryPoint, 12));
+	FORCE(EntrySize = LhRoundToNextInstruction(InEntryPoint, X64_DRIVER_JMPSIZE));
 #else
     FORCE(EntrySize = LhRoundToNextInstruction(InEntryPoint, 5));
 #endif
@@ -232,24 +252,30 @@ Returns:
 	    Has to be written directly into the target buffer, because to
 	    relocate RIP-relative addressing we need to know where the
 	    instruction will go to...
+
+		The entry point code will be copied to the end of the trampoline
+		with any relative addresses adjusted (if possible). Hook->OldProc
+		points to this location.
     */
     *RelocSize = 0;
     Hook->OldProc = MemoryPtr; 
 
     FORCE(LhRelocateEntryPoint(Hook->TargetProc, EntrySize, Hook->OldProc, RelocSize));
 
-    MemoryPtr += *RelocSize + 12;
-    Hook->NativeSize += *RelocSize + 12;
+	// Reserve enough room to fit worst case
+	MemoryPtr += *RelocSize + MAX_JMP_SIZE;
+	Hook->NativeSize += *RelocSize + MAX_JMP_SIZE;
 
-    // add jumper to relocated entry point that will proceed execution in original method
+    // add jumper to end of relocated entry point that will continue execution at 
+	// the next instruction within the original method.
 #ifdef X64_DRIVER
 
 	// absolute jumper
 	RelAddr = (LONGLONG)(Hook->TargetProc + Hook->EntrySize);
 
-	RtlCopyMemory(Hook->OldProc + *RelocSize, Jumper_x64, 12);
+	RtlCopyMemory(Hook->OldProc + *RelocSize, Jumper_x64, X64_DRIVER_JMPSIZE);
 	// Set address to be copied into RAX
-	RtlCopyMemory(Hook->OldProc + *RelocSize + 2, &RelAddr, 8);
+	RtlCopyMemory(Hook->OldProc + *RelocSize + X64_DRIVER_JMPADDR_OFFSET, &RelAddr, 8);
 
 #else
 
@@ -265,11 +291,12 @@ Returns:
 
 #endif
 
-    // backup original entry point
+    // backup original entry point (8 bytes)
     Hook->TargetBackup = *((ULONGLONG*)Hook->TargetProc); 
 
 #ifdef X64_DRIVER
-	Hook->TargetBackup_x64 = *((ULONGLONG*)(Hook->TargetProc + 8)); 
+	// 64-bit driver requires backup of additional 8 bytes supporting up to MAX_JMP_SIZE
+	Hook->TargetBackup_x64 = *((ULONGLONG*)(Hook->TargetProc + 8));
 #endif
 
 #ifndef _M_X64
@@ -376,15 +403,25 @@ Returns:
     ULONG                       Index;
     LONGLONG          			RelAddr;
     ULONG           			RelocSize;
-    UCHAR			            Jumper[12] = {0xE9, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    // This will contain the ASM that will perform a JMP into the trampoline
+    UCHAR			            Jumper[MAX_JMP_SIZE] = { 0xE9, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
     ULONGLONG                   AtomicCache;
     BOOL                        Exists;
     LONG                        NtStatus = STATUS_INTERNAL_ERROR;
 
 #if X64_DRIVER
+	// This is the ASM that will perform a jump INTO the trampoline for X64_DRIVER
+	// Note that the address 0x0 will be replaced with appropriate address.
+	// 50                             push   rax
 	// 48 b8 00 00 00 00 00 00 00 00  mov rax, 0x0
-	// ff e0                          jmp rax
-	UCHAR			            Jumper_x64[12] = {0x48, 0xb8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xe0};
+	// 48 87 04 24                    xchg   QWORD PTR[rsp], rax
+	// c3                             ret
+	UCHAR			            Jumper_x64[X64_DRIVER_JMPSIZE] = {
+		0x50,
+		0x48, 0xb8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x48, 0x87, 0x04, 0x24,
+		0xc3
+	};
 	ULONGLONG					AtomicCache_x64;
 	KIRQL						CurrentIRQL = PASSIVE_LEVEL;
 #endif
@@ -411,9 +448,9 @@ Returns:
 	// absolute jumper
 	RelAddr = (ULONGLONG)Hook->Trampoline;
 
-	RtlCopyMemory(Jumper, Jumper_x64, 12);
+	RtlCopyMemory(Jumper, Jumper_x64, X64_DRIVER_JMPSIZE);
 	// Set address to be copied into RAX
-	RtlCopyMemory(Jumper + 2, &RelAddr, 8);
+	RtlCopyMemory(Jumper + X64_DRIVER_JMPADDR_OFFSET, &RelAddr, 8);
 
 #else
 
@@ -461,7 +498,8 @@ Returns:
 	AtomicCache = *((ULONGLONG*)(Hook->TargetProc + 8));
     {
 		RtlCopyMemory(&AtomicCache_x64, Jumper, 8);
-	    RtlCopyMemory(&AtomicCache, Jumper + 8, 4);
+	    // Copy the second part of the Jumper
+		RtlCopyMemory(&AtomicCache, Jumper + 8, X64_DRIVER_JMPSIZE - 8);
 
 		// backup entry point for later comparison
 	    Hook->HookCopy = AtomicCache_x64;

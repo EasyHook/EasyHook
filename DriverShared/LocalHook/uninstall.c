@@ -205,6 +205,7 @@ Descriptions:
 #endif
             *((ULONGLONG*)Hook->TargetProc) = Hook->TargetBackup;
 #ifdef X64_DRIVER
+            // we support a trampoline jump of up to 16 bytes in X64_DRIVER
             *((ULONGLONG*)(Hook->TargetProc + 8)) = Hook->TargetBackup_x64;
             RtlWPOn(CurrentIRQL);
 #endif

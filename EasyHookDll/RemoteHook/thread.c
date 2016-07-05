@@ -317,8 +317,11 @@ EASYHOOK_NT_INTERNAL NtForceLdrInitializeThunk(HANDLE hProc)
 	if (!WriteProcessMemory(hProc, RemoteInjectCode, InjectCode, CodeSize, &BytesWritten) || (BytesWritten != CodeSize))
 		THROW(STATUS_INTERNAL_ERROR, L"Unable to write into target process memory.");
 
-	if ((hRemoteThread = CreateRemoteThread(hProc, NULL, 0, (LPTHREAD_START_ROUTINE)RemoteInjectCode, NULL, 0, NULL)) == NULL)
-		THROW(STATUS_ACCESS_DENIED, L"Unable to create remote thread.");
+	if (!RTL_SUCCESS(NtCreateThreadEx(hProc, (LPTHREAD_START_ROUTINE)RemoteInjectCode, NULL, FALSE, &hRemoteThread)))
+	{
+		if ((hRemoteThread = CreateRemoteThread(hProc, NULL, 0, (LPTHREAD_START_ROUTINE)RemoteInjectCode, NULL, 0, NULL)) == NULL)
+			THROW(STATUS_ACCESS_DENIED, L"Unable to create remote thread.");
+	}
 
 	WaitForSingleObject(hRemoteThread, INFINITE);
 

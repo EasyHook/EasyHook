@@ -1,7 +1,16 @@
-﻿nuget {
+﻿configurations 
+{
+    // This node contains custom pivot information.
+    Toolset 
+    {
+        key : "PlatformToolset"; // this is CoApp pre-defined key
+        choices: { v140, v120, v110, v100 };
+    };
+}
+nuget {
    nuspec {
       id = EasyHookNativePackage;
-      version : 2.7.0.0;
+      version : 2.7.6035.0;
       title: EasyHook Native Package;
       authors: {EasyHook};
       owners: {EasyHook};
@@ -11,7 +20,12 @@
       summary:The reinvention of Windows API Hooking;
       description: @"This project supports extending (hooking) unmanaged code (APIs) on 32- or 64-bit
 Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8.1, and Windows 10.";
-      releaseNotes: "New native only NuGet package";
+      releaseNotes: @"2.7.6035.0:
+1. MAX_HOOK_COUNT increased from 128 to 1024
+2. CreateAndInject fixed to support injection across sessions (providing appropriate privileges).
+3. RhCreateStealthRemoteThread fixed for 32-bit (still fairly experimental)  (#91)
+4. 64-bit driver now preserves RAX register for trampoline (#78)
+5. Native NuGet package now includes support for VS2015";
       projectUrl: "https://easyhook.github.io/";
       copyright: Copyright © 2009 Christoph Husse & Copyright © 2012 Justin Stenning. All rights reserved.;
       tags: {  api, hook, hooking, easyhook, native };
@@ -20,8 +34,29 @@ Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8
    files {
       include: { .\Public\easyhook.h };
  
-      // The release here works for any config that contains release
-      // Examples : Release ENU,  RELEASE-ENU,  Release DEU
+      // v110 - VS2012
+      [x86,v110,release] {
+         lib:     { .\Build\netfx4-Release\x86\EasyHook32.lib; }
+         symbols: { .\Build\netfx4-Release\x86\EasyHook32.pdb; }
+         bin:     { .\Build\netfx4-Release\x86\EasyHook32.dll; }
+      };
+      [x86,v110,debug] {
+         lib:     { .\Build\netfx4-Debug\x86\EasyHook32.lib; }
+         symbols: { .\Build\netfx4-Debug\x86\EasyHook32.pdb; }
+         bin:     { .\Build\netfx4-Debug\x86\EasyHook32.dll; }
+      };
+      [x64,v110,release] {
+         lib:     { .\Build\netfx4-Release\x64\EasyHook64.lib; }
+         symbols: { .\Build\netfx4-Release\x64\EasyHook64.pdb; }
+         bin:     { .\Build\netfx4-Release\x64\EasyHook64.dll; }
+      };
+      [x64,v110,debug] {
+         lib:     { .\Build\netfx4-Debug\x64\EasyHook64.lib; }
+         symbols: { .\Build\netfx4-Debug\x64\EasyHook64.pdb; }
+         bin:     { .\Build\netfx4-Debug\x64\EasyHook64.dll; }
+      };
+
+      // v120 - VS2013
       [x86,v120,release] {
          lib:     { .\Build\netfx4-Release\x86\EasyHook32.lib; }
          symbols: { .\Build\netfx4-Release\x86\EasyHook32.pdb; }
@@ -42,7 +77,28 @@ Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8
          symbols: { .\Build\netfx4-Debug\x64\EasyHook64.pdb; }
          bin:     { .\Build\netfx4-Debug\x64\EasyHook64.dll; }
       };
- 
+
+      // v140 - VS2015
+      [x86,v140,release] {
+         lib:     { .\Build\netfx4-Release\x86\EasyHook32.lib; }
+         symbols: { .\Build\netfx4-Release\x86\EasyHook32.pdb; }
+         bin:     { .\Build\netfx4-Release\x86\EasyHook32.dll; }
+      };
+      [x86,v140,debug] {
+         lib:     { .\Build\netfx4-Debug\x86\EasyHook32.lib; }
+         symbols: { .\Build\netfx4-Debug\x86\EasyHook32.pdb; }
+         bin:     { .\Build\netfx4-Debug\x86\EasyHook32.dll; }
+      };
+      [x64,v140,release] {
+         lib:     { .\Build\netfx4-Release\x64\EasyHook64.lib; }
+         symbols: { .\Build\netfx4-Release\x64\EasyHook64.pdb; }
+         bin:     { .\Build\netfx4-Release\x64\EasyHook64.dll; }
+      };
+      [x64,v140,debug] {
+         lib:     { .\Build\netfx4-Debug\x64\EasyHook64.lib; }
+         symbols: { .\Build\netfx4-Debug\x64\EasyHook64.pdb; }
+         bin:     { .\Build\netfx4-Debug\x64\EasyHook64.dll; }
+      };
       // The debug here works for any config that contains debug
       // Examples : Debug ENU,  DEBUG-ENU,  Debug DEU
       //[x86,v120,debug] {

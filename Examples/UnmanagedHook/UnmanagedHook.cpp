@@ -37,19 +37,23 @@ BOOL WINAPI MessageBeepHook(__in UINT uType)
     return TRUE;
 }
 
-DWORD __stdcall TestThread(void* InParams)
-{
-	while(TRUE) Sleep(100);
-
-	return 0;
-}
-
 DWORD __stdcall HijackEntry(void* InParams)
 {
 	if(InParams != (PVOID)0x12345678)
 		throw;
 
 	printf("\n" "Hello from stealth remote thread!\n");
+
+	return 0;
+}
+
+
+DWORD __stdcall TestThread(void* InParams)
+{
+	HANDLE					hRemoteThread;
+	RhCreateStealthRemoteThread(GetCurrentProcessId(), HijackEntry, (PVOID)0x12345678, &hRemoteThread);
+
+	while (TRUE) Sleep(100);
 
 	return 0;
 }
@@ -64,7 +68,7 @@ extern "C" int main(int argc, wchar_t* argv[])
 	HANDLE					hRemoteThread;
 
 	// test driver...
-	printf("Installing support driver...\n");
+	/*printf("Installing support driver...\n");
 
 	FORCE(RhInstallSupportDriver());
 
@@ -74,13 +78,13 @@ extern "C" int main(int argc, wchar_t* argv[])
 		FORCE(RhInstallDriver(L"TestDriver64.sys", L"TestDriver64.sys"))
 	else
 		FORCE(RhInstallDriver(L"TestDriver32.sys", L"TestDriver32.sys"));
-
+*/
 	// test stealth thread creation...
 	printf("Testing stealth thread creation...\n");
 
 	hRemoteThread = CreateThread(NULL, 0, TestThread, NULL, 0, NULL);
 
-	FORCE(RhCreateStealthRemoteThread(GetCurrentProcessId(), HijackEntry, (PVOID)0x12345678, &hRemoteThread));
+	//FORCE(RhCreateStealthRemoteThread(GetCurrentProcessId(), HijackEntry, (PVOID)0x12345678, &hRemoteThread));
 
 	Sleep(500);
 

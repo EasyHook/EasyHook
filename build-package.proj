@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <!-- https://github.com/loresoft/msbuildtasks -->
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+  <Import Project=".\MSBuildTasks.1.5.0.196\tools\MSBuild.Community.Tasks.Targets"/>
 
   <!-- BeforeBuild: update version info across all projects -->
   <Target Name="BeforeBuild" >

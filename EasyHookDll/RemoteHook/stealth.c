@@ -52,24 +52,29 @@ typedef struct _STEALTH_CONTEXT_
         ULONGLONG       __Unused__[8];
     };
 
-    ULONGLONG           Rax;
-    ULONGLONG           Rcx;
-    ULONGLONG           Rdx;
-    ULONGLONG           Rbp;
-    ULONGLONG           Rsp;
-    ULONGLONG           Rsi;
-    ULONGLONG           Rdi;
-    ULONGLONG           Rbx;
-    ULONGLONG           Rip;
-    ULONGLONG           RFlags;
-    ULONGLONG           R8;
-    ULONGLONG           R9;
-    ULONGLONG           R10;
-    ULONGLONG           R11;
-    ULONGLONG           R12;
-    ULONGLONG           R13;
-    ULONGLONG           R14;
-    ULONGLONG           R15;
+	// Used to save the current thread's state before calling StealthStub_ASM_x86/x64
+    // Integer Registers
+	ULONGLONG           Rax;		// 0
+    ULONGLONG           Rcx;		// 1
+    ULONGLONG           Rdx;		// 2
+    ULONGLONG           Rbp;		// 3
+    ULONGLONG           Rsp;		// 4
+    ULONGLONG           Rsi;		// 5
+    ULONGLONG           Rdi;		// 6
+    ULONGLONG           Rbx;		// 7
+    ULONGLONG           Rip;		// 8
+    ULONGLONG           RFlags;		// 9
+    ULONGLONG           R8;			// 10
+    ULONGLONG           R9;			// 11
+    ULONGLONG           R10;		// 12
+    ULONGLONG           R11;		// 13
+    ULONGLONG           R12;		// 14
+    ULONGLONG           R13;		// 15
+    ULONGLONG           R14;		// 16
+    ULONGLONG           R15;		// 17
+	// Stack values (as a couple of values will be overwritten within StealthStub_ASM_x64)
+	ULONGLONG			StackA;		// 18
+	ULONGLONG			StackB;		// 19
 }STEALTH_CONTEXT, *PSTEALTH_CONTEXT;
 
 
@@ -214,6 +219,8 @@ Returns:
 
 	if(hHijackedThread == NULL)
 		THROW(STATUS_NOT_SUPPORTED, L"Unable to select active thread in target process.");
+
+	DEBUGMSG(L"RhCreateStealthRemoteThread hijacked thread Id: %d\n", hijackedThreadId);
 
     /*
         Capture context...

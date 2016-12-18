@@ -33,9 +33,9 @@ extern "C"{
 #include "stdafx.h"
 
 #if _DEBUG
-    #define DEBUGMSG(message) { WCHAR debugMsg[1024] = { 0 }; _snwprintf_s(debugMsg, 1024, _TRUNCATE, L"%s\n", message); OutputDebugStringW(debugMsg); }
+    #define DEBUGMSG(...) do { WCHAR debugMsg[1024] = { 0 }; _snwprintf_s(debugMsg, 1024, _TRUNCATE, __VA_ARGS__); OutputDebugStringW(debugMsg); } while(0)
 #else
-    #define DEBUGMSG(message) { }
+    #define DEBUGMSG(__VA_ARGS__) do { } while(0)
 #endif
 
 #ifndef DRIVER

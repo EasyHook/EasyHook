@@ -109,11 +109,11 @@ void RtlSetLastError(LONG InCode, NTSTATUS InNtStatus, WCHAR* InMessage)
                     MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                     (LPTSTR) &lpMsgBuf,
                     0, NULL );
-                _snwprintf_s(msg, 1024, _TRUNCATE, L"%s (%s)", InMessage, lpMsgBuf);
+                _snwprintf_s(msg, 1024, _TRUNCATE, L"%s (%s)\n", InMessage, lpMsgBuf);
             }
             else 
             {
-                _snwprintf_s(msg, 1024, _TRUNCATE, L"%s (%s)", InMessage, RtlErrorCodeToString(InNtStatus));
+                _snwprintf_s(msg, 1024, _TRUNCATE, L"%s (%s)\n", InMessage, RtlErrorCodeToString(InNtStatus));
             }
             DEBUGMSG(msg);
 

@@ -42,11 +42,10 @@ DWORD __stdcall HijackEntry(void* InParams)
 	if(InParams != (PVOID)0x12345678)
 		throw;
 
-	printf("\n" "Hello from stealth remote thread!\n");
+	printf("\nHello from stealth thread! Thread ID: %d\n", GetCurrentThreadId());
 
 	return 0;
 }
-
 
 DWORD __stdcall TestThread(void* InParams)
 {
@@ -79,12 +78,14 @@ extern "C" int main(int argc, wchar_t* argv[])
 	else
 		FORCE(RhInstallDriver(L"TestDriver32.sys", L"TestDriver32.sys"));
 */
+	
+	printf("Main thread Id: %d\n", GetCurrentThreadId());
+
 	// test stealth thread creation...
 	printf("Testing stealth thread creation...\n");
 
+	// The thread will attempt to install a hook using RhCreateStealthRemoteThread
 	hRemoteThread = CreateThread(NULL, 0, TestThread, NULL, 0, NULL);
-
-	//FORCE(RhCreateStealthRemoteThread(GetCurrentProcessId(), HijackEntry, (PVOID)0x12345678, &hRemoteThread));
 
 	Sleep(500);
 

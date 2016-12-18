@@ -32,6 +32,13 @@ public StealthStub_ASM_x64
 StealthStub_ASM_x64 PROC
 	sub			rsp, 8 * 4
 	
+; save stack before call to CreateThread
+	mov			r10, qword ptr[rsp + 40]
+	mov			qword ptr[rbx + 64 + 8 * 19], r10
+	mov			r10, qword ptr[rsp + 32]
+	mov			qword ptr[rbx + 64 + 8 * 18], r10
+
+; CreateThread
 	mov			qword ptr[rsp + 40], 0
 	mov			qword ptr[rsp + 32], 0
 	mov			r9, qword ptr [rbx + 16]	; RemoteThreadParam
@@ -41,6 +48,15 @@ StealthStub_ASM_x64 PROC
 	call		qword ptr[rbx]				; CreateThread
 	cmp			rax, 0
 
+; restore stack after call to CreateThread
+	mov			rdx, rsp
+	add			rdx, 20h
+	mov			rcx, qword ptr[rbx + 64 + 8 * 18]
+	mov			qword ptr[rdx], rcx
+	add			rdx, 8
+	mov			rcx, qword ptr[rbx + 64 + 8 * 19]
+	mov			qword ptr[rdx], rcx
+
 ; signal completion
 	mov			rcx, qword ptr [rbx + 48]		
 	mov			qword ptr [rbx + 48], rax
@@ -48,8 +64,8 @@ StealthStub_ASM_x64 PROC
 
 ; wait for completion
 	mov			rdx, -1
-	mov			rcx, qword ptr [ebx + 32]
-	call		qword ptr [ebx + 24]		; WaitForSingleObject(hCompletionEvent, INFINITE)	
+	mov			rcx, qword ptr [rbx + 32]
+	call		qword ptr [rbx + 24]		; WaitForSingleObject(hCompletionEvent, INFINITE)	
 
 ; close handle
 	mov			rcx, qword ptr [rbx + 32]		

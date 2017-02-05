@@ -64,12 +64,12 @@ namespace EasyHook
     /// <summary>
     /// EasyHook will search in the injected user library for a class which implements
     /// this interface. You should only have one class exposing this interface, otherwise
-    /// it is undefined which one will be choosen. 
+    /// it is undefined which one will be chosen. See remarks for more details on how you should create this class.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// To implement this interface is not the only thing to do. The related class shall export
-    /// two methods. The first one is <c>Initialize(IContext, ...)</c> which will let you initialize
+    /// To implement this interface is not the only thing to do. The related class shall implement
+    /// two methods. The first one is a constructor <c>ctor(IContext, ...)</c> which will let you initialize
     /// your library. You should immediately complete this call and only connect to your host
     /// application for further error reporting. This initialization method allows you to redirect
     /// all unhandled exceptions to your host application automatically. So even if all things in
@@ -79,23 +79,23 @@ namespace EasyHook
     /// but not all custom ones. Otherwise you will only intercept a general exception with no specific
     /// information attached.
     /// </para><para>
-    /// The second one is <c>Run(IContext, ...)</c> and should return if you want to unload your injected library. 
-    /// Unhandled exceptions WON'T be redirected automatically. As you are expected to connect to
-    /// your host in <c>Initialize()</c>, you are now also expected to report errors by yourself.
+    /// The second one is <c>Run(IContext, ...)</c> and should only exit/return when you want to unload your injected library. 
+    /// Unhandled exceptions WON'T be redirected automatically and are likely to crash the target process. As you are expected 
+    /// to connect to your host in the <c>ctor()</c>, you are now also expected to report errors by yourself.
     /// </para><para>
     /// The parameter list described by <c>(IContext, ...)</c> will always contain a <see cref="RemoteHooking.IContext"/>
-    /// instance as first parameter. All further parameters will depend on the arguments passed to <see cref="RemoteHooking.Inject"/>
-    /// at your injection host. <c>Initialize()</c> and <c>Run()</c> must have the same custom parameter list
+    /// instance as the first parameter. All further parameters will depend on the arguments passed to <see cref="RemoteHooking.Inject"/>
+    /// at your injection host. <c>ctor()</c> and <c>Run()</c> must have the same custom parameter list
     /// as composed by the one passed to <c>Inject()</c>. Otherwise an exception will be thrown. For example
     /// if you call <see cref="RemoteHooking.Inject"/> with <c>Inject(..., ..., ..., ..., "MyString1", "MyString2")</c>, you
     /// have supplied a custom argument list of the format <c>String, String</c> to <c>Inject</c>. This list
     /// will be converted to an object array and serialized. The injected library stub will later
-    /// deserialize this array and pass it to <c>Initialize()</c> and <c>Run()</c>, both expected to have
-    /// a parameter of <c>IContext, String, String</c> in our case. So <c>Run</c> will now be called with
-    /// <c>(IContext, "MyString1", "MyString2")</c>. I hope this is comprehensively explained ;-).
+    /// deserialize this array and pass it to <c>ctor()</c> and <c>Run()</c>, both expected to have
+    /// a signature of <c>IContext, String, String</c> in our case. So <c>Run</c> will now be called with
+    /// <c>(IContext, "MyString1", "MyString2")</c>.
     /// </para><para>
-    /// You shouldn't use static fields or properties within such a class, as this might lead to
-    /// bugs in your code when multiple library instances are running in the same target!
+    /// You should avoid using static fields or properties within such a class, as this might lead to
+    /// bugs in your code when multiple library instances are injected into the same target!
     /// </para>
     /// </remarks>
     public interface IEntryPoint { }
@@ -138,7 +138,7 @@ namespace EasyHook
         /// A context contains some basic information about the environment
         /// in which your library main method has been invoked. You will always
         /// get an instance of this interface in your library <c>Run</c> method
-        /// and your library <c>Initialize</c> method. 
+        /// and your library constructor. 
         /// </summary>
         public interface IContext
         {
@@ -416,12 +416,11 @@ namespace EasyHook
         /// your working directory will be switched. EasyHook will automatically add
         /// the directory of the injecting application as first directory of the target's PATH environment
         /// variable. So make sure that all required dependencies are either located
-        /// within the injecting application's directory, a system directory or any directory defaultly
-        /// contained in the PATH variable. As all managed assemblies have to be in the GAC
-        /// there is no need for them being in any of those directories!
+        /// within the injecting application's directory, a system directory or any directory already
+        /// contained in the PATH variable.
         /// </para> <para>
         /// EasyHook provides extensive error information during injection. Any kind of failure is
-        /// being catched and thrown as an exception by this method. If for example your library
+        /// being caught and thrown as an exception by this method. If for example your library
         /// does not expose a class implementing <see cref="IEntryPoint"/>, an exception will be
         /// raised in the target process during injection. The exception will be redirected to this method
         /// and you can catch it in a try-catch statement around <see cref="Inject"/>.
@@ -431,14 +430,13 @@ namespace EasyHook
         /// of objects marked with the <see cref="SerializableAttribute"/>. All common NET classes
         /// will be serializable by default, but if you are using your own classes you might have to provide
         /// serialization by yourself. The custom parameter list will be passed unchanged to your injected
-        /// library entry points <c>Run</c> and <c>Initialize</c>. Verify that all required type libraries to deserialize
-        /// your parameter list are in the GAC.
+        /// library entry points <c>Run</c> and <c>construcotr</c>. Verify that all required type libraries to deserialize
+        /// your parameter list are either registered in the GAC or otherwise accessible to your library by being in the same path.
         /// </para><para>
         /// It is supported to inject code into 64-bit processes from within 32-bit processes and
         /// vice versa. It is also supported to inject code into other terminal sessions. Of course
         /// this will require additional processes and services to be created, but as they are managed
-        /// internally, you won't notice them! There will be some delays when injecting the first library.
-        /// Further injections are completed much faster!
+        /// internally, you won't notice them! There will be some delay when injecting the first library.
         /// </para><para>
         /// Even if it would technically be possible to inject a library for debugging purposes into
         /// the current process, it will throw an exception. This is because it heavily depends on
@@ -452,7 +450,7 @@ namespace EasyHook
         /// any other exception not listed here. Don't rely on the exception type. If you passed valid parameters,
         /// the only exceptions you should explicitly check for are <see cref="NotSupportedException"/> and
         /// <see cref="AccessViolationException"/>. All others
-        /// shall be catched together and threaded as bad environment or invalid parameter error.
+        /// shall be caught and treated as bad environment or invalid parameter error.
         /// </para>
         /// </remarks>
         /// <param name="InTargetPID">
@@ -463,15 +461,15 @@ namespace EasyHook
         /// </param>
         /// <param name="InLibraryPath_x86">
         /// A partially qualified assembly name or a relative/absolute file path of the 32-bit version of your library. 
-        /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\\MyAssembly.dll". 
+        /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\MyAssembly.dll". 
         /// </param>
         /// <param name="InLibraryPath_x64">
         /// A partially qualified assembly name or a relative/absolute file path of the 64-bit version of your library. 
-        /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\\MyAssembly.dll". 
+        /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\MyAssembly.dll". 
         /// </param>
         /// <param name="InPassThruArgs">
         /// A serializable list of parameters being passed to your library entry points <c>Run()</c> and
-        /// <c>Initialize()</c>.
+        /// constructor (see <see cref="IEntryPoint"/>).
         /// </param>
         /// <exception cref="InvalidOperationException">
         /// It is unstable to inject libraries into the same process. This exception is disabled in DEBUG mode.
@@ -492,7 +490,7 @@ namespace EasyHook
         /// It is not supported to inject into the target process. This is common on Windows Vista and Server 2008.
         /// </exception>
         /// <exception cref="TimeoutException">
-        /// Unable to wait for user library to be initialized. Check your library <c>Initialize()</c> handler.
+        /// Unable to wait for user library to be initialized. Check your library's <see cref="IEntryPoint"/> constructor.
         /// </exception>
         /// <exception cref="EntryPointNotFoundException">
         /// The given user library does not export a class implementing the <see cref="IEntryPoint"/> interface.
@@ -525,15 +523,15 @@ namespace EasyHook
         /// </param>
         /// <param name="InLibraryPath_x86">
         /// A partially qualified assembly name or a relative/absolute file path of the 32-bit version of your library. 
-        /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\\MyAssembly.dll". 
+        /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\MyAssembly.dll". 
         /// </param>
         /// <param name="InLibraryPath_x64">
         /// A partially qualified assembly name or a relative/absolute file path of the 64-bit version of your library. 
-        /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\\MyAssembly.dll". 
+        /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\MyAssembly.dll". 
         /// </param>
         /// <param name="InPassThruArgs">
         /// A serializable list of parameters being passed to your library entry points <c>Run()</c> and
-        /// <c>Initialize()</c>.
+        /// constructor (see <see cref="IEntryPoint"/>).
         /// </param>
         public static void Inject(
             Int32 InTargetPID,
@@ -904,7 +902,7 @@ namespace EasyHook
         /// </param>
         /// <param name="InPassThruArgs">
         /// A serializable list of parameters being passed to your library entry points <c>Run()</c> and
-        /// <c>Initialize()</c>.
+        /// constructor (see <see cref="IEntryPoint"/>).
         /// </param>
         /// <exception cref="ArgumentException">
         /// The given EXE path could not be found.
@@ -1001,7 +999,7 @@ namespace EasyHook
         /// </param>
         /// <param name="InPassThruArgs">
         /// A serializable list of parameters being passed to your library entry points <c>Run()</c> and
-        /// <c>Initialize()</c>.
+        /// constructor (see <see cref="IEntryPoint"/>).
         /// </param>
         /// <exception cref="ArgumentException">
         /// The given EXE path could not be found.

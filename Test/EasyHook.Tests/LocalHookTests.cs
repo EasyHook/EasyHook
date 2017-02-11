@@ -119,7 +119,7 @@ namespace EasyHook.Tests
 
             BeepDelegate b = (BeepDelegate)Marshal.GetDelegateForFunctionPointer(lh.HookBypassAddress, typeof(BeepDelegate));
 
-            Assert.IsTrue(b(100, 100));
+            b(100, 100);
             Assert.IsFalse(_beepHookCalled);
         }
     }

@@ -564,7 +564,7 @@ Returns:
 	if (!IsValidPointer(OutAddress, sizeof(PVOID*)))
 		THROW(STATUS_INVALID_PARAMETER_3, L"Invalid pointer for result storage.");
 
-	*OutAddress = Handle->OldProc;
+	*OutAddress = (PVOID*)Handle->OldProc;
 
 	RETURN;
 

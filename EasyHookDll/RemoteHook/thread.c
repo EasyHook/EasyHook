@@ -498,10 +498,12 @@ Parameters:
 
         Receives the initial TID of the newly created process.
 */
+#define MAX_CREATEPROCESS_COMMANDLINE 32768
+
     STARTUPINFO				StartInfo;
 	PROCESS_INFORMATION		ProcessInfo;
 	WCHAR					FullExePath[MAX_PATH + 1];
-	WCHAR                   FullCommandLine[MAX_PATH + 1];
+	WCHAR                   FullCommandLine[MAX_CREATEPROCESS_COMMANDLINE];
     WCHAR					CurrentDir[MAX_PATH + 1];
     WCHAR*					FilePart;
     NTSTATUS            NtStatus;
@@ -526,7 +528,7 @@ Parameters:
     // compute current directory...
     RtlCopyMemory(FullExePath, CurrentDir, sizeof(FullExePath));
     
-    swprintf_s(FullCommandLine, MAX_PATH, L"\"%s\" %s", FullExePath, InCommandLine);
+    swprintf_s(FullCommandLine, MAX_CREATEPROCESS_COMMANDLINE, L"\"%s\" %s", FullExePath, InCommandLine);
 
     *FilePart = 0;
 

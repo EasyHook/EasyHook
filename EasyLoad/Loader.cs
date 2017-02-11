@@ -119,8 +119,7 @@ namespace EasyLoad
 
                         // Load EasyHook and the target assembly
                         LoadEasyHookProxy lp = new LoadEasyHookProxy();
-                        lp.Load(inParam);
-                        return 1;
+                        return lp.Load(inParam);
                     }
                 }
 

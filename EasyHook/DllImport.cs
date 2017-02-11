@@ -220,6 +220,9 @@ namespace EasyHook
             String InAssemblyName,
             String InDescription,
             String InUniqueID);
+
+        [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        public static extern int LhGetHookBypassAddress(IntPtr handle, out IntPtr address);
     }
 
     static class NativeAPI_x64
@@ -412,6 +415,9 @@ namespace EasyHook
             String InAssemblyName,
             String InDescription,
             String InUniqueID);
+
+        [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode)]
+        public static extern int LhGetHookBypassAddress(IntPtr handle, out IntPtr address);
     }
 
     public static class NativeAPI
@@ -453,6 +459,7 @@ namespace EasyHook
         public const Int32 STATUS_INVALID_PARAMETER_4= unchecked((Int32)0xC00000F2L);
         public const Int32 STATUS_INVALID_PARAMETER_5= unchecked((Int32)0xC00000F3L);
         public const Int32 STATUS_NOT_SUPPORTED= unchecked((Int32)0xC00000BBL);
+
         public const Int32 STATUS_INTERNAL_ERROR= unchecked((Int32)0xC00000E5L);
         public const Int32 STATUS_INSUFFICIENT_RESOURCES= unchecked((Int32)0xC000009AL);
         public const Int32 STATUS_BUFFER_TOO_SMALL= unchecked((Int32)0xC0000023L);
@@ -605,6 +612,12 @@ namespace EasyHook
         {
             if (Is64Bit) Force( NativeAPI_x64.LhBarrierEndStackTrace(OutBackup));
             else Force( NativeAPI_x86.LhBarrierEndStackTrace(OutBackup));
+        }
+
+        public static void LhGetHookBypassAddress(IntPtr handle, out IntPtr address)
+        {
+            if (Is64Bit) Force(NativeAPI_x64.LhGetHookBypassAddress(handle, out address));
+            else Force(NativeAPI_x86.LhGetHookBypassAddress(handle, out address));
         }
 
         public static void DbgAttachDebugger()

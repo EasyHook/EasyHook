@@ -16,10 +16,14 @@ namespace EasyHook.Tests
         [return: MarshalAs(UnmanagedType.Bool)]
         delegate bool BeepDelegate(uint dwFreq, uint dwDuration);
 
+        bool _beepHookCalled = false;
+
         [return: MarshalAs(UnmanagedType.Bool)]
         bool BeepHook(uint dwFreq, uint dwDuration)
         {
-            return Beep(dwFreq, dwDuration);
+            _beepHookCalled = true;
+            Beep(dwFreq, dwDuration);
+            return false;
         }
 
         [TestInitialize]
@@ -94,6 +98,29 @@ namespace EasyHook.Tests
 
             // Ensure the hooks are freed
             NativeAPI.LhWaitForPendingRemovals();
+        }
+
+        [TestMethod]
+        public void HookBypassAddress_DoesNotCallHook()
+        {
+            // Install MAX_HOOK_COUNT hooks (i.e. 1024)
+            LocalHook lh = LocalHook.Create(
+                LocalHook.GetProcAddress("kernel32.dll", "Beep"),
+                new BeepDelegate(BeepHook),
+                this);
+            
+            lh.ThreadACL.SetInclusiveACL(new int[] { 0 });
+
+            Assert.IsFalse(Beep(100, 100));
+
+            Assert.IsTrue(_beepHookCalled);
+
+            _beepHookCalled = false;
+
+            BeepDelegate b = (BeepDelegate)Marshal.GetDelegateForFunctionPointer(lh.HookBypassAddress, typeof(BeepDelegate));
+
+            Assert.IsTrue(b(100, 100));
+            Assert.IsFalse(_beepHookCalled);
         }
     }
 }

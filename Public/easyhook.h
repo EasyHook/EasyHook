@@ -178,6 +178,9 @@ DRIVER_SHARED_API(NTSTATUS, LhBarrierBeginStackTrace(PVOID* OutBackup));
 
 DRIVER_SHARED_API(NTSTATUS, LhBarrierEndStackTrace(PVOID InBackup));
 
+// Retrieve Hook bypass address (in order to call original without triggering hook or modifying ACLs)
+DRIVER_SHARED_API(NTSTATUS, LhGetHookBypassAddress(TRACED_HOOK_HANDLE pHandle, PVOID** pAddress));
+
 typedef struct _MODULE_INFORMATION_* PMODULE_INFORMATION;
 
 typedef struct _MODULE_INFORMATION_
@@ -238,6 +241,7 @@ DRIVER_SHARED_API(NTSTATUS, LhBarrierCallStackTrace(
 		DRIVER_EXPORT(LhSetExclusiveACL);
 		DRIVER_EXPORT(LhSetInclusiveACL);
 		DRIVER_EXPORT(LhIsProcessIntercepted);
+		DRIVER_EXPORT(LhGetHookBypassAddress);
 	}EASYHOOK_INTERFACE_API_v_1, *PEASYHOOK_INTERFACE_API_v_1;
 
 	typedef struct _EASYHOOK_DEVICE_EXTENSION_

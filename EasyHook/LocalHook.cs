@@ -507,6 +507,25 @@ namespace EasyHook
         }
 
         /// <summary>
+        /// Returns the trampoline bypass address associated with this hook.
+        /// </summary>
+        /// <exception cref="ObjectDisposedException">
+        /// The underlying hook has been disposed.
+        /// </exception>
+        public IntPtr HookBypassAddress
+        {
+            get
+            {
+                if (IntPtr.Zero == m_Handle)
+                    throw new ObjectDisposedException(typeof(LocalHook).FullName);
+
+                IntPtr address = IntPtr.Zero;
+                NativeAPI.LhGetHookBypassAddress(m_Handle, out address);
+                return address;
+            }
+        }
+
+        /// <summary>
         /// Checks whether a given thread ID will be intercepted by the underlying hook.
         /// </summary>
         /// <remarks>
@@ -852,7 +871,7 @@ namespace EasyHook
             GC.WaitForPendingFinalizers();
             GC.Collect();
 
-            NativeAPI.LhWaitForPendingRemovals(); 
+            NativeAPI.LhWaitForPendingRemovals();
         }
     }
 }

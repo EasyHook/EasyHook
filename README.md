@@ -2,7 +2,13 @@
 
 [![Join the chat at https://gitter.im/EasyHook/EasyHook](https://badges.gitter.im/EasyHook/EasyHook.svg)](https://gitter.im/EasyHook/EasyHook?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This project supports extending (hooking) unmanaged code (APIs) with pure managed ones, from within a fully managed environment on 32- or 64-bit Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8.1, and Windows 10. 
+Master branch: [![Master branch build status](https://ci.appveyor.com/api/projects/status/278ff5njpjnarayd/branch/master?svg=true)](https://ci.appveyor.com/project/spazzarama/easyhook/branch/master)
+
+Develop branch: [![Develop branch build status](https://ci.appveyor.com/api/projects/status/278ff5njpjnarayd/branch/develop?svg=true)](https://ci.appveyor.com/project/spazzarama/easyhook/branch/develop)
+
+You can support the EasyHook project over at Bountysource or [raise a bounty for an issue to be fixed](https://www.bountysource.com/teams/easyhook/issues): [![Current bounties](https://api.bountysource.com/badge/team?team_id=104536)](https://www.bountysource.com/teams/easyhook/bounties)
+
+This project supports extending (hooking) unmanaged code (APIs) with pure managed ones, from within a fully managed environment on 32- or 64-bit Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8.1, and Windows 10.
 
 EasyHook currently supports injecting assemblies built for .NET Framework 3.5 and 4.0 and can also inject native DLLs.
 
@@ -16,7 +22,7 @@ https://www.nuget.org/packages/EasyHook
 For native C++ apps there is also a native NuGet package available: https://www.nuget.org/packages/EasyHookNativePackage
 
 ## Bug reports or questions
-Reporting bugs is the only way to get them fixed and help other users of the library!
+Reporting bugs is the only way to get them fixed and help other users of the library! If an issue isn't getting addressed, try [raising a bounty for it](https://www.bountysource.com/teams/easyhook/issues).
 
 Report issues at: https://github.com/EasyHook/EasyHook/issues
 

@@ -10,7 +10,7 @@
 nuget {
    nuspec {
       id = EasyHookNativePackage;
-      version : 2.7.6035.0;
+      version : 2.7.6270.0;
       title: EasyHook Native Package;
       authors: {EasyHook};
       owners: {EasyHook};
@@ -20,7 +20,12 @@ nuget {
       summary:The reinvention of Windows API Hooking;
       description: @"This project supports extending (hooking) unmanaged code (APIs) on 32- or 64-bit
 Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8.1, and Windows 10.";
-      releaseNotes: @"2.7.6035.0:
+      releaseNotes: @"2.7.6270.0:
+1. CreateAndInject now supports long command lines (#84 / #170)
+2. RhCreateRemoveStealthThread now works for 64-bit targets (#91 / #159)
+3. Added LhGetHookBypassAddress / LocalHook.HookBypassAddress to allow bypassing the hook and call original directly without having to be within the hook handler (#155)
+
+2.7.6035.0:
 1. MAX_HOOK_COUNT increased from 128 to 1024
 2. CreateAndInject fixed to support injection across sessions (providing appropriate privileges).
 3. RhCreateStealthRemoteThread fixed for 32-bit (still fairly experimental)  (#91)

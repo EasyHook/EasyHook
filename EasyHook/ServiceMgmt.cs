@@ -94,7 +94,6 @@ namespace EasyHook
             Int32 InNativeOptions,
             String InLibraryPath_x86,
             String InLibraryPath_x64,
-            String LibraryLocation,
             Boolean InRequireStrongName,
             params Object[] InPassThruArgs)
         {
@@ -107,7 +106,6 @@ namespace EasyHook
                 InNativeOptions,
                 InLibraryPath_x86, 
                 InLibraryPath_x64, 
-                LibraryLocation,
                 false,
                 false,
                 InRequireStrongName,

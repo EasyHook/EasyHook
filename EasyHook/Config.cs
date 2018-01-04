@@ -65,6 +65,34 @@ namespace EasyHook
             }
         }
 
+        private static String helperLibraryLocation = "";
+
+        /// <summary>
+        /// The path where helper files, like EasyHook(32|64).dll are stored.
+        /// Defaults to the location of the assembly containing the Config type
+        /// </summary>
+        public static String HelperLibraryLocation
+        {
+            get
+            {
+                if(String.IsNullOrEmpty(helperLibraryLocation))
+                {
+                    return Path.GetDirectoryName(typeof(Config).Assembly.Location);
+                }
+
+                if (helperLibraryLocation.Length > 0 && !helperLibraryLocation.EndsWith("\\"))
+                {
+                    helperLibraryLocation += "\\";
+                }
+
+                return helperLibraryLocation;
+            }
+            set
+            {
+                helperLibraryLocation = value;
+            }
+        }
+
         /// <summary>
         /// Get the directory name of the current process, ending with a backslash.
         /// </summary>

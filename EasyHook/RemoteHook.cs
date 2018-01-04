@@ -467,9 +467,6 @@ namespace EasyHook
         /// A partially qualified assembly name or a relative/absolute file path of the 64-bit version of your library. 
         /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\MyAssembly.dll". 
         /// </param>
-        /// <param name="LibraryLocation">
-        /// The location of the helper assemblies
-        /// </param>
         /// <param name="InPassThruArgs">
         /// A serializable list of parameters being passed to your library entry points <c>Run()</c> and
         /// constructor (see <see cref="IEntryPoint"/>).
@@ -503,7 +500,6 @@ namespace EasyHook
             InjectionOptions InOptions,
             String InLibraryPath_x86,
             String InLibraryPath_x64,
-            String LibraryLocation,
             params Object[] InPassThruArgs)
         {
             InjectEx(
@@ -513,7 +509,6 @@ namespace EasyHook
                 0,
                 InLibraryPath_x86,
                 InLibraryPath_x64,
-                LibraryLocation,
                 ((InOptions & InjectionOptions.NoWOW64Bypass) == 0),
                 ((InOptions & InjectionOptions.NoService) == 0),
                 ((InOptions & InjectionOptions.DoNotRequireStrongName) == 0),
@@ -521,7 +516,7 @@ namespace EasyHook
         }
 
         /// <summary>
-        /// See <see cref="Inject(Int32, InjectionOptions, String, String, String, Object[])"/> for more information.
+        /// See <see cref="Inject(Int32, InjectionOptions, String, String, Object[])"/> for more information.
         /// </summary>
         /// <param name="InTargetPID">
         /// The target process ID.
@@ -534,9 +529,6 @@ namespace EasyHook
         /// A partially qualified assembly name or a relative/absolute file path of the 64-bit version of your library. 
         /// For example "MyAssembly, PublicKeyToken=248973975895496" or ".\Assemblies\MyAssembly.dll". 
         /// </param>
-        /// <param name="LibraryLocation">
-        /// The location of the helper assemblies
-        /// </param>
         /// <param name="InPassThruArgs">
         /// A serializable list of parameters being passed to your library entry points <c>Run()</c> and
         /// constructor (see <see cref="IEntryPoint"/>).
@@ -545,7 +537,6 @@ namespace EasyHook
             Int32 InTargetPID,
             String InLibraryPath_x86,
             String InLibraryPath_x64,
-            String LibraryLocation,
             params Object[] InPassThruArgs)
         {
             InjectEx(
@@ -555,7 +546,6 @@ namespace EasyHook
                 0x20000000,
                 InLibraryPath_x86, 
                 InLibraryPath_x64,
-                LibraryLocation,
                 true,
                 true,
                 true,
@@ -638,7 +628,6 @@ namespace EasyHook
             Int32 InNativeOptions,
             String InLibraryPath_x86,
             String InLibraryPath_x64,
-            String LibraryLocation,
             Boolean InCanBypassWOW64,
             Boolean InCanCreateService,
             Boolean InRequireStrongName,
@@ -685,8 +674,8 @@ namespace EasyHook
                             InTargetPID,
                             InWakeUpTID,
                             NativeAPI.EASYHOOK_INJECT_MANAGED | InNativeOptions,
-                            Path.Combine((LibraryLocation == null) ? Path.GetDirectoryName(typeof(Config).Assembly.Location) : LibraryLocation, "EasyLoad32.dll"),
-                            Path.Combine((LibraryLocation == null) ? Path.GetDirectoryName(typeof(Config).Assembly.Location) : LibraryLocation, "EasyLoad64.dll"),
+                            Path.Combine(Config.HelperLibraryLocation, "EasyLoad32.dll"),
+                            Path.Combine(Config.HelperLibraryLocation, "EasyLoad64.dll"),
                             hPassThru.AddrOfPinnedObject(),
                             (int)PassThru.Length))
                     {
@@ -701,7 +690,6 @@ namespace EasyHook
                                         InNativeOptions,
                                         InLibraryPath_x86,
                                         InLibraryPath_x64,
-                                        LibraryLocation,
                                         InRequireStrongName,
                                         InPassThruArgs);
                                 else
@@ -720,7 +708,6 @@ namespace EasyHook
                                         InNativeOptions,
                                         InLibraryPath_x86,
                                         InLibraryPath_x64,
-                                        LibraryLocation,
                                         InRequireStrongName,
                                         InPassThruArgs);
                                 else
@@ -949,7 +936,6 @@ namespace EasyHook
                     0x20000000,
                     InLibraryPath_x86,
                     InLibraryPath_x64,
-                    null,
                     ((InOptions & InjectionOptions.NoWOW64Bypass) == 0),
                     ((InOptions & InjectionOptions.NoService) == 0),
                     ((InOptions & InjectionOptions.DoNotRequireStrongName) == 0),

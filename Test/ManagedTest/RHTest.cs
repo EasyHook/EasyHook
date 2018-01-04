@@ -89,7 +89,8 @@ namespace Examples
             RemoteHooking.Inject(
                 RemoteHooking.GetCurrentProcessId(),
                 "..\\x86\\ManagedTest.exe",
-                "..\\x64\\ManagedTest.exe", 
+                "..\\x64\\ManagedTest.exe",
+                null,
                 0x12345678);
         }
     }

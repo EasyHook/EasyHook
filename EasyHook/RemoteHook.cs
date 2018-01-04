@@ -701,6 +701,7 @@ namespace EasyHook
                                         InNativeOptions,
                                         InLibraryPath_x86,
                                         InLibraryPath_x64,
+                                        LibraryLocation,
                                         InRequireStrongName,
                                         InPassThruArgs);
                                 else
@@ -719,6 +720,7 @@ namespace EasyHook
                                         InNativeOptions,
                                         InLibraryPath_x86,
                                         InLibraryPath_x64,
+                                        LibraryLocation,
                                         InRequireStrongName,
                                         InPassThruArgs);
                                 else

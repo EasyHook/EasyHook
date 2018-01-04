@@ -545,7 +545,7 @@ namespace EasyHook
                 0,
                 0x20000000,
                 InLibraryPath_x86, 
-                InLibraryPath_x64, 
+                InLibraryPath_x64,
                 true,
                 true,
                 true,
@@ -674,9 +674,8 @@ namespace EasyHook
                             InTargetPID,
                             InWakeUpTID,
                             NativeAPI.EASYHOOK_INJECT_MANAGED | InNativeOptions,
-                            // TODO: allow initial loaded assembly to be configurable
-                            Path.Combine(Path.GetDirectoryName(typeof(Config).Assembly.Location), "EasyLoad32.dll"),
-                            Path.Combine(Path.GetDirectoryName(typeof(Config).Assembly.Location), "EasyLoad64.dll"),
+                            Path.Combine(Config.HelperLibraryLocation, "EasyLoad32.dll"),
+                            Path.Combine(Config.HelperLibraryLocation, "EasyLoad64.dll"),
                             hPassThru.AddrOfPinnedObject(),
                             (int)PassThru.Length))
                     {

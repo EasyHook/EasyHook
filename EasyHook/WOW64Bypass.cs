@@ -109,7 +109,7 @@ namespace EasyHook
                 InWakeUpTID,
                 InNativeOptions,
                 InLibraryPath_x86, 
-                InLibraryPath_x64, 
+                InLibraryPath_x64,
                 false,
                 true,
                 InRequireStrongName,

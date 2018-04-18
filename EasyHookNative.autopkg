@@ -4,13 +4,13 @@
     Toolset 
     {
         key : "PlatformToolset"; // this is CoApp pre-defined key
-        choices: { v140, v120, v110, v100 };
+        choices: { v141, v140, v120, v110, v100 };
     };
 }
 nuget {
    nuspec {
       id = EasyHookNativePackage;
-      version : 2.7.6270.0;
+      version : 2.7.6682.0;
       title: EasyHook Native Package;
       authors: {EasyHook};
       owners: {EasyHook};
@@ -20,7 +20,15 @@ nuget {
       summary:The reinvention of Windows API Hooking;
       description: @"This project supports extending (hooking) unmanaged code (APIs) on 32- or 64-bit
 Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8.1, and Windows 10.";
-      releaseNotes: @"2.7.6270.0:
+      releaseNotes: @"2.7.6682.0:
+1. Quoted service path to avoid path spaces vulnerability (outlined in CVE-2005-1185, CVE-2005-2938 and CVE-2000-1128)
+2. Rename CLIENT_ID struct to DBG_CLIENT_ID (fix build error on Windows SDK 10.0.16299.0) (#225)
+3. NuGet support for VS2017 (v141) native C/C++ package (#181)
+
+2.7.6578.0:
+1. Allow EasyLoad library path to be specified within Config class - only impacts managed remote hook (#220)
+
+2.7.6270.0:
 1. CreateAndInject now supports long command lines (#84 / #170)
 2. RhCreateRemoveStealthThread now works for 64-bit targets (#91 / #159)
 3. Added LhGetHookBypassAddress / LocalHook.HookBypassAddress to allow bypassing the hook and call original directly without having to be within the hook handler (#155)
@@ -104,6 +112,28 @@ Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8
          symbols: { .\Build\netfx4-Debug\x64\EasyHook64.pdb; }
          bin:     { .\Build\netfx4-Debug\x64\EasyHook64.dll; }
       };
+      
+      // v141 - VS2017
+      [x86,v141,release] {
+         lib:     { .\Build\netfx4-Release\x86\EasyHook32.lib; }
+         symbols: { .\Build\netfx4-Release\x86\EasyHook32.pdb; }
+         bin:     { .\Build\netfx4-Release\x86\EasyHook32.dll; }
+      };
+      [x86,v141,debug] {
+         lib:     { .\Build\netfx4-Debug\x86\EasyHook32.lib; }
+         symbols: { .\Build\netfx4-Debug\x86\EasyHook32.pdb; }
+         bin:     { .\Build\netfx4-Debug\x86\EasyHook32.dll; }
+      };
+      [x64,v141,release] {
+         lib:     { .\Build\netfx4-Release\x64\EasyHook64.lib; }
+         symbols: { .\Build\netfx4-Release\x64\EasyHook64.pdb; }
+         bin:     { .\Build\netfx4-Release\x64\EasyHook64.dll; }
+      };
+      [x64,v141,debug] {
+         lib:     { .\Build\netfx4-Debug\x64\EasyHook64.lib; }
+         symbols: { .\Build\netfx4-Debug\x64\EasyHook64.pdb; }
+         bin:     { .\Build\netfx4-Debug\x64\EasyHook64.dll; }
+      };      
       // The debug here works for any config that contains debug
       // Examples : Debug ENU,  DEBUG-ENU,  Debug DEU
       //[x86,v120,debug] {

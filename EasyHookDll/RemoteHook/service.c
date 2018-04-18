@@ -24,6 +24,7 @@
 // about the project and latest updates.
 
 #include "stdafx.h"
+#include <shlwapi.h>
 
 EASYHOOK_NT_EXPORT RtlInstallService(
             WCHAR* InServiceName,
@@ -71,6 +72,8 @@ Returns:
     NTSTATUS            NtStatus;
     LPCWSTR		        StartParams[1] = {InChannelName};
     ULONG               res;
+	ULONG				inExePathLength;
+	WCHAR*				quotedInExePath;
 
 	if((hSCManager = OpenSCManagerW(NULL, NULL, SC_MANAGER_ALL_ACCESS)) == NULL)
 		THROW(STATUS_ACCESS_DENIED, L"Unable to open service control manager. Check for administrator privileges!");
@@ -98,17 +101,29 @@ Returns:
         THROW(STATUS_ALREADY_REGISTERED, L"The service is already registered. Use the service control manager to remove it!");
 	}
 
+	// quote InExePath 	
+	inExePathLength = RtlUnicodeLength(InExePath);	
+	if ((quotedInExePath = (WCHAR *)RtlAllocateMemory(TRUE,(inExePathLength+3)*sizeof(WCHAR)))==NULL)		
+		THROW(STATUS_NO_MEMORY, L"Unable to allocate memory to perform a string quote.");
+
+	RtlCopyMemory(quotedInExePath,InExePath,inExePathLength*sizeof(WCHAR));
+	PathQuoteSpacesW(quotedInExePath);
+
 	// install service
-	if((hService = CreateServiceW(
-			hSCManager,              
-			InServiceName,            
-			InServiceName,           
-			SERVICE_ALL_ACCESS,        
-			SERVICE_WIN32_OWN_PROCESS,
-			SERVICE_DEMAND_START,    
-			SERVICE_ERROR_NORMAL,     
-			InExePath,            
-			NULL, NULL, NULL, NULL, NULL)) == NULL)
+	hService = CreateServiceW(
+		hSCManager,              
+		InServiceName,            
+		InServiceName,           
+		SERVICE_ALL_ACCESS,        
+		SERVICE_WIN32_OWN_PROCESS,
+		SERVICE_DEMAND_START,    
+		SERVICE_ERROR_NORMAL,     
+		quotedInExePath,            
+		NULL, NULL, NULL, NULL, NULL);
+
+	RtlFreeMemory(quotedInExePath);
+
+	if(hService == NULL)
 		THROW(STATUS_INTERNAL_ERROR, L"Unable to install service as system process.");
 
     // start service

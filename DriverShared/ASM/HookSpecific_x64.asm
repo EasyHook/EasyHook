@@ -184,6 +184,11 @@ IsExecutedPtr:
 	db 0
 	
 ; ATTENTION: 64-Bit requires stack alignment (RSP) of 16 bytes!!
+	; Apply alignment trick: https://stackoverflow.com/a/9600102
+	push rsp
+	push [rsp]
+	and rsp, 0FFFFFFFFFFFFFFF0H
+	
 	mov rax, rsp
 	push rcx ; save not sanitized registers...
 	push rdx
@@ -225,8 +230,9 @@ CALL_NET_ENTRY:
 	
 ; call NET intro
 	lea rcx, [IsExecutedPtr + 8] ; Hook handle (only a position hint)
-	mov rdx, qword ptr [rsp + 32 + 4 * 16 + 4 * 8] ; push return address
-	lea r8, qword ptr [rsp + 32 + 4 * 16 + 4 * 8] ; push address of return address
+	; Here we are under the alignment trick.
+	mov r8, [rsp + 32 + 4 * 16 + 4 * 8 + 8] ; r8 = original rsp (address of return address)
+	mov rdx, [r8] ; return address (value stored in original rsp)
 	call qword ptr [NETIntro] ; Hook->NETIntro(Hook, RetAddr, InitialRSP);
 	
 ; should call original method?
@@ -247,7 +253,9 @@ CALL_NET_ENTRY:
 CALL_HOOK_HANDLER:
 ; adjust return address
 	lea rax, [CALL_NET_OUTRO]
-	mov qword ptr [rsp + 32 + 4 * 16 + 4 * 8], rax
+	; Here we are under the alignment trick.
+	mov r9, [rsp + 32 + 4 * 16 + 4 * 8 + 8] ; r9 = original rsp
+	mov qword ptr [r9], rax
 
 ; call hook handler
 	lea rax, [NewProc]
@@ -256,6 +264,8 @@ CALL_HOOK_HANDLER:
 CALL_NET_OUTRO: ; this is where the handler returns...
 
 ; call NET outro
+	; Here we are NOT under the alignment trick.
+	
 	push 0 ; space for return address
 	push rax
 	
@@ -293,6 +303,9 @@ TRAMPOLINE_EXIT:
 	pop r8
 	pop rdx
 	pop rcx
+	
+	; Remove alignment trick: https://stackoverflow.com/a/9600102
+	mov rsp, [rsp + 8]
 	
 	jmp qword ptr[rax] ; ATTENTION: In case of hook handler we will return to CALL_NET_OUTRO, otherwise to the caller...
 	

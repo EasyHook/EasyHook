@@ -391,8 +391,10 @@ Returns:
 				   be only 5 bytes and whereever the underlying code returns it will always
 				   be in a solid state. But this can only be guaranteed if the jump is the first
 				   instruction... */
+#ifndef _M_X64
 				if(pOld != InEntryPoint)
 					THROW(STATUS_NOT_SUPPORTED, L"Hooking far jumps is only supported if they are the first instruction.");
+#endif
 				
 				// ATTENTION: will continue in "case 0xE8"
 			}

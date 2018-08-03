@@ -10,7 +10,7 @@
 nuget {
    nuspec {
       id = EasyHookNativePackage;
-      version : 2.7.6684.0;
+      version : 2.7.6789.0;
       title: EasyHook Native Package;
       authors: {EasyHook};
       owners: {EasyHook};
@@ -20,7 +20,10 @@ nuget {
       summary:The reinvention of Windows API Hooking;
       description: @"This project supports extending (hooking) unmanaged code (APIs) on 32- or 64-bit
 Windows XP SP2, Windows Vista x64, Windows Server 2008 x64, Windows 7, Windows 8.1, and Windows 10.";
-      releaseNotes: @"2.7.6684.0:
+      releaseNotes: @"2.7.6789.0:
+1. Support hooking far jumps even if not first instruction for x64 (#243)
+
+2.7.6684.0:
 1. x64 trampoline: ensure stack is 16 bytes aligned (#214 and #234)
 
 2.7.6682.0:

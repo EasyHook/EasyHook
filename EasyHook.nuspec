@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>EasyHook</id>
-        <version>2.7.6684.0</version>
+        <version>2.7.6789.0</version>
         <title>EasyHook</title>
         <authors>EasyHook</authors>
         <owners>EasyHook</owners>
@@ -13,7 +13,10 @@
 
 EasyHook currently supports injecting assemblies built for .NET Framework 3.5 and 4.0 and can also inject native DLLs.</description>
         <summary>The reinvention of Windows API Hooking</summary>
-        <releaseNotes>2.7.6684.0:
+        <releaseNotes>2.7.6789.0:
+1. Support hooking far jumps even if not first instruction for x64 (#243)
+
+2.7.6684.0:
 1. x64 trampoline: ensure stack is 16 bytes aligned (#214 and #234)
 
 2.7.6682.0:

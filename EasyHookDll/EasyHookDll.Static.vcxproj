@@ -172,12 +172,12 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'" />
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">EasyHook32</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">EasyHook32</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">EasyHook32SD</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">EasyHook32SD</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">EasyHook64SD</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">EasyHook64SD</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">EasyHook32</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">EasyHook32</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">EasyHook32S</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">EasyHook32S</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'">EasyHook64S</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">EasyHook64S</TargetName>
   </PropertyGroup>
@@ -185,7 +185,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)\DriverShared;$(SolutionDir);$(SolutionDir)\Public;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;STATIC;_ALLOW_RTCc_IN_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -220,7 +220,7 @@ copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)\DriverShared;$(SolutionDir);$(SolutionDir)\Public;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;STATIC;_ALLOW_RTCc_IN_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>

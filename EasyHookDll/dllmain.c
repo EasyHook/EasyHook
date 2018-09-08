@@ -31,7 +31,13 @@ HMODULE             hCurrentModule = NULL;
 DWORD               RhTlsIndex;
 HANDLE              hEasyHookHeap = NULL;
 
-BOOL APIENTRY DllMain( HMODULE hModule,
+#ifdef STATIC
+#define DLLENTRYNAME EasyHookMain 
+#else
+#define DLLENTRYNAME DllMain
+#endif
+
+BOOL APIENTRY DLLENTRYNAME( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
 					 )

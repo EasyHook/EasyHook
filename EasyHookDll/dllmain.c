@@ -33,6 +33,32 @@ HANDLE              hEasyHookHeap = NULL;
 
 #ifdef STATIC
 #define DLLENTRYNAME EasyHookMain 
+
+BOOL APIENTRY DLLENTRYNAME(HMODULE hModule,
+	DWORD  ul_reason_for_call,
+	LPVOID lpReserved
+);
+
+BOOL APIENTRY EasyHookAttach()
+{
+	HMODULE hModule = NULL;
+	GetModuleHandleEx(
+		GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+		(LPCTSTR)DLLENTRYNAME,
+		&hModule);
+	return _EasyHookMain(hModule, DLL_PROCESS_ATTACH, NULL);
+}
+
+BOOL APIENTRY EasyHookDetach()
+{
+	HMODULE hModule = NULL;
+	GetModuleHandleEx(
+		GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+		(LPCTSTR)DLLENTRYNAME,
+		&hModule);
+	return _EasyHookMain(hModule, DLL_PROCESS_DETACH, NULL);
+}
+
 #else
 #define DLLENTRYNAME DllMain
 #endif

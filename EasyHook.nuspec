@@ -43,8 +43,11 @@ EasyHook currently supports injecting assemblies built for .NET Framework 3.5 an
         <copyright>Copyright © 2009 Christoph Husse &amp; Copyright © 2012 Justin Stenning</copyright>
         <tags>api hook hooking easyhook</tags>
         <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System.Runtime.Remoting" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Runtime.Remoting" />
         </frameworkAssemblies>
+        <contentFiles>
+          <files include="**" buildAction="Content" copyToOutput="true" />
+        </contentFiles>
     </metadata>
     <files>
         <file src="Build\netfx3.5-Release\x64\EasyHook32.dll" target="content\net35\EasyHook32.dll" />
@@ -59,6 +62,20 @@ EasyHook currently supports injecting assemblies built for .NET Framework 3.5 an
         <file src="Build\netfx4-Release\x64\EasyHook64Svc.exe" target="content\net40\EasyHook64Svc.exe" />
         <file src="Build\netfx4-Release\x64\EasyLoad32.dll" target="content\net40\EasyLoad32.dll" />
         <file src="Build\netfx4-Release\x64\EasyLoad64.dll" target="content\net40\EasyLoad64.dll" />
+      
+        <file src="Build\netfx3.5-Release\x64\EasyHook32.dll" target="contentFiles\any\net35\EasyHook32.dll" />
+        <file src="Build\netfx3.5-Release\x64\EasyHook32Svc.exe" target="contentFiles\any\net35\EasyHook32Svc.exe" />
+        <file src="Build\netfx3.5-Release\x64\EasyHook64.dll" target="contentFiles\any\net35\EasyHook64.dll" />
+        <file src="Build\netfx3.5-Release\x64\EasyHook64Svc.exe" target="contentFiles\any\net35\EasyHook64Svc.exe" />
+        <file src="Build\netfx3.5-Release\x64\EasyLoad32.dll" target="contentFiles\any\net35\EasyLoad32.dll" />
+        <file src="Build\netfx3.5-Release\x64\EasyLoad64.dll" target="contentFiles\any\net35\EasyLoad64.dll" />
+        <file src="Build\netfx4-Release\x64\EasyHook32.dll" target="contentFiles\any\net40\EasyHook32.dll" />
+        <file src="Build\netfx4-Release\x64\EasyHook32Svc.exe" target="contentFiles\any\net40\EasyHook32Svc.exe" />
+        <file src="Build\netfx4-Release\x64\EasyHook64.dll" target="contentFiles\any\net40\EasyHook64.dll" />
+        <file src="Build\netfx4-Release\x64\EasyHook64Svc.exe" target="contentFiles\any\net40\EasyHook64Svc.exe" />
+        <file src="Build\netfx4-Release\x64\EasyLoad32.dll" target="contentFiles\any\net40\EasyLoad32.dll" />
+        <file src="Build\netfx4-Release\x64\EasyLoad64.dll" target="contentFiles\any\net40\EasyLoad64.dll" />
+      
         <file src="Build\netfx3.5-Release\x64\EasyHook.dll" target="lib\net35\EasyHook.dll" />
         <file src="Build\netfx3.5-Release\x64\EasyHook.xml" target="lib\net35\EasyHook.xml" />
         <file src="Build\netfx4-Release\x64\EasyHook.dll" target="lib\net40\EasyHook.dll" />

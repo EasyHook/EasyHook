@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2019
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EasyHookDll.Static", "EasyHookDll\EasyHookDll.Static.vcxproj", "{D087E484-DBC9-4A2E-8368-C1D0E524994D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		netfx3.5-Debug|x64 = netfx3.5-Debug|x64
+		netfx3.5-Debug|x86 = netfx3.5-Debug|x86
+		netfx3.5-Release|x64 = netfx3.5-Release|x64
+		netfx3.5-Release|x86 = netfx3.5-Release|x86
+		netfx4-Debug|x64 = netfx4-Debug|x64
+		netfx4-Debug|x86 = netfx4-Debug|x86
+		netfx4-Release|x64 = netfx4-Release|x64
+		netfx4-Release|x86 = netfx4-Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx3.5-Debug|x64.ActiveCfg = netfx3.5-Debug|x64
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx3.5-Debug|x64.Build.0 = netfx3.5-Debug|x64
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx3.5-Debug|x86.ActiveCfg = netfx3.5-Debug|Win32
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx3.5-Debug|x86.Build.0 = netfx3.5-Debug|Win32
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx3.5-Release|x64.ActiveCfg = netfx3.5-Release|x64
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx3.5-Release|x64.Build.0 = netfx3.5-Release|x64
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx3.5-Release|x86.ActiveCfg = netfx3.5-Release|Win32
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx3.5-Release|x86.Build.0 = netfx3.5-Release|Win32
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx4-Debug|x64.ActiveCfg = netfx4-Debug|x64
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx4-Debug|x64.Build.0 = netfx4-Debug|x64
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx4-Debug|x86.ActiveCfg = netfx4-Debug|Win32
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx4-Debug|x86.Build.0 = netfx4-Debug|Win32
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx4-Release|x64.ActiveCfg = netfx4-Release|x64
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx4-Release|x64.Build.0 = netfx4-Release|x64
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx4-Release|x86.ActiveCfg = netfx4-Release|Win32
+		{D087E484-DBC9-4A2E-8368-C1D0E524994D}.netfx4-Release|x86.Build.0 = netfx4-Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90841B3F-5E04-42B9-ACA5-EE380FFEEF67}
+	EndGlobalSection
+EndGlobal

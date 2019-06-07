@@ -51,6 +51,10 @@
 extern "C"{
 #endif
 
+#ifdef EASYHOOK_STATIC
+#define EASYHOOK_API                    __stdcall
+#define DRIVER_SHARED_API(type, decl)   typedef type EASYHOOK_API PROC_##decl; EXTERN_C type EASYHOOK_API decl
+#else
 #ifdef EASYHOOK_EXPORTS
     #define EASYHOOK_API						__declspec(dllexport) __stdcall
 	#define DRIVER_SHARED_API(type, decl)		EXTERN_C type EASYHOOK_API decl
@@ -62,6 +66,7 @@ extern "C"{
         #define EASYHOOK_API					__stdcall
 		#define DRIVER_SHARED_API(type, decl)	typedef type EASYHOOK_API PROC_##decl; EXTERN_C type EASYHOOK_API decl
     #endif
+#endif
 #endif
 
 /* 
@@ -136,6 +141,11 @@ DRIVER_SHARED_API(NTSTATUS, LhWaitForPendingRemovals());
 				BOOL* OutResult));
 
 #else
+
+#if EASYHOOK_STATIC
+	EASYHOOK_BOOL_EXPORT EasyHookAttach();
+	EASYHOOK_BOOL_EXPORT EasyHookDetach();
+#endif
 
 	EASYHOOK_NT_EXPORT LhSetInclusiveACL(
 				ULONG* InThreadIdList,

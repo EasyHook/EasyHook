@@ -31,7 +31,39 @@ HMODULE             hCurrentModule = NULL;
 DWORD               RhTlsIndex;
 HANDLE              hEasyHookHeap = NULL;
 
-BOOL APIENTRY DllMain( HMODULE hModule,
+#ifdef EASYHOOK_STATIC
+#define DLLENTRYNAME EasyHookMain 
+
+BOOL APIENTRY DLLENTRYNAME(HMODULE hModule,
+	DWORD  ul_reason_for_call,
+	LPVOID lpReserved
+);
+
+EASYHOOK_BOOL_EXPORT EasyHookAttach()
+{
+	HMODULE hModule = NULL;
+	GetModuleHandleEx(
+		GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+		(LPCTSTR)DLLENTRYNAME,
+		&hModule);
+	return DLLENTRYNAME(hModule, DLL_PROCESS_ATTACH, NULL);
+}
+
+EASYHOOK_BOOL_EXPORT EasyHookDetach()
+{
+	HMODULE hModule = NULL;
+	GetModuleHandleEx(
+		GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+		(LPCTSTR)DLLENTRYNAME,
+		&hModule);
+	return DLLENTRYNAME(hModule, DLL_PROCESS_DETACH, NULL);
+}
+
+#else
+#define DLLENTRYNAME DllMain
+#endif
+
+BOOL APIENTRY DLLENTRYNAME( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
 					 )

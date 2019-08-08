@@ -384,6 +384,19 @@ Description:
 	InInfo->ExitThread = GetProcAddress(hMod, "ExitThread");
 	InInfo->GetLastError = GetProcAddress(hMod, "GetLastError");
 
+	/*
+	Check that the call actually returned proper pointers.
+	*/
+	if (InInfo->LoadLibraryW == NULL ||
+	    InInfo->FreeLibrary == NULL ||
+	    InInfo->GetProcAddress == NULL ||
+	    InInfo->VirtualFree == NULL ||
+	    InInfo->VirtualProtect == NULL ||
+	    InInfo->ExitThread == NULL ||
+	    InInfo->GetLastError == NULL)
+	{
+		UNMANAGED_ERROR(3);
+	}
     
 
 	/* 

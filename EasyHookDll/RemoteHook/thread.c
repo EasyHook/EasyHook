@@ -1239,6 +1239,9 @@ Returns:
 	// Ensure that if we have injected into a suspended process that we can retrieve the remote function addresses
 	FORCE(NtForceLdrInitializeThunk(hProc));
 
+	// The first GetRemoteModuleHandle call in GetRemoteFuncAddress can return NULL in some applications started in a suspended. Call GetRemoteFuncAddress once to prevent an access violation error.
+	GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "LoadLibraryW");
+	
 	// Determine function addresses within remote process
     Info->LoadLibraryW   = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "LoadLibraryW");
 	Info->FreeLibrary    = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "FreeLibrary");

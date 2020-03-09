@@ -17,16 +17,53 @@ EasyHook currently supports injecting assemblies built for .NET Framework 3.5 an
 For more information head to the EasyHook site at https://easyhook.github.io
 
 ## NuGet
+
 https://www.nuget.org/packages/EasyHook
 
 For native C++ apps there is also a native NuGet package available: https://www.nuget.org/packages/EasyHookNativePackage
 
 ## Bug reports or questions
+
 Reporting bugs is the only way to get them fixed and help other users of the library! If an issue isn't getting addressed, try [raising a bounty for it](https://www.bountysource.com/teams/easyhook/issues).
 
 Report issues at: https://github.com/EasyHook/EasyHook/issues
 
+## Building
+
+Requires MSBuild Community Tasks: https://github.com/loresoft/msbuildtasks
+
+### Build Binaries - build.bat
+
+Requires Visual Studio 2015
+
+Use the build.bat to build binaries for all configurations (.NET 3.5/4.0, Debug/Release, x86/x64).
+
+.\netfx3.5-Debug\x86
+.\netfx3.5-Debug\x64
+.\netfx3.5-Release\x86
+.\netfx3.5-Release\x64
+.\netfx4-Debug\x86
+.\netfx4-Debug\x64
+.\netfx4-Release\x86
+.\netfx4-Release\x64
+
+### Packaging for Release - build-package.bat
+
+Use the build-package.bat to set version information, build binaries for all 
+configurations and ZIP Release builds and Source within .\Deploy.
+
+Generates a ZIP archive:
+.\Deploy\EasyHook-#.#.#.#-Binaries.zip
+.\Deploy\EasyHook-#.#.#.#-Source.zip
+
+Containing the following files:
+.\Deploy\NetFX3.5\*
+.\Deploy\NetFX4.0\*
+.\Deploy\Source\*
+
+
 ## License
+
     Copyright (c) 2009 Christoph Husse & Copyright (c) 2012 Justin Stenning
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -48,6 +85,7 @@ Report issues at: https://github.com/EasyHook/EasyHook/issues
     THE SOFTWARE.
 
 ## External libraries
+
 EasyHook includes the UDIS86 library Copyright (c) 2002-2012, Vivek Thampi <vivek.mt@gmail.com>. See .\DriverShared\Disassembler\udis86-LICENSE.txt for license details. Minor modifications have been made for it to compile with EasyHook.
 
 More information about UDIS86 can be found at https://github.com/vmt/udis86

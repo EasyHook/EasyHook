@@ -35,7 +35,7 @@ extern "C"{
 #if _DEBUG
     #define DEBUGMSG(...) do { WCHAR debugMsg[1024] = { 0 }; _snwprintf_s(debugMsg, 1024, _TRUNCATE, __VA_ARGS__); OutputDebugStringW(debugMsg); } while(0)
 #else
-    #define DEBUGMSG(__VA_ARGS__) do { } while(0)
+    #define DEBUGMSG(...) do { } while(0)
 #endif
 
 #ifndef DRIVER

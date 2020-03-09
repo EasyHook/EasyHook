@@ -103,7 +103,7 @@ Returns:
 #ifndef DRIVER
 	ULONG		CurrentId = (ULONG)GetCurrentThreadId();
 #else
-	ULONG		CurrentId = (ULONG)PsGetCurrentThreadId();
+	ULONG		CurrentId = (ULONG)(ULONG64)PsGetCurrentThreadId();
 #endif
 	LONG		Index = -1;
     LONG		i;
@@ -167,7 +167,7 @@ Returns:
 #ifndef DRIVER
 	ULONG		CurrentId = (ULONG)GetCurrentThreadId();
 #else
-	ULONG		CurrentId = (ULONG)PsGetCurrentThreadId();
+	ULONG		CurrentId = (ULONG)(ULONG64)PsGetCurrentThreadId();
 #endif
     LONG        Index;
 
@@ -205,7 +205,7 @@ Parameters:
 #ifndef DRIVER
 	ULONG		    CurrentId = (ULONG)GetCurrentThreadId();
 #else
-	ULONG		    CurrentId = (ULONG)PsGetCurrentThreadId();
+	ULONG		    CurrentId = (ULONG)(ULONG64)PsGetCurrentThreadId();
 #endif
     ULONG           Index;
 
@@ -358,7 +358,7 @@ Returns:
 		CheckID = InThreadID;
 #else
 	if(InProcessID == 0)
-		CheckID = (ULONG)PsGetCurrentProcessId();
+		CheckID = (ULONG)(ULONG64)PsGetCurrentProcessId();
 	else
 		CheckID = InProcessID;
 #endif
@@ -828,7 +828,7 @@ Description:
 #ifndef DRIVER
 	Runtime->IsExecuting = IsThreadIntercepted(&InHandle->LocalACL, GetCurrentThreadId());
 #else
-	Runtime->IsExecuting = IsProcessIntercepted(&InHandle->LocalACL, (ULONG)PsGetCurrentProcessId());
+	Runtime->IsExecuting = IsProcessIntercepted(&InHandle->LocalACL, (ULONG)(ULONG64)PsGetCurrentProcessId());
 #endif
 
 	if(!Runtime->IsExecuting)

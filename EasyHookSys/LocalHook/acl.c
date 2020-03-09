@@ -68,7 +68,7 @@ Parameters:
     for(Index = 0; Index < InProcessCount; Index++)
     {
         if(InProcessIdList[Index] == 0)
-            InProcessIdList[Index] = (ULONG)PsGetCurrentProcessId();
+            InProcessIdList[Index] = (ULONG)(ULONG64)PsGetCurrentProcessId();
     }
 
     // set ACL...

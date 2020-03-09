@@ -109,7 +109,7 @@ namespace EasyLoad
                             }, ps);
                         }
                     }
-                    catch (OutOfMemoryException ome)
+                    catch (OutOfMemoryException)
                     {
                         // Creation of AppDomain failed, so fall back to using default domain (means it cannot be unloaded)
                         

@@ -1,4 +1,5 @@
-#include "EasyHook.h"
+#include "easyhook.h"
+
 #include <stdio.h>
 #include <conio.h>
 

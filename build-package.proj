@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <!-- https://github.com/loresoft/msbuildtasks -->
-  <Import Project=".\MSBuildTasks.1.5.0.196\tools\MSBuild.Community.Tasks.Targets"/>
+  <Import Project=".\Packages\MSBuildTasks.1.5.0.196\tools\MSBuild.Community.Tasks.Targets"/>
 
   <!-- BeforeBuild: update version info across all projects -->
   <Target Name="BeforeBuild" >
@@ -171,8 +171,8 @@
          WorkingDirectory="$(PackageDir)"
          ZipFileName="$(PackageDir)\EasyHook-$(Major).$(Minor).$(Build).$(Revision)-Binaries.zip"
          ZipLevel="9" />
-    <Exec Command="NuGet.exe pack .\EasyHook.nuspec -NoPackageAnalysis -symbols" />
-    <Exec Command="powershell.exe -executionpolicy Unrestricted -command &quot;&amp; { &amp;'.\tools\EasyHookNativePkg.ps1' } &quot;" />
+    <Exec Command=".\Bin\NuGet.exe pack .\EasyHook.nuspec -NoPackageAnalysis -symbols" />
+    <Exec Command="PowerShell.exe -ExecutionPolicy Unrestricted -command &quot;&amp; { &amp;'.\Tools\EasyHookNativePkg.ps1' } &quot;" />
     <!-- no longer archiving source files here
 	<Zip Files="@(SourceFiles)"
          WorkingDirectory="$(PackageDir)\Source"

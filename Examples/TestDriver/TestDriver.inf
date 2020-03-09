@@ -12,6 +12,7 @@ DriverVer= ; TODO: set DriverVer in stampinf property pages
 
 [DestinationDirs]
 DefaultDestDir = 12
+TestDriver_Device_CoInstaller_CopyFiles = 11
 
 ; ================= Class section =====================
 
@@ -27,6 +28,7 @@ HKR,,Icon,,-5
 
 [SourceDisksFiles]
 TestDriver.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
 
 ;*****************************************
 ; Install Section
@@ -61,9 +63,6 @@ LoadOrderGroup = Extended Base
 ;--- TestDriver_Device Coinstaller installation ------
 ;
 
-[DestinationDirs]
-TestDriver_Device_CoInstaller_CopyFiles = 11
-
 [TestDriver_Device.NT.CoInstallers]
 AddReg=TestDriver_Device_CoInstaller_AddReg
 CopyFiles=TestDriver_Device_CoInstaller_CopyFiles
@@ -73,9 +72,6 @@ HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfC
 
 [TestDriver_Device_CoInstaller_CopyFiles]
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
-
-[SourceDisksFiles]
-WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
 
 [TestDriver_Device.NT.Wdf]
 KmdfService =  TestDriver, TestDriver_wdfsect

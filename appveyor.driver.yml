@@ -1,0 +1,45 @@
+version: 2.8.{build}
+
+pull_requests:
+  do_not_increment_build_number: true
+
+skip_tags: true
+
+image:
+  - Visual Studio 2019
+  - Visual Studio 2017
+
+configuration:
+  - Win10-Release
+  - Win10-Debug
+  - Win8.1-Release
+  - Win8.1-Debug
+  - Win8-Release
+  - Win8-Debug
+  - Win7-Release
+  - Win7-Debug
+
+platform:
+  - Win32
+  - x64
+
+shallow_clone: true
+
+install:
+  - Tools\ci_install.bat
+
+before_build:
+  - nuget restore -OutputDirectory .\Packages EasyHookSys.sln
+  - nuget install -OutputDirectory .\Packages MSBuildTasks -Version 1.5.0.196
+  - nuget install -OutputDirectory .\Packages vswhere -Version 2.8.4
+
+build:
+  parallel: true
+  project: EasyHookSys.sln
+
+after_build:
+  - 7z a "EasyHook.%VISUAL_STUDIO_NAME%.%Configuration%.%Platform%.zip" %APPVEYOR_BUILD_FOLDER%\Build\%Configuration%\%Platform%\*.dll %APPVEYOR_BUILD_FOLDER%\Build\%Configuration%\%Platform%\*.pdb %APPVEYOR_BUILD_FOLDER%\Build\%Configuration%\%Platform%\*.exe
+
+artifacts:
+- path: 'EasyHook.$(VISUAL_STUDIO_NAME).$(Configuration).$(Platform).zip'
+  name: EasyHook

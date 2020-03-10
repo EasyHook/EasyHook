@@ -1,0 +1,44 @@
+version: 2.8.{build}
+
+pull_requests:
+  do_not_increment_build_number: true
+
+skip_tags: true
+
+image:
+  - Visual Studio 2019
+  - Visual Studio 2017
+  - Visual Studio 2015
+  - Visual Studio 2013
+
+configuration:
+  - netfx4-Release
+  - netfx4-Debug
+  - netfx3.5-Release
+  - netfx3.5-Debug
+
+platform:
+  - x64
+  - Win32
+
+shallow_clone: true
+
+install:
+  - Tools\ci_install.bat
+
+test_script:
+  - Tools\ci_test.bat
+
+before_build:
+  - nuget restore -OutputDirectory .\Packages EasyHook.sln
+
+build:
+  parallel: true
+  project: EasyHook.sln
+
+after_build:
+  - 7z a "EasyHook.%VISUAL_STUDIO_NAME%.%Configuration%.%BUILD_PLATFORM%.zip" %APPVEYOR_BUILD_FOLDER%\Build\%Configuration%\%BUILD_PLATFORM%\*.dll %APPVEYOR_BUILD_FOLDER%\Build\%Configuration%\%BUILD_PLATFORM%\*.pdb %APPVEYOR_BUILD_FOLDER%\Build\%Configuration%\%BUILD_PLATFORM%\*.exe
+
+artifacts:
+- path: 'EasyHook.$(VISUAL_STUDIO_NAME).$(Configuration).$(BUILD_PLATFORM).zip'
+  name: EasyHook

@@ -58,7 +58,8 @@ __pragma(warning(pop))
 extern "C"{
 #endif
 
-#include "EasyHook.h"
+#include "easyhook.h"
+
 #include "DriverShared.h"
 
 BOOL RtlFileExists(WCHAR* InPath);

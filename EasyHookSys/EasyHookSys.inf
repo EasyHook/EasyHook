@@ -12,6 +12,7 @@ DriverVer= ; TODO: set DriverVer in stampinf property pages
 
 [DestinationDirs]
 DefaultDestDir = 12
+EasyHookSys_Device_CoInstaller_CopyFiles = 11
 
 ; ================= Class section =====================
 
@@ -27,6 +28,7 @@ HKR,,Icon,,-5
 
 [SourceDisksFiles]
 EasyHookSys.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
 
 ;*****************************************
 ; Install Section
@@ -61,9 +63,6 @@ LoadOrderGroup = Extended Base
 ;--- EasyHookSys_Device Coinstaller installation ------
 ;
 
-[DestinationDirs]
-EasyHookSys_Device_CoInstaller_CopyFiles = 11
-
 [EasyHookSys_Device.NT.CoInstallers]
 AddReg=EasyHookSys_Device_CoInstaller_AddReg
 CopyFiles=EasyHookSys_Device_CoInstaller_CopyFiles
@@ -73,9 +72,6 @@ HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfC
 
 [EasyHookSys_Device_CoInstaller_CopyFiles]
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
-
-[SourceDisksFiles]
-WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
 
 [EasyHookSys_Device.NT.Wdf]
 KmdfService =  EasyHookSys, EasyHookSys_wdfsect

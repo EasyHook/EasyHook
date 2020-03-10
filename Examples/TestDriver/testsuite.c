@@ -1,8 +1,8 @@
 /*
     You may use this file without any restriction...
 */
-#include "EasyHook.h"
 
+#include "easyhook.h"
 
 #define FORCE(expr)     {if(!NT_SUCCESS(NtStatus = (expr))) goto ERROR_ABORT;}
 

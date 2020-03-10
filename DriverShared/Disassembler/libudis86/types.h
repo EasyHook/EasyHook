@@ -39,10 +39,16 @@
 # endif
 #endif /* __KERNEL__ */
 
+// warning C4005: '_CRT_STRINGIZE': macro redefinition
+#pragma warning( push )
+#pragma warning( disable: 4005 )
+
 #if !defined(__UD_STANDALONE__)
 # include <stdint.h>
 # include <stdio.h>
 #endif
+
+#pragma warning( pop )
 
 /* gcc specific extensions */
 #ifdef __GNUC__

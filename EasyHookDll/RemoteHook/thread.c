@@ -1808,7 +1808,7 @@ Returns:
                     opcodes++;
                 }
 
-                sprintf_s(result->EntryDisasm + strlen(result->EntryDisasm), 1024 - strlen(result->EntryDisasm), "%-35s%-30sIP:%x\n", asmBuf, buf, nextInstr);
+                sprintf_s(result->EntryDisasm + strlen(result->EntryDisasm), 1024 - strlen(result->EntryDisasm), "%-35s%-30sIP:%I64x\n", asmBuf, buf, nextInstr);
                 a++;
 
                 pEntryPoint = (DWORD_PTR)nextInstr;
@@ -1836,7 +1836,7 @@ Returns:
                     sprintf_s(asmBuf + strlen(asmBuf), 260 - strlen(asmBuf), "%02X ", *opcodes);
                     opcodes++;
                 }
-                sprintf_s(result->EntryDisasm + strlen(result->EntryDisasm), 1024 - strlen(result->EntryDisasm), "%-35s%-30sIP:%x\n", asmBuf, buf, nextInstr);
+                sprintf_s(result->EntryDisasm + strlen(result->EntryDisasm), 1024 - strlen(result->EntryDisasm), "%-35s%-30sIP:%I64x\n", asmBuf, buf, nextInstr);
                 pEntryPoint = (DWORD_PTR)nextInstr;
             }
             pEntryPoint = (DWORD_PTR)hookBuf->OldProc;
@@ -1851,7 +1851,7 @@ Returns:
                     sprintf_s(asmBuf + strlen(asmBuf), 260 - strlen(asmBuf), "%02X ", *opcodes);
                     opcodes++;
                 }
-                sprintf_s(result->RelocDisasm + strlen(result->RelocDisasm), 1024 - strlen(result->RelocDisasm), "%-35s%-30sIP:%x\n", asmBuf, buf, nextInstr);
+                sprintf_s(result->RelocDisasm + strlen(result->RelocDisasm), 1024 - strlen(result->RelocDisasm), "%-35s%-30sIP:%I64x\n", asmBuf, buf, nextInstr);
                 pEntryPoint = (DWORD_PTR)nextInstr;
             }
         }

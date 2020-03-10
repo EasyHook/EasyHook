@@ -28,6 +28,9 @@
     <Filter Include="Driver Files">
       <UniqueIdentifier>{89f4aac7-1a61-4dbd-b3c9-aa3bfd48bbb7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Driver Files\Disassembler">
+      <UniqueIdentifier>{0536ed9b-e997-4435-af06-08d8589f800e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -91,6 +94,33 @@
     </ClInclude>
     <ClInclude Include="..\Public\easyhook.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\udis86.h">
+      <Filter>Driver Files\Disassembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\decode.h">
+      <Filter>Driver Files\Disassembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\extern.h">
+      <Filter>Driver Files\Disassembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\itab.h">
+      <Filter>Driver Files\Disassembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\syn.h">
+      <Filter>Driver Files\Disassembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\types.h">
+      <Filter>Driver Files\Disassembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\Disassembler\libudis86\udint.h">
+      <Filter>Driver Files\Disassembler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\DriverShared.h">
+      <Filter>Driver Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DriverShared\rtl.h">
+      <Filter>Driver Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

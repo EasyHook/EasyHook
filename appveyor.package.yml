@@ -1,0 +1,24 @@
+version: 0.0.{build}
+
+pull_requests:
+  do_not_increment_build_number: true
+
+skip_tags: true
+
+image:
+  - Visual Studio 2019
+  - Visual Studio 2017
+
+shallow_clone: true
+
+install:
+  - Tools\ci_install.bat
+
+build_script:
+  - Tools\build-package.bat
+
+artifacts:
+- path: .\*.nupkg
+  name: EasyHook NuGet
+- path: .\Deploy\*.zip
+  name: EasyHook Binaries

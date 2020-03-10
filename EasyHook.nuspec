@@ -45,9 +45,6 @@ EasyHook currently supports injecting assemblies built for .NET Framework 3.5 an
         <frameworkAssemblies>
             <frameworkAssembly assemblyName="System.Runtime.Remoting" />
         </frameworkAssemblies>
-        <contentFiles>
-          <files include="**" buildAction="Content" copyToOutput="true" />
-        </contentFiles>
     </metadata>
     <files>
         <file src="Build\netfx3.5-Release\x64\EasyHook32.dll" target="content\net35\EasyHook32.dll" />

@@ -1,7 +1,31 @@
-﻿using System;
+﻿// EasyLoad (File: EasyLoad\Loader.cs)
+//
+// Copyright (c) 2015 Justin Stenning
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+// Please visit https://easyhook.github.io for more information
+// about the project and latest updates.
+
+using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EasyHook.Tests
@@ -16,7 +40,7 @@ namespace EasyHook.Tests
         [return: MarshalAs(UnmanagedType.Bool)]
         delegate bool BeepDelegate(uint dwFreq, uint dwDuration);
 
-        bool _beepHookCalled = false;
+        bool _beepHookCalled;
 
         [return: MarshalAs(UnmanagedType.Bool)]
         bool BeepHook(uint dwFreq, uint dwDuration)
@@ -27,12 +51,14 @@ namespace EasyHook.Tests
         }
 
         [TestInitialize]
-        public void Initialise()
+        public void Initialize()
         {
             NativeAPI.LhWaitForPendingRemovals();
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InsufficientMemoryException),
+            "Adding too many hooks should result in System.InsufficientMemoryException.")]
         public void InstallTooManyHooks_ThrowException()
         {
             int maxHookCount = 1024;
@@ -49,67 +75,45 @@ namespace EasyHook.Tests
                 hooks.Add(lh);
             }
 
-            // NOTE: Disposing hooks does not free the memory
-            // need to also call NativeAPI.LhWaitForPendingRemovals()
-            // or LocalHook.Release();
+            // NOTE: Disposing hooks does not free the memory and we need to also
+            // call NativeAPI.LhWaitForPendingRemovals() or LocalHook.Release();
             foreach (var h in hooks)
                 h.Dispose();
             hooks.Clear();
 
-            bool exceptionThrown = false;
             try
             {
                 // Adding one more hook should result in System.InsufficientMemoryException
                 hooks.Add(LocalHook.Create(
-                        LocalHook.GetProcAddress("kernel32.dll", "Beep"),
-                        new BeepDelegate(BeepHook),
-                        this));
+                    LocalHook.GetProcAddress("kernel32.dll", "Beep"),
+                    new BeepDelegate(BeepHook),
+                    this));
 
                 foreach (var h in hooks)
                     h.Dispose();
                 hooks.Clear();
             }
-            catch (System.InsufficientMemoryException)
+            finally
             {
-                // Correctly threw error because too many hooks
-                exceptionThrown = true;
+                // Ensure the hooks are freed
+                NativeAPI.LhWaitForPendingRemovals();
+
+                foreach (var h in hooks)
+                    h.Dispose();
+                hooks.Clear();
             }
-
-            Assert.IsTrue(exceptionThrown, "System.InsufficientMemoryException was not thrown");
-
-            // Ensure the hooks are freed
-            NativeAPI.LhWaitForPendingRemovals();
-
-            // Now try to install again after removals processed
-            try
-            {
-                hooks.Add(LocalHook.Create(
-                    LocalHook.GetProcAddress("kernel32.dll", "Beep"),
-                    new BeepDelegate(BeepHook),
-                    this));
-            }
-            catch (System.InsufficientMemoryException)
-            {
-                Assert.Fail("Disposing of hooks did not free room within GlobalSlotList");
-            }
-            foreach (var h in hooks)
-                h.Dispose();
-            hooks.Clear();
-
-            // Ensure the hooks are freed
-            NativeAPI.LhWaitForPendingRemovals();
         }
 
         [TestMethod]
         public void HookBypassAddress_DoesNotCallHook()
         {
             // Install MAX_HOOK_COUNT hooks (i.e. 1024)
-            LocalHook lh = LocalHook.Create(
+            LocalHook localHook = LocalHook.Create(
                 LocalHook.GetProcAddress("kernel32.dll", "Beep"),
                 new BeepDelegate(BeepHook),
                 this);
-            
-            lh.ThreadACL.SetInclusiveACL(new int[] { 0 });
+
+            localHook.ThreadACL.SetInclusiveACL(new int[] { 0 });
 
             Assert.IsFalse(Beep(100, 100));
 
@@ -117,9 +121,10 @@ namespace EasyHook.Tests
 
             _beepHookCalled = false;
 
-            BeepDelegate b = (BeepDelegate)Marshal.GetDelegateForFunctionPointer(lh.HookBypassAddress, typeof(BeepDelegate));
+            BeepDelegate beepDelegate = (BeepDelegate)Marshal.GetDelegateForFunctionPointer(
+                localHook.HookBypassAddress, typeof(BeepDelegate));
 
-            b(100, 100);
+            beepDelegate(100, 100);
             Assert.IsFalse(_beepHookCalled);
         }
     }

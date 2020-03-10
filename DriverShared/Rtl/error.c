@@ -96,7 +96,7 @@ void RtlSetLastError(LONG InCode, NTSTATUS InNtStatus, WCHAR* InMessage)
         if (lstrlenW(InMessage) > 0)
         {
             WCHAR msg[1024] = { 0 };
-            LPVOID lpMsgBuf;
+            LPTSTR lpMsgBuf = NULL;
 
             if (InNtStatus == STATUS_SUCCESS) 
             {

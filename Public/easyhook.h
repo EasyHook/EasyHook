@@ -35,10 +35,10 @@
 	typedef void* HMODULE;
 
 #else
-
-    #define NTDDI_VERSION           NTDDI_WIN2KSP4
-    #define _WIN32_WINNT            0x500
-    #define _WIN32_IE_              _WIN32_IE_WIN2KSP4
+	// Minimum WinXP for backwards compatibility
+	#define NTDDI_VERSION           NTDDI_WINXP
+	#define _WIN32_WINNT            _WIN32_WINNT_WINXP
+	#define _WIN32_IE_              _WIN32_IE_XP
 
     #include <windows.h>
     #include <winnt.h>

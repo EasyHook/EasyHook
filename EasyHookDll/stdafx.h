@@ -27,12 +27,12 @@
 #define _STDAFX_H_
 
 
-// support for Windows 2000 SP4 and later...
+// support for Windows XP and later...
 __pragma(warning(push))
 __pragma(warning(disable:4005))
-#define NTDDI_VERSION           NTDDI_WIN2KSP4
-#define _WIN32_WINNT            0x500
-#define _WIN32_IE_              _WIN32_IE_WIN2KSP4
+#define NTDDI_VERSION           NTDDI_WINXP
+#define _WIN32_WINNT            _WIN32_WINNT_WINXP
+#define _WIN32_IE_              _WIN32_IE_XP
 __pragma(warning(pop))
 
 #pragma warning (disable:4100) // unreference formal parameter

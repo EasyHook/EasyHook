@@ -202,12 +202,17 @@ Descriptions:
 #ifdef X64_DRIVER
             CurrentIRQL = KeGetCurrentIrql();
             RtlWPOff();
+#else
+            RtlProtectMemory(Hook->TargetProc, Hook->EntrySize, PAGE_EXECUTE_READWRITE);
 #endif
+
             *((ULONGLONG*)Hook->TargetProc) = Hook->TargetBackup;
 #ifdef X64_DRIVER
             // we support a trampoline jump of up to 16 bytes in X64_DRIVER
             *((ULONGLONG*)(Hook->TargetProc + 8)) = Hook->TargetBackup_x64;
             RtlWPOn(CurrentIRQL);
+#else
+            RtlProtectMemory(Hook->TargetProc, Hook->EntrySize, PAGE_EXECUTE_READ);
 #endif
 
 #pragma warning(disable: 4127)

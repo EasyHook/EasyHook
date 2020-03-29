@@ -13,9 +13,9 @@ image:
 
 configuration:
   - netfx4-Release
-  - netfx4-Debug
+#  - netfx4-Debug
   - netfx3.5-Release
-  - netfx3.5-Debug
+#  - netfx3.5-Debug
 
 platform:
   - x64

@@ -68,7 +68,7 @@ namespace EasyHook
                     {
                         // install and start service
                         NativeAPI.RtlInstallService(
-                            "EasyHook" + (NativeAPI.Is64Bit?"64":"32") + "Svc",
+                            Path.GetFileNameWithoutExtension(Config.GetSvcExecutableName()),
                             Path.GetFullPath(Config.GetDependantSvcExecutableName()),
                             ChannelName);
 
@@ -94,6 +94,10 @@ namespace EasyHook
             Int32 InNativeOptions,
             String InLibraryPath_x86,
             String InLibraryPath_x64,
+            String helperLibrary_x86,
+            String helperLibrary_x64,
+            String easyHookLibrary_x86,
+            String easyHookLibrary_x64,
             Boolean InRequireStrongName,
             params Object[] InPassThruArgs)
         {
@@ -104,8 +108,12 @@ namespace EasyHook
                 InTargetPID, 
                 InWakeUpTID,
                 InNativeOptions,
-                InLibraryPath_x86, 
-                InLibraryPath_x64, 
+                InLibraryPath_x86,
+                InLibraryPath_x64,
+                helperLibrary_x86,
+                helperLibrary_x64,
+                easyHookLibrary_x86,
+                easyHookLibrary_x64,
                 false,
                 false,
                 InRequireStrongName,

@@ -54,7 +54,7 @@ Parameters:
 
         The channel name for the service to register its IPC channel.
         This should be randomly generated.
-
+		
 Returns:
 
     STATUS_ALREADY_REGISTERED
@@ -70,10 +70,13 @@ Returns:
 	SC_HANDLE			hSCManager = NULL;
 	SC_HANDLE			hService = NULL;
     NTSTATUS            NtStatus;
-    LPCWSTR		        StartParams[1] = {InChannelName};
+	WCHAR				EasyHookPath[MAX_PATH + 1];
+    LPCWSTR		        StartParams[2] = {InChannelName, EasyHookPath};
     ULONG               res;
 	ULONG				inExePathLength;
 	WCHAR*				quotedInExePath;
+
+	RtlGetCurrentModulePath(EasyHookPath, MAX_PATH);
 
 	if((hSCManager = OpenSCManagerW(NULL, NULL, SC_MANAGER_ALL_ACCESS)) == NULL)
 		THROW(STATUS_ACCESS_DENIED, L"Unable to open service control manager. Check for administrator privileges!");
@@ -127,7 +130,7 @@ Returns:
 		THROW(STATUS_INTERNAL_ERROR, L"Unable to install service as system process.");
 
     // start service
-	if(!StartServiceW(hService, 1, (LPCWSTR*)StartParams))
+	if(!StartServiceW(hService, 2, (LPCWSTR*)StartParams))
     {
         res = GetLastError();
 

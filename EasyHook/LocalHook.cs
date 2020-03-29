@@ -164,10 +164,7 @@ namespace EasyHook
             {
                 IntPtr Callback;
 
-                if (NativeAPI.Is64Bit)
-                    return NativeAPI_x64.LhBarrierGetCallback(out Callback) == NativeAPI.STATUS_SUCCESS;
-                else
-                    return NativeAPI_x86.LhBarrierGetCallback(out Callback) == NativeAPI.STATUS_SUCCESS;
+                return NativeAPI_EasyHook.LhBarrierGetCallback(out Callback) == NativeAPI.STATUS_SUCCESS;
             }
         }
 

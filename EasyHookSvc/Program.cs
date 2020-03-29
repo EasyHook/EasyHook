@@ -78,7 +78,7 @@ namespace EasyHookSvc
                     Config.PrintError("Unable to cleanup GAC...\r\n" + Info.ToString());
                 }
             }
-            else if (args.Length == 1)
+            else if (args.Length >= 1)
             {
                 /*
                  * This will provide the service interface under admin privileges which

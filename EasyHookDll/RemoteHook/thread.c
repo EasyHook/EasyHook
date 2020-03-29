@@ -615,7 +615,7 @@ Parameters:
             No special behavior. The given libraries are expected to be unmanaged DLLs.
             Further they should export an entry point named 
             "NativeInjectionEntryPoint" (in case of 64-bit) and
-            "_NativeInjectionEntryPoint@4" (in case of 32-bit). The expected entry point 
+            _NativeInjectionEntryPoint" (in case of 32-bit). The expected entry point 
             signature is REMOTE_ENTRY_POINT.
 
         EASYHOOK_INJECT_MANAGED: 
@@ -1153,7 +1153,7 @@ Returns:
 #ifdef _M_X64
 	CHAR*					EasyHookEntry = "HookCompleteInjection";
 #else
-	CHAR*					EasyHookEntry = "_HookCompleteInjection@4";
+	CHAR*					EasyHookEntry = "HookCompleteInjection";
 #endif
 
     // validate parameters

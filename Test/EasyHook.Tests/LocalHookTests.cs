@@ -27,6 +27,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace EasyHook.Tests
 {
@@ -50,8 +51,8 @@ namespace EasyHook.Tests
             return false;
         }
 
-        [TestInitialize]
-        public void Initialize()
+        [TestCleanup]
+        public void Cleanup()
         {
             NativeAPI.LhWaitForPendingRemovals();
         }
@@ -126,6 +127,23 @@ namespace EasyHook.Tests
 
             beepDelegate(100, 100);
             Assert.IsFalse(_beepHookCalled);
+        }
+
+        [TestMethod]
+        public void TestChangeEasyHookDllName()
+        {
+            if (File.Exists("EasyHook32.dll"))
+            {
+                File.Copy("EasyHook32.dll", "TestEasyHookName32.dll", true);
+            }
+            if (File.Exists("EasyHook64.dll"))
+            {
+                File.Copy("EasyHook64.dll", "TestEasyHookName64.dll", true);
+            }
+
+            Config.SetEasyHookDllNames("TestEasyHookName32.dll", "TestEasyHookName64.dll", true);
+
+            NativeAPI.RhIsAdministrator();
         }
     }
 }

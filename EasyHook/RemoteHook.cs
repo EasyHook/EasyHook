@@ -674,8 +674,8 @@ namespace EasyHook
                             InTargetPID,
                             InWakeUpTID,
                             NativeAPI.EASYHOOK_INJECT_MANAGED | InNativeOptions,
-                            Path.Combine(Config.HelperLibraryLocation, "EasyLoad32.dll"),
-                            Path.Combine(Config.HelperLibraryLocation, "EasyLoad64.dll"),
+                            Path.Combine(Config.HelperLibraryLocation, Config.HelperLibrary32Bit),
+                            Path.Combine(Config.HelperLibraryLocation, Config.HelperLibrary64Bit),
                             hPassThru.AddrOfPinnedObject(),
                             (int)PassThru.Length))
                     {
@@ -690,6 +690,10 @@ namespace EasyHook
                                         InNativeOptions,
                                         InLibraryPath_x86,
                                         InLibraryPath_x64,
+                                        Path.Combine(Config.HelperLibraryLocation, Config.HelperLibrary32Bit),
+                                        Path.Combine(Config.HelperLibraryLocation, Config.HelperLibrary64Bit),
+                                        NativeAPI_EasyHook.DllName32,
+                                        NativeAPI_EasyHook.DllName64,
                                         InRequireStrongName,
                                         InPassThruArgs);
                                 else
@@ -708,6 +712,10 @@ namespace EasyHook
                                         InNativeOptions,
                                         InLibraryPath_x86,
                                         InLibraryPath_x64,
+                                        Path.Combine(Config.HelperLibraryLocation, Config.HelperLibrary32Bit),
+                                        Path.Combine(Config.HelperLibraryLocation, Config.HelperLibrary64Bit),
+                                        NativeAPI_EasyHook.DllName32,
+                                        NativeAPI_EasyHook.DllName64,
                                         InRequireStrongName,
                                         InPassThruArgs);
                                 else

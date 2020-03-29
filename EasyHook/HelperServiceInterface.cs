@@ -44,11 +44,21 @@ namespace EasyHook
                 Int32 InNativeOptions,
                 String InLibraryPath_x86,
                 String InLibraryPath_x64,
+                String helperLibrary_x86,
+                String helperLibrary_x64,
+                String easyHookLibrary_x86,
+                String easyHookLibrary_x64,
                 Boolean InCanBypassWOW64,
                 Boolean InCanCreateService,
                 Boolean InRequireStrongName,
                 params Object[] InPassThruArgs)
         {
+            Config.HelperLibraryLocation = Path.GetDirectoryName(helperLibrary_x86);
+            Config.HelperLibrary32Bit = Path.GetFileName(helperLibrary_x86);
+            Config.HelperLibrary64Bit = Path.GetFileName(helperLibrary_x64);
+
+            Config.SetEasyHookDllNames(easyHookLibrary_x86, easyHookLibrary_x64, true);
+
             RemoteHooking.InjectEx(
                 InHostPID,
                 InTargetPID,

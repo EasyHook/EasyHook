@@ -65,6 +65,40 @@ namespace EasyHook
             }
         }
 
+        /// <summary>
+        /// The 32-bit EasyHook native DLL filename
+        /// </summary>
+        public static string EasyHook32DllName
+        {
+            get
+            {
+                return NativeAPI_EasyHook.DllName32;
+            }
+        }
+
+        /// <summary>
+        /// The 64-bit EasyHook native DLL filename
+        /// </summary>
+        public static string EasyHook64DllName
+        {
+            get
+            {
+                return NativeAPI_EasyHook.DllName64;
+            }
+        }
+
+        /// <summary>
+        /// Override the default EasyHook native dll filename. If value differs from <see cref="EasyHook32DllName"/> or <see cref="EasyHook64DllName"/> and setting <paramref name="force"/> to <c>true</c> will force all existing hooks to be unloaded.
+        /// </summary>
+        /// <param name="easyhook32">The 32-bit EasyHook library file name to use</param>
+        /// <param name="easyhook64">The 64-bit EasyHook library file name to use</param>
+        /// <param name="force">If the filenames differ from <see cref="EasyHook32DllName"/> and <paramref name="force"/> is <c>true</c>: existing EasyHook native library will be unloaded if already loaded, otherwise if <c>false</c>: will throw an <see cref="InvalidOperationException"/> if any native EasyHook functions have been accessed,</param>
+        /// <exception cref="InvalidOperationException">Thrown if native EasyHook methods have been accessed and <paramref name="force"/> is false.</exception>
+        public static void SetEasyHookDllNames(string easyhook32, string easyhook64, bool force = false)
+        {
+            NativeAPI_EasyHook.SetDllNames(easyhook32, easyhook64, force);
+        }
+
         private static String helperLibraryLocation = "";
 
         /// <summary>
@@ -94,6 +128,21 @@ namespace EasyHook
         }
 
         /// <summary>
+        /// For 32-bit targets, the dll that will be injected that exports int Load([MarshalAs(UnmanagedType.LPWStr)]String inParam)
+        /// </summary>
+        public static string HelperLibrary32Bit { get; set; } = "EasyLoad32.dll";
+        
+        /// <summary>
+        /// For 64-bit targets, the dll that will be injected that exports int Load([MarshalAs(UnmanagedType.LPWStr)]String inParam)
+        /// </summary>
+        public static string HelperLibrary64Bit { get; set; } = "EasyLoad64.dll";
+
+        /// <summary>
+        /// The name of the executable used for the service and WOW64 bypass.
+        /// </summary>
+        public static string WOW64BypassExecutableFilename { get; set; } = "EasyHook" + (NativeAPI.Is64Bit ? "32" : "64") + "Svc.exe";
+
+        /// <summary>
         /// Get the directory name of the current process, ending with a backslash.
         /// </summary>
         /// <returns>Directory name of the current process</returns>
@@ -109,7 +158,7 @@ namespace EasyHook
         /// <returns>Executable name</returns>
         public static String GetSvcExecutableName()
         {
-            return "EasyHook" + (NativeAPI.Is64Bit ? "64" : "32") + "Svc.exe";
+            return WOW64BypassExecutableFilename;
         }
 
         /// <summary>
@@ -119,7 +168,7 @@ namespace EasyHook
         /// <returns></returns>
         public static String GetWOW64BypassExecutableName()
         {
-            return "EasyHook" + (NativeAPI.Is64Bit ? "32" : "64") + "Svc.exe";
+            return WOW64BypassExecutableFilename;
         }
 
         /// <summary>

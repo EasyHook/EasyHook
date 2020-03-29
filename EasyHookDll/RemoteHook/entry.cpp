@@ -82,7 +82,7 @@ Description:
 #ifdef _M_X64
                                 "NativeInjectionEntryPoint");
 #else
-                                "_NativeInjectionEntryPoint@4");
+                                "NativeInjectionEntryPoint");
 #endif
 
     if(hUserLib == NULL)

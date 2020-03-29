@@ -77,6 +77,8 @@ namespace EasyHookSvc
 
         public void OnExecute(Object InParam)
         {
+            // args[0]: IPC channel name
+            // args[1]: EasyHook native DLL name (for 32/64-bit as matches this process)
             String[] args = (String[])InParam;
 
             try
@@ -84,6 +86,15 @@ namespace EasyHookSvc
                 String ChannelName = args[0];
                 Mutex TermMutex = Mutex.OpenExisting("Global\\Mutex_" + ChannelName);
                 WellKnownSidType SidType = WellKnownSidType.BuiltinAdministratorsSid;
+
+                if (args.Length > 1 && File.Exists(args[1]))
+                {
+                    if (Path.GetFileName(args[1]) != (NativeAPI.Is64Bit ? Config.EasyHook64DllName : Config.EasyHook32DllName))
+                    {
+                        // Set the easyhook dll name as to support using different file names
+                        Config.SetEasyHookDllNames(!NativeAPI.Is64Bit ? args[1] : Config.EasyHook32DllName, NativeAPI.Is64Bit ? args[1] : Config.EasyHook64DllName);
+                    }
+                }
 
                 if (!RemoteHooking.IsAdministrator)
                     SidType = WellKnownSidType.WorldSid;

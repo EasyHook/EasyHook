@@ -127,20 +127,23 @@ namespace EasyHook
             }
         }
 
+        private static string _helperLibrary32Bit = "EasyLoad32.dll";
         /// <summary>
         /// For 32-bit targets, the dll that will be injected that exports int Load([MarshalAs(UnmanagedType.LPWStr)]String inParam)
         /// </summary>
-        public static string HelperLibrary32Bit { get; set; } = "EasyLoad32.dll";
+        public static string HelperLibrary32Bit { get { return _helperLibrary32Bit; } set { _helperLibrary32Bit = value; } }
         
+        private static string _helperLibrary64Bit = "EasyLoad64.dll";
         /// <summary>
         /// For 64-bit targets, the dll that will be injected that exports int Load([MarshalAs(UnmanagedType.LPWStr)]String inParam)
         /// </summary>
-        public static string HelperLibrary64Bit { get; set; } = "EasyLoad64.dll";
+        public static string HelperLibrary64Bit { get { return _helperLibrary64Bit; } set { _helperLibrary64Bit = value; } }
 
+        private static string _wow64BypassExecutableFilename = "EasyHook" + (NativeAPI.Is64Bit ? "32" : "64") + "Svc.exe";
         /// <summary>
         /// The name of the executable used for the service and WOW64 bypass.
         /// </summary>
-        public static string WOW64BypassExecutableFilename { get; set; } = "EasyHook" + (NativeAPI.Is64Bit ? "32" : "64") + "Svc.exe";
+        public static string WOW64BypassExecutableFilename { get { return _wow64BypassExecutableFilename; } set { _wow64BypassExecutableFilename = value; } }
 
         /// <summary>
         /// Get the directory name of the current process, ending with a backslash.

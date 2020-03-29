@@ -34,8 +34,10 @@ namespace EasyHook
     {
         static bool _initialised = false;
 
-        public static string DllName32 { get; private set; } = "EasyHook32.dll";
-        public static string DllName64 { get; private set; } = "EasyHook64.dll";
+        private static string dllName32 = "EasyHook32.dll";
+        public static string DllName32 { get { return dllName32; } private set { dllName32 = value; } }
+        private static string dllName64 = "EasyHook64.dll";
+        public static string DllName64 { get { return dllName64; } private set { dllName64 = value; } }
 
         /// <summary>
         /// The path and/or name of the EasyHook native binary (e.g. EasyHook32.dll or EasyHook64.dll)
@@ -64,7 +66,7 @@ namespace EasyHook
                     {
                         if (!force)
                         {
-                            throw new InvalidOperationException($"{nameof(DllName)} cannot be changed after any {nameof(NativeAPI)} exports have been called.");
+                            throw new InvalidOperationException(nameof(DllName) + " cannot be changed after any " + nameof(NativeAPI) + " exports have been called.");
                         }
                         else
                         {

@@ -3,7 +3,7 @@
 *******************************************************************************
 * Build Binaries - build.bat
 *******************************************************************************
-Requires Visual Studio 2013
+Requires Visual Studio 2015 or later
 
 Use the build.bat to build binaries for all configurations (.NET 3.5/4.0, 
 Debug/Release, x86/x64).

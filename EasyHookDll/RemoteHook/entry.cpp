@@ -82,7 +82,14 @@ Description:
 #ifdef _M_X64
                                 "NativeInjectionEntryPoint");
 #else
-                                "NativeInjectionEntryPoint");
+                                "_NativeInjectionEntryPoint@4");
+#endif
+
+#ifndef _M_X64
+    // Support exports renamed from _NativeInjectionEntryPoint@4 to NativeInjectionEntryPoint in .def EXPORTS section for 32bit
+    if (EntryProc == NULL) {
+        EntryProc = (REMOTE_ENTRY_POINT*)GetProcAddress(hUserLib, "NativeInjectionEntryPoint");
+    }
 #endif
 
     if(hUserLib == NULL)

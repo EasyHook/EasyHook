@@ -463,10 +463,11 @@ Description:
 	return TRUE;
 }
 
-EASYHOOK_NT_EXPORT RtlCreateSuspendedProcess(
-		WCHAR* InEXEPath,
+EASYHOOK_NT_EXPORT RtlCreateSuspendedProcessEx(
+        WCHAR* CurrentDirectory,
+        WCHAR* InEXEPath,
         WCHAR* InCommandLine,
-		ULONG InCustomFlags,
+        ULONG InCustomFlags,
         ULONG* OutProcessId,
         ULONG* OutThreadId)
 {
@@ -477,6 +478,10 @@ Description:
     This is only intended for the managed layer.
 
 Parameters:
+
+     - CurrentDirectory
+
+          Current directory for the EXE file of the process being created.
 
     - InEXEPath
 
@@ -501,9 +506,9 @@ Parameters:
 #define MAX_CREATEPROCESS_COMMANDLINE 32768
 
     STARTUPINFO				StartInfo;
-	PROCESS_INFORMATION		ProcessInfo;
-	WCHAR					FullExePath[MAX_PATH + 1];
-	WCHAR                   FullCommandLine[MAX_CREATEPROCESS_COMMANDLINE];
+    PROCESS_INFORMATION		ProcessInfo;
+    WCHAR					FullExePath[MAX_PATH + 1];
+    WCHAR                   FullCommandLine[MAX_CREATEPROCESS_COMMANDLINE];
     WCHAR					CurrentDir[MAX_PATH + 1];
     WCHAR*					FilePart;
     NTSTATUS            NtStatus;
@@ -521,20 +526,40 @@ Parameters:
     // parse path
     if(!RtlFileExists(InEXEPath))
         THROW(STATUS_INVALID_PARAMETER_1, L"The given process file does not exist.");
-
-    if(GetFullPathName(InEXEPath, MAX_PATH, CurrentDir, &FilePart) > MAX_PATH)
+    
+    if (GetFullPathName(InEXEPath, MAX_PATH, FullExePath, &FilePart) > MAX_PATH) {
         THROW(STATUS_INVALID_PARAMETER_1, L"Full path information exceeds MAX_PATH characters.");
+    }
 
     // compute current directory...
-    RtlCopyMemory(FullExePath, CurrentDir, sizeof(FullExePath));
-    
-    swprintf_s(FullCommandLine, MAX_CREATEPROCESS_COMMANDLINE, L"\"%s\" %s", FullExePath, InCommandLine);
+    if (NULL != CurrentDirectory)
+    {
+        RtlCopyMemory(CurrentDir, CurrentDirectory, sizeof(CurrentDir));
+    }
+    else
+    {
+        ULONG Index;
+        WCHAR* Dest = CurrentDir;
+        WCHAR* Src = FullExePath;
 
-    *FilePart = 0;
+        for (Index = 0; Index < _countof(CurrentDir); Index++)
+        {
+            if (Src >= FilePart)
+            {
+                *Dest = 0;
+                break;
+            }
+            *Dest = *Src;
+            Dest++;
+            Src++;
+        }
+    }
+
+    swprintf_s(FullCommandLine, MAX_CREATEPROCESS_COMMANDLINE, L"\"%s\" %s", FullExePath, InCommandLine);
 
     // create suspended process
     StartInfo.cb = sizeof(StartInfo);
-	StartInfo.wShowWindow = TRUE;
+    StartInfo.wShowWindow = TRUE;
 
     if(!CreateProcessW(
 		    FullExePath, 
@@ -563,21 +588,36 @@ FINALLY_OUTRO:
 		    CloseHandle(ProcessInfo.hThread);
 
         return NtStatus;
-	}
+    }
+}
+
+EASYHOOK_NT_EXPORT RtlCreateSuspendedProcess(
+        WCHAR* InEXEPath,
+        WCHAR* InCommandLine,
+        ULONG InCustomFlags,
+        ULONG* OutProcessId,
+        ULONG* OutThreadId)
+{
+    return RtlCreateSuspendedProcessEx(
+        NULL,
+        InEXEPath,
+        InCommandLine,
+        InCustomFlags,
+        OutProcessId,
+        OutThreadId);
 }
 
 
 
-
-
-EASYHOOK_NT_EXPORT RhCreateAndInject(
-		WCHAR* InEXEPath,
+EASYHOOK_NT_EXPORT RhCreateAndInjectEx(
+        WCHAR* CurrentDirectory,
+        WCHAR* InEXEPath,
         WCHAR* InCommandLine,
-		ULONG InProcessCreationFlags,
-		ULONG InInjectionOptions,
-		WCHAR* InLibraryPath_x86,
-		WCHAR* InLibraryPath_x64,
-		PVOID InPassThruBuffer,
+        ULONG InProcessCreationFlags,
+        ULONG InInjectionOptions,
+        WCHAR* InLibraryPath_x86,
+        WCHAR* InLibraryPath_x64,
+        PVOID InPassThruBuffer,
         ULONG InPassThruSize,
         ULONG* OutProcessId)
 {
@@ -593,6 +633,10 @@ Description:
     that is no requirement for the process to work...
 
 Parameters:
+
+    - CurrentDirectory
+
+        Current directory for the EXE file of the process being created.
 
     - InEXEPath
 
@@ -666,7 +710,7 @@ Parameters:
         THROW(STATUS_INVALID_PARAMETER_8, L"The given process ID storage is invalid.");
 
     // all other parameters are validate by called APIs...
-	FORCE(RtlCreateSuspendedProcess(InEXEPath, InCommandLine, InProcessCreationFlags, &ProcessId, &ThreadId));
+    FORCE(RtlCreateSuspendedProcessEx(CurrentDirectory, InEXEPath, InCommandLine, InProcessCreationFlags, &ProcessId, &ThreadId));
 
 
     // inject library
@@ -696,6 +740,30 @@ THROW_OUTRO:
     }
 FINALLY_OUTRO:
     return NtStatus;
+}
+
+EASYHOOK_NT_EXPORT RhCreateAndInject(
+        WCHAR* InEXEPath,
+        WCHAR* InCommandLine,
+        ULONG InProcessCreationFlags,
+        ULONG InInjectionOptions,
+        WCHAR* InLibraryPath_x86,
+        WCHAR* InLibraryPath_x64,
+        PVOID InPassThruBuffer,
+        ULONG InPassThruSize,
+        ULONG* OutProcessId)
+{
+    return RhCreateAndInjectEx(
+        NULL,
+        InEXEPath,
+        InCommandLine,
+        InProcessCreationFlags,
+        InInjectionOptions,
+        InLibraryPath_x86,
+        InLibraryPath_x64,
+        InPassThruBuffer,
+        InPassThruSize,
+        OutProcessId);
 }
 
 #ifndef _DEBUG

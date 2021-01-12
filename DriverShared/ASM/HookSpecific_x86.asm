@@ -281,7 +281,7 @@ HookInject_EXECUTABLE:
 	mov ebx, [esi + 64] ; VirtualFree()
 	push 08000h
 	push 0
-	push dword ptr [esi + 16]
+	push dword ptr [esi + 32] ; Inject->RemoteEntryPoint
 	
 	lea eax, dword ptr [esp + 12]
 	jmp eax

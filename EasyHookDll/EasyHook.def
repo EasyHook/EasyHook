@@ -35,6 +35,7 @@ EXPORTS
 	LhWaitForPendingRemovals
 	ReleaseTestFuncHookResults
 	RhCreateAndInject
+	RhCreateAndInjectEx
 	RhCreateStealthRemoteThread
 	RhGetProcessToken
 	RhInjectLibrary
@@ -45,6 +46,7 @@ EXPORTS
 	RhIsX64System
 	RhWakeUpProcess
 	RtlCreateSuspendedProcess
+	RtlCreateSuspendedProcessEx
 	RtlGetLastError
 	RtlGetLastErrorString
 	RtlGetLastErrorStringCopy

@@ -33,6 +33,14 @@
       <Configuration>netfx3.5-Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="netstandard2.0-Debug|Win32">
+      <Configuration>netstandard2.0-Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="netstandard2.0-Debug|x64">
+      <Configuration>netstandard2.0-Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D087E484-DBC9-4A2E-8368-C1D0E524994D}</ProjectGuid>
@@ -64,6 +72,12 @@
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfAtl>Static</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
@@ -88,6 +102,12 @@
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfAtl>Static</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
@@ -104,6 +124,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -116,25 +139,36 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">$(SolutionDir)Build\$(Configuration)\x86\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">$(SolutionDir)Build\$(Configuration)\x86\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">$(SolutionDir)Build\$(Configuration)\x86\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">$(SolutionDir)Build\$(Configuration)\x86\Temp\EasyHookDll\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">$(SolutionDir)Build\$(Configuration)\x86\Temp\EasyHookDll\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">$(SolutionDir)Build\$(Configuration)\x86\Temp\EasyHookDll\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">true</LinkIncremental>
     <LinkKeyFile Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'" />
     <LinkKeyFile Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'" />
+    <LinkKeyFile Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'" />
     <OutDir Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">$(SolutionDir)Build\$(Configuration)\x64\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">$(SolutionDir)Build\$(Configuration)\x64\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">$(SolutionDir)Build\$(Configuration)\x64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">$(SolutionDir)Build\$(Configuration)\x64\Temp\EasyHookDll\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">$(SolutionDir)Build\$(Configuration)\x64\Temp\EasyHookDll\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">$(SolutionDir)Build\$(Configuration)\x64\Temp\EasyHookDll\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">true</LinkIncremental>
     <LinkKeyFile Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'" />
     <LinkKeyFile Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'" />
+    <LinkKeyFile Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'" />
     <OutDir Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">$(SolutionDir)Build\$(Configuration)\x86\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">$(SolutionDir)Build\$(Configuration)\x86\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">$(SolutionDir)Build\$(Configuration)\x86\Temp\EasyHookDll\</IntDir>
@@ -149,16 +183,22 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">false</LinkIncremental>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'" />
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'" />
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'" />
@@ -173,8 +213,10 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'" />
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">EasyHook32</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">EasyHook32</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">EasyHook32</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">EasyHook64</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">EasyHook64</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">EasyHook64</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">EasyHook32</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">EasyHook32</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'">EasyHook64</TargetName>
@@ -250,6 +292,41 @@ copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
       <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
     </MASM>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)\DriverShared;$(SolutionDir);$(SolutionDir)\Public;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;EASYHOOK_EXPORTS;_ALLOW_RTCc_IN_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>true</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CallingConvention>StdCall</CallingConvention>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ExceptionHandling>Async</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>Aux_ulib_x86.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <ModuleDefinitionFile>EasyHook.def</ModuleDefinitionFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(TargetPath)" "$(TargetDir)..\x64\EasyHook32.dll"
+copy "$(TargetDir)EasyHook32.lib" "$(TargetDir)..\x64\EasyHook32.lib"</Command>
+    </PostBuildEvent>
+    <MASM>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
+    </MASM>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
@@ -287,6 +364,42 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
     </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)\DriverShared;$(SolutionDir);$(SolutionDir)\Public;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;EASYHOOK_EXPORTS;_ALLOW_RTCc_IN_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>true</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CallingConvention>StdCall</CallingConvention>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ExceptionHandling>Async</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>Aux_ulib_x64.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(TargetPath)</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+      <ModuleDefinitionFile>EasyHook.def</ModuleDefinitionFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(TargetPath)" "$(TargetDir)..\x86\EasyHook64.dll"
+copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
+    </PostBuildEvent>
+    <MASM>
+      <UseSafeExceptionHandlers>false</UseSafeExceptionHandlers>
+    </MASM>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
@@ -501,9 +614,11 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">CompileAsC</CompileAs>
     </ClCompile>
     <ClCompile Include="..\DriverShared\Disassembler\libudis86\itab.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'">CompileAsC</CompileAs>
@@ -511,9 +626,11 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">CompileAsC</CompileAs>
     </ClCompile>
     <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-att.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'">CompileAsC</CompileAs>
@@ -521,9 +638,11 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">CompileAsC</CompileAs>
     </ClCompile>
     <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn-intel.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'">CompileAsC</CompileAs>
@@ -531,9 +650,11 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">CompileAsC</CompileAs>
     </ClCompile>
     <ClCompile Include="..\DriverShared\Disassembler\libudis86\syn.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'">CompileAsC</CompileAs>
@@ -541,9 +662,11 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">CompileAsC</CompileAs>
     </ClCompile>
     <ClCompile Include="..\DriverShared\Disassembler\libudis86\udis86.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'">CompileAsC</CompileAs>
@@ -551,9 +674,11 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">CompileAsC</CompileAs>
     </ClCompile>
     <ClCompile Include="dllmain.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">CompileAsCpp</CompileAs>
@@ -624,14 +749,19 @@ copy "$(TargetDir)EasyHook64.lib" "$(TargetDir)..\x86\EasyHook64.lib"</Command>
     <MASM Include="..\DriverShared\ASM\HookSpecific_x64.asm">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">true</ExcludedFromBuild>
       <Command Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">cd "$(IntDir)"
 ml64.exe /D_WIN32 /c /Cx "%(FullPath)"
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">cd "$(IntDir)"
 ml64.exe /D_WIN32 /c /Cx "%(FullPath)"
 </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">cd "$(IntDir)"
+ml64.exe /D_WIN32 /c /Cx "%(FullPath)"
+</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">true</ExcludedFromBuild>
       <Command Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">cd "$(IntDir)"
@@ -658,18 +788,27 @@ ml.exe /D_WIN32 /c /Cx "%(FullPath)"
       <Command Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">cd "$(IntDir)"
 ml.exe /D_WIN32 /c /Cx "%(FullPath)"
 </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">cd "$(IntDir)"
+ml.exe /D_WIN32 /c /Cx "%(FullPath)"
+</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">true</ExcludedFromBuild>
       <Command Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">cd "$(IntDir)"
 ml.exe /D_WIN32 /c /Cx "%(FullPath)"
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">cd "$(IntDir)"
 ml.exe /D_WIN32 /c /Cx "%(FullPath)"
 </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">cd "$(IntDir)"
+ml.exe /D_WIN32 /c /Cx "%(FullPath)"
+</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">cd "$(IntDir)"
 ml.exe /D_WIN32 /c /Cx "%(FullPath)"
 </Command>
@@ -697,26 +836,18 @@ ml.exe /D_WIN32 /c /Cx "%(FullPath)"
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EasyHookSvc\EasyHookSvc.csproj">
-      <Project>{b9a68e47-237f-4045-a371-d5cceb896f7f}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\EasyHook\EasyHook.csproj">
-      <Project>{ab53862b-3b5c-4efc-9787-1f01199ebfbf}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="EasyHookDll_64.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="EasyHookDll_32.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx3.5-Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx4-Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netstandard2.0-Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='netfx4-Release|x64'">true</ExcludedFromBuild>
     </ResourceCompile>
   </ItemGroup>

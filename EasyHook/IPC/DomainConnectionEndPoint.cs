@@ -21,6 +21,7 @@
     about the project and latest updates.
 */
 
+#if !NETSTANDARD
 using EasyHook.Domain;
 
 namespace EasyHook.IPC
@@ -31,16 +32,16 @@ namespace EasyHook.IPC
   internal sealed class DomainConnectionEndPoint : DuplexChannelEndPointObject
   {
 
-    #region Variables
+#region Variables
 
     /// <summary>
     /// The identifier of the current application domain.
     /// </summary>
     private static readonly DomainIdentifier _id;
 
-    #endregion
+#endregion
 
-    #region Properties
+#region Properties
 
     /// <summary>
     /// Gets the identifier for the endpoint.
@@ -50,18 +51,18 @@ namespace EasyHook.IPC
       get { return _id; }
     }
 
-    #endregion
+#endregion
 
-    #region Constructors
+#region Constructors
 
     static DomainConnectionEndPoint()
     {
       _id = DomainIdentifier.GetLocalDomainIdentifier();
     }
 
-    #endregion
+#endregion
 
-    #region Public Methods
+#region Public Methods
 
     /// <summary>
     /// Creates or opens a connection to an instance of <typeparamref name="TEndPoint"/>.
@@ -74,9 +75,9 @@ namespace EasyHook.IPC
       return DummyCore.ConnectionManager.CreateChannel<TEndPoint>();
     }
 
-    #endregion
+#endregion
 
-    #region Public Overrides
+#region Public Overrides
 
     public override object InitializeLifetimeService()
     {
@@ -84,7 +85,8 @@ namespace EasyHook.IPC
       return null;
     }
 
-    #endregion
+#endregion
 
   }
 }
+#endif

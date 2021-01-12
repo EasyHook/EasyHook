@@ -184,12 +184,16 @@ namespace EasyHook
 
             if (ClassType != null)
             {
+#if NETSTANDARD
+                throw new NotSupportedException(".NET Standard 2.0 does not support Marshal.GetComSlotForMethodInfo");
+#else
                 classGuid = ClassType.GUID;
                 interfaceGuid = InterfaceType.GUID;
                 // get com-slot-number (vtable-index) of function X
                 vTableOffsets = new int[MethodPointers.Length];
                 for (var i = 0; i < Methods.Length; i++)
                     vTableOffsets[i] = Marshal.GetComSlotForMethodInfo(Methods[i]);
+#endif
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿
+﻿#if !NETSTANDARD
 using System.Diagnostics;
 namespace EasyHook.IPC
 {
@@ -28,3 +28,4 @@ namespace EasyHook.IPC
 
   }
 }
+#endif

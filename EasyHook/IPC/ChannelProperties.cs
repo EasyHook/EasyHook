@@ -21,6 +21,8 @@
     about the project and latest updates.
 */
 
+#if !NETSTANDARD
+
 using System;
 using System.Collections;
 using System.Runtime.Remoting.Channels.Ipc;
@@ -263,3 +265,5 @@ namespace EasyHook.IPC
 
   }
 }
+
+#endif

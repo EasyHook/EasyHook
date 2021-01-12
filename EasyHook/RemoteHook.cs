@@ -22,7 +22,7 @@
 //
 // Please visit https://easyhook.github.io for more information
 // about the project and latest updates.
-
+#if !NETSTANDARD
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,10 +33,10 @@ using System.Security.Principal;
 using System.Security.Policy;
 using System.Security;
 using System.Security.Permissions;
-using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
@@ -1060,3 +1060,4 @@ namespace EasyHook
         }
     }
 }
+#endif

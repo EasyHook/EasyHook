@@ -23,6 +23,8 @@
 // Please visit https://easyhook.github.io for more information
 // about the project and latest updates.
 
+#if !NETSTANDARD
+
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -58,3 +60,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("2.7.0.0")]
 [assembly: AssemblyFileVersion("2.7.0.0")]
+
+#endif

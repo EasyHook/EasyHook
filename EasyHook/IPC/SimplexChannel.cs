@@ -20,7 +20,7 @@
     Please visit http://www.codeplex.com/easyhook for more information
     about the project and latest updates.
 */
-
+#if !NETSTANDARD
 using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
@@ -40,15 +40,15 @@ namespace EasyHook.IPC
     where TEndPoint : EndPointObject
   {
 
-    #region Variables
+#region Variables
 
     private readonly ChannelProperties _channelProperties;
     private readonly EndPointConfigurationData<TEndPoint> _endPointConfig;
     private IpcServerChannel _serverChannel;
 
-    #endregion
+#endregion
 
-    #region Properties
+#region Properties
 
     /// <summary>
     /// Gets the full url of the current <see cref="SimplexChannel{TEndPoint}"/>.
@@ -66,9 +66,9 @@ namespace EasyHook.IPC
       get { return _serverChannel != null; }
     }
 
-    #endregion
+#endregion
 
-    #region Constructors
+#region Constructors
 
     /// <summary>
     /// Initializes a new instance of <see cref="SimplexChannel{TEndPoint}"/> using the given configuration data.
@@ -82,9 +82,9 @@ namespace EasyHook.IPC
       _endPointConfig = endPointConfigurationData;
     }
 
-    #endregion
+#endregion
 
-    #region Public Methods
+#region Public Methods
 
     /// <summary>
     /// Initializes the <see cref="SimplexChannel{TEndPoint}"/>.
@@ -102,9 +102,9 @@ namespace EasyHook.IPC
                                                          _endPointConfig.ObjectMode);
     }
 
-    #endregion
+#endregion
 
-    #region Private Static Methods
+#region Private Static Methods
 
     /// <summary>
     /// Asserts the given <see cref="EndPointConfigurationData{TEndPoint}"/> to be valid.
@@ -138,7 +138,8 @@ namespace EasyHook.IPC
       return securityDescriptor;
     }
 
-    #endregion
+#endregion
     
   }
 }
+#endif

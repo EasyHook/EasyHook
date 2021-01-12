@@ -22,7 +22,7 @@
 //
 // Please visit https://easyhook.github.io for more information
 // about the project and latest updates.
-
+#if !NETSTANDARD
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -472,3 +472,4 @@ namespace EasyHook
         #endregion
     }
 }
+#endif

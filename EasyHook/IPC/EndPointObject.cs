@@ -20,7 +20,7 @@
     Please visit http://www.codeplex.com/easyhook for more information
     about the project and latest updates.
 */
-
+#if !NETSTANDARD
 using System;
 using System.Runtime.Remoting;
 
@@ -32,7 +32,7 @@ namespace EasyHook.IPC
   public abstract class EndPointObject : MarshalByRefObject
   {
 
-    #region Public Members
+#region Public Members
 
     // ToDo: If project is updated to .NET3.5 or above, implement extension method TryPing()
     /// <summary>
@@ -45,9 +45,9 @@ namespace EasyHook.IPC
     {
     }
 
-    #endregion
+#endregion
 
-    #region Internal Members
+#region Internal Members
 
     /// <summary>
     /// Asserts that the given <paramref name="type"/> is a <see cref="Type"/> deriving from <see cref="EndPointObject"/>.
@@ -62,7 +62,8 @@ namespace EasyHook.IPC
         throw new ArgumentException("The given type must be a type deriving from EndPointObject", paramName);
     }
 
-    #endregion
+#endregion
 
   }
 }
+#endif

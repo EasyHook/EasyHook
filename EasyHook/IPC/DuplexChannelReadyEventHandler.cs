@@ -20,9 +20,10 @@
     Please visit http://www.codeplex.com/easyhook for more information
     about the project and latest updates.
 */
-
+#if !NETSTANDARD
 namespace EasyHook.IPC
 {
   internal delegate void DuplexChannelReadyEventHandler<TEndPoint>(DuplexChannel<TEndPoint> sender)
     where TEndPoint : DuplexChannelEndPointObject;
 }
+#endif

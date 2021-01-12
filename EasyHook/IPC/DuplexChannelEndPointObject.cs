@@ -20,7 +20,7 @@
     Please visit http://www.codeplex.com/easyhook for more information
     about the project and latest updates.
 */
-
+#if !NETSTANDARD
 using System;
 using System.Reflection;
 
@@ -32,7 +32,7 @@ namespace EasyHook.IPC
   internal abstract class DuplexChannelEndPointObject : EndPointObject
   {
 
-    #region Private Constants - Member Names for Reflection
+#region Private Constants - Member Names for Reflection
 
     /// <summary>
     /// <see cref="BindingFlags"/> to use when finding a class member through reflection.
@@ -49,17 +49,17 @@ namespace EasyHook.IPC
     /// </summary>
     private const string _Subscribe = "Subscribe";
 
-    #endregion
+#endregion
 
-    #region Private Variables
+#region Private Variables
 
     private static EventHandler _onEndPointReady;
     private static object _onEndPointReadyState;
     private static bool _isEndPointReady;
 
-    #endregion
+#endregion
 
-    #region Internal Members
+#region Internal Members
 
     /// <summary>
     /// Signals the remote endpoint that the local endpoint is ready to be connected to.
@@ -117,9 +117,9 @@ namespace EasyHook.IPC
         throw new ArgumentException("The given type must be a type deriving from EndPointObject", paramName);
     }
 
-    #endregion
+#endregion
 
-    #region Internal Protected Members
+#region Internal Protected Members
 
     /// <summary>
     /// Is marked protected since it's not possible to use reflection on private static members.
@@ -142,7 +142,8 @@ namespace EasyHook.IPC
       _onEndPointReadyState = state;
     }
 
-    #endregion
+#endregion
 
   }
 }
+#endif

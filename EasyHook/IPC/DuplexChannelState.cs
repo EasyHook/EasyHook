@@ -20,7 +20,7 @@
     Please visit http://www.codeplex.com/easyhook for more information
     about the project and latest updates.
 */
-
+#if !NETSTANDARD
 using System;
 
 namespace EasyHook.IPC
@@ -49,3 +49,4 @@ namespace EasyHook.IPC
     FullDuplex = 0x03
   }
 }
+#endif

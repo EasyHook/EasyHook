@@ -36,10 +36,15 @@
 
 #else
 	// Minimum WinXP for backwards compatibility
-	#define NTDDI_VERSION           NTDDI_WINXP
-	#define _WIN32_WINNT            _WIN32_WINNT_WINXP
-	#define _WIN32_IE_              _WIN32_IE_XP
-
+#ifndef NTDDI_VERSION
+    #define NTDDI_VERSION           NTDDI_WINXP
+#endif
+#ifndef _WIN32_WINNT
+    #define _WIN32_WINNT            _WIN32_WINNT_WINXP
+#endif
+#ifndef _WIN32_IE_
+    #define _WIN32_IE_              _WIN32_IE_XP
+#endif
     #include <windows.h>
     #include <winnt.h>
     #include <winternl.h>
@@ -410,6 +415,18 @@ DRIVER_SHARED_API(NTSTATUS, LhBarrierCallStackTrace(
 				ULONG InPassThruSize);
 
 	EASYHOOK_NT_EXPORT RhCreateAndInject(
+				WCHAR* InEXEPath,
+				WCHAR* InCommandLine,
+				ULONG InProcessCreationFlags,
+				ULONG InInjectionOptions,
+				WCHAR* InLibraryPath_x86,
+				WCHAR* InLibraryPath_x64,
+				PVOID InPassThruBuffer,
+				ULONG InPassThruSize,
+				ULONG* OutProcessId);
+
+	EASYHOOK_NT_EXPORT RhCreateAndInjectEx(
+				WCHAR* CurrentDirectory,
 				WCHAR* InEXEPath,
 				WCHAR* InCommandLine,
 				ULONG InProcessCreationFlags,

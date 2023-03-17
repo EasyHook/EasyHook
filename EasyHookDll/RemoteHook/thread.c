@@ -1382,7 +1382,7 @@ Returns:
 		}
 	}
 	else if(Code != WAIT_OBJECT_0 + 1)
-		THROW(STATUS_INTERNAL_ERROR, L"Unable to wait for injection completion due to timeout. ");
+		THROW(STATUS_INTERNAL_ERROR, L"Unable to wait for injection completion due to timeout.");
 
     RETURN;
 

@@ -137,7 +137,7 @@ Returns:
     
     *nextInstr = (ULONG64)InPtr + *length;
 
-    if(length > 0)
+    if(*length > 0)
         return STATUS_SUCCESS;
     else
         return STATUS_INVALID_PARAMETER;

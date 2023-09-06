@@ -96,11 +96,11 @@ void RtlSetLastError(LONG InCode, NTSTATUS InNtStatus, WCHAR* InMessage)
         if (lstrlenW(InMessage) > 0)
         {
             WCHAR msg[1024] = { 0 };
-            LPVOID lpMsgBuf;
 
             if (InNtStatus == STATUS_SUCCESS) 
             {
-                FormatMessage(
+				LPVOID lpMsgBuf;
+				FormatMessage(
                     FORMAT_MESSAGE_ALLOCATE_BUFFER | 
                     FORMAT_MESSAGE_FROM_SYSTEM |
                     FORMAT_MESSAGE_IGNORE_INSERTS,
@@ -110,14 +110,13 @@ void RtlSetLastError(LONG InCode, NTSTATUS InNtStatus, WCHAR* InMessage)
                     (LPTSTR) &lpMsgBuf,
                     0, NULL );
                 _snwprintf_s(msg, 1024, _TRUNCATE, L"%s (%s)\n", InMessage, lpMsgBuf);
-            }
+				LocalFree(lpMsgBuf);
+			}
             else 
             {
                 _snwprintf_s(msg, 1024, _TRUNCATE, L"%s (%s)\n", InMessage, RtlErrorCodeToString(InNtStatus));
             }
             DEBUGMSG(msg);
-
-            LocalFree(lpMsgBuf);
         }
 #endif
         LastError = (PWCHAR)InMessage;

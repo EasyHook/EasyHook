@@ -40,7 +40,7 @@ Parameters:
         by this method!
 */
 
-#if defined(_M_X64) && !defined(DRIVER)
+#if !defined(DRIVER)
     VirtualFree(*RefHandle, 0, MEM_RELEASE);
 #else
     RtlFreeMemory(*RefHandle);
@@ -108,7 +108,7 @@ Returns:
 
     UCHAR*			    Res = NULL;
 
-#if defined(_M_X64) && !defined(DRIVER)
+#if !defined(DRIVER)
     LONGLONG            Base;
     LONGLONG		    iStart;
     LONGLONG		    iEnd;
@@ -128,7 +128,7 @@ Returns:
 
 
     // reserve page with execution privileges
-#if defined(_M_X64) && !defined(DRIVER)
+#if !defined(DRIVER)
 
     /*
         Reserve memory around entry point...
@@ -166,10 +166,10 @@ Returns:
 
     if(Res == NULL)
 	    return NULL;
-#else
-    
+
+#else 
+
 	*OutPageSize = PAGE_SIZE;
-	// in 32-bit mode the trampoline will always be reachable
 	// In 64-bit driver mode we use an absolute address so the trampoline will always be reachable
     if((Res = (UCHAR*)RtlAllocateMemory(TRUE, PAGE_SIZE)) == NULL)
         return NULL;

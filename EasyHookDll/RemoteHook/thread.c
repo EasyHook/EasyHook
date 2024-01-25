@@ -808,7 +808,15 @@ Example:
 	GetRemoteModuleHandle(PID, "kernel32.dll");
 */
 	MODULEENTRY32 modEntry;
-	HANDLE tlh = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pId);
+    HANDLE tlh;
+    for (int retryTime = 0; retryTime < 5; retryTime++)
+    {
+        tlh = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pId);
+        if (tlh != INVALID_HANDLE_VALUE || GetLastError() != ERROR_BAD_LENGTH)
+            break;
+    }
+    if (tlh == INVALID_HANDLE_VALUE)
+        return NULL;
 	char moduleChar[256] = { 0 };
 
 	modEntry.dwSize = sizeof(MODULEENTRY32);
@@ -1240,13 +1248,33 @@ Returns:
 	FORCE(NtForceLdrInitializeThunk(hProc));
 
 	// Determine function addresses within remote process
-    Info->LoadLibraryW   = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "LoadLibraryW");
-	Info->FreeLibrary    = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "FreeLibrary");
-	Info->GetProcAddress = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "GetProcAddress");
-	Info->VirtualFree    = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "VirtualFree");
-	Info->VirtualProtect = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "VirtualProtect");
-	Info->ExitThread     = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "ExitThread");
-	Info->GetLastError   = (PVOID)GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "GetLastError");
+    Info->LoadLibraryW   = GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "LoadLibraryW");
+    if (Info->LoadLibraryW == NULL)
+        THROW(STATUS_PROCEDURE_NOT_FOUND, L"Unable to locate kernel32.dll|LoadLibraryW in target process.");
+
+	Info->FreeLibrary    = GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "FreeLibrary");
+    if (Info->FreeLibrary == NULL)
+        THROW(STATUS_PROCEDURE_NOT_FOUND, L"Unable to locate kernel32.dll|FreeLibrary in target process.");
+
+	Info->GetProcAddress = GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "GetProcAddress");
+    if (Info->GetProcAddress == NULL)
+        THROW(STATUS_PROCEDURE_NOT_FOUND, L"Unable to locate kernel32.dll|GetProcAddress in target process.");
+
+	Info->VirtualFree    = GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "VirtualFree");
+    if (Info->VirtualFree == NULL)
+        THROW(STATUS_PROCEDURE_NOT_FOUND, L"Unable to locate kernel32.dll|VirtualFree in target process.");
+
+	Info->VirtualProtect = GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "VirtualProtect");
+    if (Info->VirtualProtect == NULL)
+        THROW(STATUS_PROCEDURE_NOT_FOUND, L"Unable to locate kernel32.dll|VirtualProtect in target process.");
+
+	Info->ExitThread     = GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "ExitThread");
+    if (Info->ExitThread == NULL)
+        THROW(STATUS_PROCEDURE_NOT_FOUND, L"Unable to locate kernel32.dll|ExitThread in target process.");
+
+	Info->GetLastError   = GetRemoteFuncAddress(InTargetPID, hProc, "kernel32.dll", "GetLastError");
+    if (Info->GetLastError == NULL)
+        THROW(STATUS_PROCEDURE_NOT_FOUND, L"Unable to locate kernel32.dll|GetLastError in target process.");
 
     Info->WakeUpThreadID = InWakeUpTID;
     Info->IsManaged = InInjectionOptions & EASYHOOK_INJECT_MANAGED;
